@@ -2,6 +2,11 @@ import re
 
 
 if __name__ == '__main__':
-    p = re.compile('[a-zA-Z0-9_\t\f\v\s]+')
-    m = p.match()
+    p = re.compile('[^\(\)\[\]\{\}]+')
+
+    f = open('input.txt')
+
+    m = p.findall(f.read())
     print(m)
+
+    f.close()

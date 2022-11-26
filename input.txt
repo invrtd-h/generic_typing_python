@@ -1,0 +1,7 @@
+a, b = input(), input()
+memo = [[-1 for _ in range(100)] for _ in range(100)]
+def dp(i: int, j: int):
+    if i < 0 or j < 0:
+        return 0
+    if memo[i][j] != -1:
+        return memo[i][j]
