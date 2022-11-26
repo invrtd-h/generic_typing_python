@@ -12,12 +12,14 @@ from preptree import *
 
 # Here is our total rule of preprocessor
 #
+# TOT : TOT \NEWLINE\ LINE
+#     | LINE
 # LINE : INDENT LINE2
 #      | LINE2
 # LINE2 : BPARENS \NEWLINE\
 #       | \NEWLINE\
 # INDENT : WHITE
-#        | INDENT WHITE
+#        | WHITE INDENT
 # WHITE : \TAB\
 #       | \SPACE\
 # BPARENS : BPARENS SENTENCE
@@ -64,11 +66,11 @@ def p_line2_r1(p):
 
 def p_indent_r0(p):
     'INDENT : WHITE'
-    return IndentToken(None, p[0])
+    return IndentToken(p[0], None)
 
 
 def p_indent_r1(p):
-    'INDENT : INDENT WHITE'
+    'INDENT : WHITE INDENT'
     return IndentToken(p[0], p[1])
 
 

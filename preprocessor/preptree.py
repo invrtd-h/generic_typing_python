@@ -23,8 +23,8 @@ class IndentToken:
     __slots__ = ("next", "white")
 
     def __init__(self,
-                 next: Optional["IndentToken"],
-                 white: "WhiteToken"):
+                 white: "WhiteToken",
+                 next: Optional["IndentToken"]):
         self.next: Optional["IndentToken"] = next
         self.white: "WhiteToken" = white
 
