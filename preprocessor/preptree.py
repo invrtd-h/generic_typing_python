@@ -3,11 +3,11 @@ from typing import Union
 
 
 class LineToken:
-    __slots__ = ("indent", "vparens", "newline")
+    __slots__ = ("indent", "bparens", "newline")
 
-    def __init__(self, indent, vparens: Optional["VParensToken"], newline: bool):
+    def __init__(self, indent, bparens: Optional["BParensToken"], newline: bool):
         self.indent = indent
-        self.vparens = vparens
+        self.bparens = bparens
         self.newline: bool = newline
 
 
@@ -28,16 +28,16 @@ class WhiteToken:
         self.is_tab: bool = is_tab
 
 
-class VParensToken:
-    __slots__ = ("vparens", "sentence", "vparens2")
+class BParensToken:
+    __slots__ = ("bparens", "sentence", "bparens2")
 
     def __init__(self,
-                 vparens: Optional["VParensToken"],
+                 bparens: Optional["BParensToken"],
                  sentence: Optional["SentenceToken"],
-                 vparens2: Optional["VParens2Token"]):
-        self.vparens: Optional["VParensToken"] = vparens
+                 bparens2: Optional["BParens2Token"]):
+        self.bparens: Optional["BParensToken"] = bparens
         self.sentence: Optional["SentenceToken"] = sentence
-        self.vparens2: Optional["VParens2Token"] = vparens2
+        self.bparens2: Optional["BParens2Token"] = bparens2
 
 
 class SentenceToken:
@@ -55,24 +55,26 @@ class IndentOrStrToken:
         self.data = data
 
 
-class VParens2Token:
-    __slots__ = ("vparens3", "outerparen")
+class BParens2Token:
+    __slots__ = ("bparens3", "outerparen")
 
-    def __init__(self, vparens3, outerparen: str):
-        self.vparens3 = vparens3
-        self.outerparen: str = outerparen
+    def __init__(self, bparens3, outerparen: int):
+        self.bparens3 = bparens3
+        self.outerparen: int = outerparen
+
+        # {1 : (), 2 : [], 3 : {}}
 
 
-class VParens3Token:
-    __slots__ = ("next", "sentence", "vparens2")
+class BParens3Token:
+    __slots__ = ("next", "sentence", "bparens2")
 
     def __init__(self,
-                 next: Optional["VParens3Token"],
+                 next: Optional["BParens3Token"],
                  sentence: Optional[SentenceToken],
-                 vparens2: Optional[VParens2Token]):
-        self.next: Optional["VParens3Token"] = next
+                 bparens2: Optional[BParens2Token]):
+        self.next: Optional["BParens3Token"] = next
         self.sentence: Optional[SentenceToken] = sentence
-        self.vparens2: Optional[VParens2Token] = vparens2
+        self.bparens2: Optional[BParens2Token] = bparens2
 
 
 class Sentence2Token:
