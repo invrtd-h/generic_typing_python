@@ -28,8 +28,10 @@ class PrepLex(object):
         self.lexer = lex.lex(module=self, **kwargs)
 
 
+prep = PrepLex()
+
+
 if __name__ == '__main__':
-    prep = PrepLex()
 
     td1 = """
     a, b = input(), input()

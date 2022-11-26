@@ -3,18 +3,28 @@ from typing import Union
 
 
 class LineToken:
-    __slots__ = ("indent", "bparens", "newline")
+    __slots__ = ("indent", "line2")
 
-    def __init__(self, indent, bparens: Optional["BParensToken"], newline: bool):
+    def __init__(self,
+                 indent,
+                 line2: "Line2Token"):
         self.indent = indent
+        self.line2 = line2
+
+
+class Line2Token:
+    __slots__ = "bparens"
+
+    def __init__(self, bparens: Optional["BParensToken"]):
         self.bparens = bparens
-        self.newline: bool = newline
 
 
 class IndentToken:
     __slots__ = ("next", "white")
 
-    def __init__(self, next: Optional["IndentToken"], white: "WhiteToken"):
+    def __init__(self,
+                 next: Optional["IndentToken"],
+                 white: "WhiteToken"):
         self.next: Optional["IndentToken"] = next
         self.white: "WhiteToken" = white
 
@@ -43,7 +53,9 @@ class BParensToken:
 class SentenceToken:
     __slots__ = ("next", "indent_or_str")
 
-    def __init__(self, next: Optional["SentenceToken"], indent_or_str: "IndentOrStrToken"):
+    def __init__(self,
+                 next: Optional["SentenceToken"],
+                 indent_or_str: "IndentOrStrToken"):
         self.next: Optional["SentenceToken"] = next
         self.indent_or_str = indent_or_str
 
