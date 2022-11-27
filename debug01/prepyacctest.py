@@ -1,13 +1,15 @@
 import ply.yacc as yacc
 
-from preplex import PrepLex
+from preprocessor.preplex import PrepLex
 tokens = PrepLex.tokens
 
-from preplex import prep
+from preprocessor.preplex import prep
 lexer = prep.lexer
 
 def p_t(p):
     """
+    S : TOT
+      | TOT NEWLINES
     TOT : TOT NEWLINES LINE
         | LINE
     NEWLINES : NEWLINE NEWLINES
@@ -58,35 +60,34 @@ def p_t(p):
                    | LEADING_RPAR2_INNER
     LP3RIGHT_INNER : CONTENTS2 LEADING_RPAR3_INNER
                    | LEADING_RPAR3_INNER
-    LEADING_RPAR1 : RP1__ CONTENTS
-                  | RP1__
-    RP1__ : RP1 INDENT
+    LEADING_RPAR1 : RP1R CONTENTS
+                  | RP1R
+    RP1R : RP1 INDENT
+         | RP1
+    LEADING_RPAR2 : RP2R CONTENTS
+                  | RP2R
+    RP2R : RP2 INDENT
+         | RP2
+    LEADING_RPAR3 : RP3R CONTENTS
+                  | RP3R
+    RP3R : RP3 INDENT
+         | RP3
+    LEADING_RPAR1_INNER : RP1RR CONTENTS2
+                        | RP1RR
+    RP1RR : RP1 HOLES
           | RP1
-    LEADING_RPAR2 : RP2__ CONTENTS
-                  | RP2__
-    RP2__ : RP2 INDENT
+
+    LEADING_RPAR2_INNER : RP2RR CONTENTS2
+                        | RP2RR
+    RP2RR : RP2 HOLES
           | RP2
-    LEADING_RPAR3 : RP3__ CONTENTS
-                  | RP3__
-    RP3__ : RP3 INDENT
+    LEADING_RPAR3_INNER : RP3RR CONTENTS2
+                        | RP3RR
+    RP3RR : RP3 HOLES
           | RP3
-    LEADING_RPAR1_INNER : RP1____ CONTENTS2
-                        | RP1____
-    RP1____ : RP1 HOLES
-            | RP1
-    LEADING_RPAR2_INNER : RP2____ CONTENTS2
-                        | RP2____
-    RP2____ : RP2 HOLES
-            | RP2
-    LEADING_RPAR3_INNER : RP3____ CONTENTS2
-                        | RP3____
-    RP3____ : RP3 HOLES
-            | RP3
     """
 
 def p_error(p):
-    if type(p) == type(None):
-        return
     print("Syntax error at '%s'" % p.value)
 
 

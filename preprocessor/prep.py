@@ -1,36 +1,3 @@
-a, b = input(), input()
-memo = [[-1 for _ in range  (
-    0, 100
-) ] for _ in range(100)]
-def dp(i: int, j: int):
-    if i < 0 or j < 0:
-        return 0
-    if memo[i][j] != -1:
-        return memo[i][j]
-testify = (1, 2, (3,
-           4), 5,
-           6, ")(()")
-
-n, s = int(input()), input()
-M, m, now = 0, 0, 0
-for c in s:
-    now += 1 if c == '(' else -1
-    M, m = max([M, now]), min([m, now])
-print(max([M, -m]) if not now else -1)
-
-from functools import cache
-
-import sys
-sys.setrecursionlimit(10000)
-
-@cache
-def dp(n: int):
-    if n <= 3:
-        return [False, True, False, True][n]
-    return (not dp(n - 1)) or (not dp(n - 3))
-
-print("SK" if dp(int(input())) else "CY")
-
 from typing import Optional
 from functools import reduce
 
