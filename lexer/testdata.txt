@@ -1,0 +1,51 @@
+"string";
+"another string";
+'new string';
+
+trait StackLike(Self):{
+    declare_fn:{
+        append(Self, any) -> [Self or None];
+        pop(Self) -> [Self or None];
+    }declare_fn:{
+        __len__(Self) -> int;
+}}trait PointLike(Self):{
+    declare:{
+        x: int;
+        y: int;
+}}trait Addable(Self, T):{
+    declare_fn:{
+        __add__(Self, T) -> Self;
+}}trait Multipliable(Self, T):{
+    declare_fn:{
+        __mul__(Self, T) -> Self;
+}}StackLike(int) ;
+StackLike(list) ;
+Addable(str, int) ;
+Multipliable(str, int) ;
+Addable[int](str) ;
+def add_five(x: Addable[int]):{
+    return x + 5;
+}trait AddableSubable(Self, T) extends Addable(Self, T):{
+    declare_fn:{
+        __sub__(Self, T);
+}}trait Fooable(Self):{
+    declare_fn:{
+        foo(Self, any);
+}}printinfo Fooable;
+trait FooBarable(Self):{
+    declare_fn:{
+        foo(Self, any);
+        bar(Self, any);
+}}trait BarBazable(Self):{
+    declare_fn:{
+        bar(Self, any);
+        baz(Self, any);
+}}printinfo FooBarable and BarBazable;
+printinfo FooBarable or BarBazable;
+trait bar(T):{
+    declare_fn:{
+        foo(Self, int) -> int;
+}}trait baz(T):{
+    declare_fn:{
+        foo(Self, int) -> str;
+}}trait_info(bar and baz);
