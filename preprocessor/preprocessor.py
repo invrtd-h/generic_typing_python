@@ -77,7 +77,7 @@ class Program:
 
     @staticmethod
     def _nlparse(s: str) -> list[str]:
-        ret: list[str] = ["PROGRAM BEGIN", ""]
+        ret: list[str] = ["PROGRAM_BEGIN", ""]
 
         # this stack stores open parentheses
         stack: list[str] = []
@@ -152,7 +152,7 @@ class Program:
             # the given program is ill-formed; raise unbalanced parentheses error
             raise Exception(Program.unbal_paren_err_msg.format(parsed_so_far))
 
-        ret.append("PROGRAM END")
+        ret.append("PROGRAM_END")
         return ret
 
     def _add_semicolon(self) -> None:
@@ -169,7 +169,7 @@ class Program:
                 continue
 
             while stack and line.initial_indents <= stack[-1].initial_indents:
-                line.data = '}' + line.data
+                line.data = '};' + line.data
                 stack.pop()
 
             if line.data[-1] == ';':

@@ -1,51 +1,118 @@
-"string";
-"another string";
-'new string';
+PROGRAM_BEGIN;
 
-trait StackLike(Self):{
+
+
+
+
+trait StackLike(self):{
     declare_fn:{
-        append(Self, any) -> [Self or None];
-        pop(Self) -> [Self or None];
-    }declare_fn:{
-        __len__(Self) -> int;
-}}trait PointLike(Self):{
+        append(self, any) -> [self or None];
+        pop(self) -> [self or None];
+
+    };declare_fn:{
+        __len__(self) -> int;
+
+
+
+
+
+};};trait PointLike(self):{
     declare:{
         x: int;
         y: int;
-}}trait Addable(Self, T):{
+
+
+
+
+};};trait Addable(self, T):{
     declare_fn:{
-        __add__(Self, T) -> Self;
-}}trait Multipliable(Self, T):{
+        __add__(self, T) -> self;
+
+};};trait Multipliable(self, T):{
     declare_fn:{
-        __mul__(Self, T) -> Self;
-}}StackLike(int) ;
-StackLike(list) ;
-Addable(str, int) ;
-Multipliable(str, int) ;
-Addable[int](str) ;
-def add_five(x: Addable[int]):{
-    return x + 5;
-}trait AddableSubable(Self, T) extends Addable(Self, T):{
+        __mul__(self, T) -> self;
+
+
+
+
+};};printinfo StackLike(int) ;
+printinfo StackLike(list) ;
+
+printinfo Addable(str, int) ;
+printinfo Multipliable(str, int) ;
+
+
+
+
+printinfo Addable[int](str) ;
+
+
+
+
+trait AddableSubable(self, T) extends Addable[T]:{
     declare_fn:{
-        __sub__(Self, T);
-}}trait Fooable(Self):{
+        __sub__(self, T);
+
+
+
+
+};};trait Fooable(self):{
     declare_fn:{
-        foo(Self, any);
-}}printinfo Fooable;
-trait FooBarable(Self):{
+        foo(self, any);
+
+};};printinfo Fooable;
+
+
+
+
+
+
+
+
+
+trait FooBarable(self):{
     declare_fn:{
-        foo(Self, any);
-        bar(Self, any);
-}}trait BarBazable(Self):{
+        foo(self, any);
+        bar(self, any);
+
+};};trait BarBazable(self):{
     declare_fn:{
-        bar(Self, any);
-        baz(Self, any);
-}}printinfo FooBarable and BarBazable;
+        bar(self, any);
+        baz(self, any);
+
+};};printinfo FooBarable and BarBazable;
+
+
+
+
+
+
+
+
+
 printinfo FooBarable or BarBazable;
-trait bar(T):{
-    declare_fn:{
-        foo(Self, int) -> int;
-}}trait baz(T):{
-    declare_fn:{
-        foo(Self, int) -> str;
-}}trait_info(bar and baz);
+
+
+
+
+
+
+
+
+typetrace(baz <| int) ;
+
+
+policy Fooo:{
+    int -> int;
+    float -> float;
+    typename T: Addable[int] -> T;
+    typename U -> typetrace(try_lshift <| U);
+
+};
+
+
+
+};generate Fooo;
+generate FooBarable;
+
+PROGRAM_END;

@@ -3,7 +3,7 @@ import ply.lex as lex
 tokens = [
     'STRING',
     'NUMBER',
-    "WHITESPACE",
+    "WS",
     "S_COLON",
     "COLON",
     "COMMA",
@@ -14,7 +14,7 @@ tokens = [
 
     "PLUS", "MINUS", "TIMES", "F_DIV", "I_DIV", "MODULO",
     "EQ", "NEQ", "LT", "GT", "LTE", "GTE",
-    "SUBSTITUTION",
+    "SUBSTITUTION", "AT", "DOT",
     "BIT_AND", "BIT_OR", "BIT_XOR", "BIT_NOT",
     "L_SHIFT", "R_SHIFT",
 
@@ -28,27 +28,33 @@ reserved = {
     'or': 'OR',
     'not': 'NOT',
 
+    'True': 'TRUE',
+    'False': 'FALSE',
+
     'def': 'DEF',
     'class': 'CLASS',
     'return': 'RETURN',
-    'type' : 'TYPE',
+    'type': 'TYPE',
 
     'trait': 'TRAIT',
     'declare': 'DECLARE',
     'declare_fn': 'DECLARE_FN',
-    'extends' : 'EXTENDS',
-    'typetrace' : 'TYPETRACE',
-    'policy' : 'POLICY',
-    'applies' : 'APPLIES',
-    'generate' : 'GENERATE',
-    'printinfo' : 'PRINTINFO',
+    'extends': 'EXTENDS',
+    'typetrace': 'TYPETRACE',
+    'policy': 'POLICY',
+    'applies': 'APPLIES',
+    'generate': 'GENERATE',
+    'printinfo': 'PRINTINFO',
+    'satisfies': 'SATISFIES',
+
+    'PROGRAM_BEGIN': 'PROGRAM_BEGIN',
+    'PROGRAM_END': 'PROGRAM_END',
 }
 
 tokens += reserved.values()
 
 t_STRING = r"\"([^\\\"]|\\.)*\" | \'([^\\\']|\\.)*\'"
 t_NUMBER = r'\d+'
-t_WHITESPACE = r'[\s]+'
 t_S_COLON = r';'
 t_COLON = r':'
 t_COMMA = r','
@@ -73,7 +79,10 @@ t_LT = r'<'
 t_GT = r'>'
 t_LTE = r'<='
 t_GTE = r'>='
+
 t_SUBSTITUTION = r'='
+t_AT = r'@'
+t_DOT = r'\.'
 
 t_BIT_AND = r'&'
 t_BIT_OR = r'\|'
@@ -86,19 +95,23 @@ t_R_SHIFT = r'>>'
 t_REV_PIPE = r'<\|'
 
 
+def t_WS(t) -> None:
+    r'[\s]+'
+    return
+
+
 def t_ID(t):
     r'[a-zA-Z_][a-zA-Z0-9_]*'
     t.type = reserved.get(t.value, 'ID')
     return t
 
 
-def t_error(t):
+def t_error(t) -> None:
     print("Illegal character '%s'" % t.value[0])
     t.lexer.skip(1)
 
 
 lexer = lex.lex()
-
 
 if __name__ == '__main__':
     f = open('testdata.txt', 'r')
@@ -114,5 +127,3 @@ if __name__ == '__main__':
     x = 1
     if type(x) == int:
         print('int')
-
-

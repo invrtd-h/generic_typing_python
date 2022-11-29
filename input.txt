@@ -1,206 +1,21 @@
-a, b = input(), input()
-memo = [[-1 for _ in range  (
-    0, 100
-) ] for _ in range(100)]
-def dp(i: int, j: int):
-    if i < 0 or j < 0:
-        return 0
-    if memo[i][j] != -1:
-        return memo[i][j]
-testify = (1, 2, (3,
-           4), 5,
-           6, ")(()")
-
- # test comment 1
-test_str = "#test_comment"
-
-n, s = int(input()), input() # test comment 2
-M, m, now = 0, 0, 0
-for c in s:
-    now += 1 if c == '(' else -1
-    M, m = max([M, now]), min([m, now])
-print(max([M, -m]) if not now else -1)
-
-a = (
-    3 # test comment 3
-)
-
-from functools import cache
-
-import sys
-sys.setrecursionlimit(10000)
-
-@cache
-def dp(n: int):
-    if n <= 3:
-        return [False, True, False, True][n]
-    return (not dp(n - 1)) or (not dp(n - 3))
-
-print("SK" if dp(int(input())) else "CY")
-
-from typing import Optional
-from functools import reduce
-
-
-class ProgramLine:
-    __slots__ = ("data", "initial_indents", "indent_policy")
-
-    def __init__(self, raw_line: str) -> None:
-        i: int = 0
-        while i < len(raw_line) and (raw_line[i] == " " or raw_line[i] == '\t'):
-            i += 1
-
-        if raw_line[:i].count(' ') != i and raw_line[:i].count('\t') != i:
-            raise ValueError("Indentation must be either all spaces or all tabs")
-
-        self.initial_indents: int = i
-        self.data: str = raw_line[i:]
-
-        self.indent_policy: Optional[str] = None
-        if not raw_line:
-            pass
-        elif raw_line[0] == ' ':
-            self.indent_policy = ' '
-        elif raw_line[0] == '\t':
-            self.indent_policy = '\t'
-
-    def __bool__(self) -> bool:
-        return bool(self.data)
-
-
-class Program:
-    __slots__ = ("lines", "indent_type")
-
-    def __init__(self, raw_program: str) -> None:
-        splitted_data: list[str] = Program._nlparse(raw_program)
-        self.lines: list[ProgramLine] = [ProgramLine(line) for line in splitted_data]
-
-        # determine indent type of program
-        self.indent_type: Optional[str] = None
-
-        for p_line in self.lines:
-            if p_line.indent_policy is not None:
-                if self.indent_type is None:
-                    self.indent_type = p_line.indent_policy
-                elif self.indent_type != p_line.indent_policy:
-                    raise ValueError("Indentation must be either all spaces or all tabs")
-
-        self._add_semicolon()
-        self._add_parentheses()
-
-    def __repr__(self) -> str:
-        """Returns the program as a string"""
-        temp = map(self.line_to_str, self.lines)
-        return reduce(lambda x, y: x + "\n" + y, temp)
-
-    def line_to_str(self, line: ProgramLine) -> str:
-        """Returns a ProgramLine as a string"""
-        if self.indent_type is None:
-            return line.data
-        return self.indent_type * line.initial_indents + line.data
-
-    @staticmethod
-    def _nlparse(s: str) -> list[str]:
-        ret = ["PROGRAM BEGIN", ""]
-        stack = []
-
-        for c in s:
-            if not stack and c == '\n':
-                ret.append("")
-            if c != '\n':
-                ret[-1] += c
-
-            if stack:
-                if stack[-1] == '"' and c != '"':
-                    continue
-                if stack[-1] == "'" and c != "'":
-                    continue
-
-            if c in {'(', '[', '{'}:
-                stack.append(c)
-            elif c in {'"', "'"} and (not stack or stack[-1] not in {'"', "'"}):
-                stack.append(c)
-            elif c == ')':
-                if stack and stack[-1] == '(':
-                    stack.pop()
-                else:
-                    raise Exception('Unbalanced parentheses')
-            elif c == ']':
-                if stack and stack[-1] == '[':
-                    stack.pop()
-                else:
-                    raise Exception('Unbalanced parentheses')
-            elif c == '}':
-                if stack and stack[-1] == '{':
-                    stack.pop()
-                else:
-                    raise Exception('Unbalanced parentheses')
-            elif c == '"':
-                if stack and stack[-1] == '"':
-                    stack.pop()
-                else:
-                    raise Exception('Unbalanced parentheses')
-            elif c == '\'':
-                if stack and stack[-1] == '\'':
-                    stack.pop()
-                else:
-                    raise Exception('Unbalanced parentheses')
-
-        ret.append("PROGRAM END")
-        return ret
-
-    def _add_semicolon(self) -> None:
-        for line in self.lines:
-            if line and line.data[-1] not in ';:':
-                line.data += ';'
-        return None
-
-    def _add_parentheses(self) -> None:
-        stack: list[ProgramLine] = []
-
-        for line in self.lines:
-            if not line:
-                continue
-
-            while stack and line.initial_indents <= stack[-1].initial_indents:
-                line.data = '}' + line.data
-                stack.pop()
-
-            if line.data[-1] == ';':
-                continue
-            if line.data[-1] == ':':
-                if stack and line.initial_indents < stack[-1].initial_indents:
-                    raise ValueError("Unexpected Indentation")
-                line.data += '{'
-                stack.append(line)
-
-
-if __name__ == '__main__':
-    f = open("../input.txt", 'r')
-    s = f.read()
-    f.close()
-
-    result = Program(s)
-    print(result)
-
 # 1. trait definition
 # the following trait definition says that
-# typename 'Self' should support .append(x) and .pop() operation
+# typename 'self' should support .append(x) and .pop() operation
 # and __len__ method
 
-trait StackLike(Self):
+trait StackLike(self):
     declare_fn:
-        append(Self, any) -> [Self or None]
-        pop(Self) -> [Self or None]
+        append(self, any) -> [self or None]
+        pop(self) -> [self or None]
 
     declare_fn:
-        __len__(Self) -> int
+        __len__(self) -> int
 
 
 # the following trait definition says that
-# the instance of the class 'Self' should have 'x', 'y' member variables
+# the instance of the class 'self' should have 'x', 'y' member variables
 
-trait PointLike(Self):
+trait PointLike(self):
     declare:
         x: int
         y: int
@@ -208,13 +23,13 @@ trait PointLike(Self):
 
 # 2. traits with 2 or more parameters.
 
-trait Addable(Self, T):
+trait Addable(self, T):
     declare_fn:
-        __add__(Self, T) -> Self
+        __add__(self, T) -> self
 
-trait Multipliable(Self, T):
+trait Multipliable(self, T):
     declare_fn:
-        __mul__(Self, T) -> Self
+        __mul__(self, T) -> self
 
 
 # 3. trait(type) expression is evaluated as a boolean.
@@ -228,27 +43,27 @@ Multipliable(str, int) # -> True, since "str" * 3 is a valid expression
 
 # 4. trait<>() expression as a semantic sugar.
 
-Addable<int>(str) # -> False, exactly same meaning with Addable(str, int)
+Addable[int](str) # -> False, exactly same meaning with Addable(str, int)
 
 
 # 5. trait<> expression can be used like a unary trait.
 
-def add_five(x: Addable<int>):
+def add_five(x: Addable[int]):
     return x + 5
 
 
 # 6. trait extensions.
 
-trait AddableSubable(Self, T) extends Addable(Self, T):
+trait AddableSubable(self, T) extends Addable(self, T):
     declare_fn:
-        __sub__(Self, T)
+        __sub__(self, T)
 
 
 # 7. printinfo operator.
 
-trait Fooable(Self):
+trait Fooable(self):
     declare_fn:
-        foo(Self, any)
+        foo(self, any)
 
 printinfo Fooable
 
@@ -260,15 +75,15 @@ printinfo Fooable
 
 # 8. trait and/or/not operator.
 
-trait FooBarable(Self):
+trait FooBarable(self):
     declare_fn:
-        foo(Self, any)
-        bar(Self, any)
+        foo(self, any)
+        bar(self, any)
 
-trait BarBazable(Self):
+trait BarBazable(self):
     declare_fn:
-        bar(Self, any)
-        baz(Self, any)
+        bar(self, any)
+        baz(self, any)
 
 printinfo FooBarable and BarBazable
 
@@ -288,18 +103,34 @@ printinfo FooBarable or BarBazable
 # member function .bar(any)
 # """
 
+# 9. typetrace operator.
 
+def baz(x: int) -> int:
+    return x + 5
 
+typetrace(baz <| int) # -> int
 
-# trait_conflict 예제
+# 10. overloading policies.
 
-trait bar(T):
-    declare_fn:
-        foo(Self, int) => int
+def try_lshift(x: any):
+    return x << 2
 
-trait baz(T):
-    declare_fn:
-        foo(Self, int) => str
+policy Fooo:
+    int -> int
+    float -> float
+    typename T: Addable[int] -> T
+    typename U -> typetrace(try_lshift <| U)
 
-trait_info(bar and baz)
-# /-> declaration 중복 에러!
+def bazbaz(x) applies Fooo:
+    if type(x) == int:
+        return x
+    if type(x) == float:
+        return x
+    if type(x) satisfies Addable[int]:
+        return x + 1
+    return x << 2
+
+# 11. generate operator.
+
+generate Fooo
+generate FooBarable
