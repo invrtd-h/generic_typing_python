@@ -169,4 +169,5 @@ trait DefaultArgsExample(self, arg_a, arg_b, arg_c=int, arg_d=float):
     pass
 
 trait TraitWithAllOptionalArgs(self, arg_a=int, arg_b=str):
-    pass
+    fn:
+        whatever(self, int, int, =int, =int, *, a:=int, b:int)

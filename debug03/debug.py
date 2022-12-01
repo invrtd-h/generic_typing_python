@@ -49,14 +49,14 @@ def p_t(p: ply.yacc.YaccProduction):
     pred_args : main_pred COMMA next_preds
               | main_pred
     main_pred : ID
-    next_preds : next_anonymous_necessary_preds next_anonymous_opt_preds STAR next_named_preds
-               | next_anonymous_necessary_preds next_anonymous_opt_preds STAR
-               | next_anonymous_necessary_preds next_anonymous_opt_preds
-               | next_anonymous_necessary_preds STAR next_named_preds
-               | next_anonymous_necessary_preds STAR
+    next_preds : next_anonymous_necessary_preds COMMA next_anonymous_opt_preds COMMA STAR COMMA next_named_preds
+               | next_anonymous_necessary_preds COMMA next_anonymous_opt_preds COMMA STAR
+               | next_anonymous_necessary_preds COMMA next_anonymous_opt_preds
+               | next_anonymous_necessary_preds COMMA STAR COMMA next_named_preds
+               | next_anonymous_necessary_preds COMMA STAR
                | next_anonymous_necessary_preds
-               | next_anonymous_opt_preds STAR next_named_preds
-               | next_anonymous_opt_preds STAR
+               | next_anonymous_opt_preds COMMA STAR COMMA next_named_preds
+               | next_anonymous_opt_preds COMMA STAR
                | next_anonymous_opt_preds
                | STAR next_named_preds
                | STAR
@@ -66,7 +66,7 @@ def p_t(p: ply.yacc.YaccProduction):
     next_anonymous_opt_preds : next_anonymous_opt_preds COMMA next_anonymous_opt_pred
                              | next_anonymous_opt_pred
     next_anonymous_opt_pred : ASSIGN unary_pred
-    next_named_preds : next_named_preds next_named_pred
+    next_named_preds : next_named_preds COMMA next_named_pred
                      | next_named_pred
     next_named_pred : next_named_necessary_pred
                     | next_named_opt_pred
