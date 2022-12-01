@@ -25,7 +25,7 @@ trait PointLike(self):
         y: int
 
 
-trait AnyRandom(Self):
+trait AnyRandom(self):
     var:
         x: int
         y: int
@@ -151,14 +151,22 @@ generate Fooo
 generate FooBarable
 
 
-# 12. satisfies operator, implies operator.
+# 12. implies operator.
 
 printinfo [FooBarable and BarBazable] implies [FooBarable or BarBazable]
 
-# 13. obeys operator
+# 13. obeys operator.
 
 trait Trait01(self):
     static_fn:
         foo() obeys Fooo
 
 a, b = b, a
+
+# 14. default arguments.
+
+trait DefaultArgsExample(self, arg_a, arg_b, arg_c=int, arg_d=float):
+    pass
+
+trait TraitWithAllOptionalArgs(self, arg_a=int, arg_b=str):
+    pass

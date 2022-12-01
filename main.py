@@ -6,7 +6,8 @@ def bar(x: foo):
     return True
 
 
-def baz(x, y=1, *, z, u=1, v, r=1)
+def baz(x, y=1, *, z, u=1, v, r=1):
+    pass
 
 
 if __name__ == '__main__':
