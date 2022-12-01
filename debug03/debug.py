@@ -49,9 +49,30 @@ def p_t(p: ply.yacc.YaccProduction):
     pred_args : main_pred COMMA next_preds
               | main_pred
     main_pred : ID
-    next_preds : next_preds COMMA next_pred
-               | next_pred
-    next_pred : unary_pred
+    next_preds : next_anonymous_necessary_preds next_anonymous_opt_preds STAR next_named_preds
+               | next_anonymous_necessary_preds next_anonymous_opt_preds STAR
+               | next_anonymous_necessary_preds next_anonymous_opt_preds
+               | next_anonymous_necessary_preds STAR next_named_preds
+               | next_anonymous_necessary_preds STAR
+               | next_anonymous_necessary_preds
+               | next_anonymous_opt_preds STAR next_named_preds
+               | next_anonymous_opt_preds STAR
+               | next_anonymous_opt_preds
+               | STAR next_named_preds
+               | STAR
+    next_anonymous_necessary_preds : next_anonymous_necessary_preds COMMA next_anonymous_necessary_pred
+                                   | next_anonymous_necessary_pred
+    next_anonymous_necessary_pred : unary_pred
+    next_anonymous_opt_preds : next_anonymous_opt_preds COMMA next_anonymous_opt_pred
+                             | next_anonymous_opt_pred
+    next_anonymous_opt_pred : ASSIGN unary_pred
+    next_named_preds : next_named_preds next_named_pred
+                     | next_named_pred
+    next_named_pred : next_named_necessary_pred
+                    | next_named_opt_pred
+    next_named_necessary_pred : arg_name COLON unary_pred
+    next_named_opt_pred : arg_name COLON ASSIGN unary_pred
+    arg_name : ID
     unary_pred : pred_name
                | unnamed_pred
     unnamed_pred : pred_name LP3 args RP3
