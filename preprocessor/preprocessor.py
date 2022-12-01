@@ -181,6 +181,11 @@ class Program:
                 stack.append(line)
 
 
+def preprocess(s: str):
+    s += '\n'
+    return str(Program(s))
+
+
 if __name__ == '__main__':
     f = open("../input.txt", 'r')
     s = f.read()

@@ -1,8 +1,6 @@
 import ply.lex as lex
 
 tokens = [
-    'STRING',
-    'NUMBER',
     "WS",
     "S_COLON",
     "COLON",
@@ -12,11 +10,8 @@ tokens = [
     "LP1", "LP2", "LP3",
     "RP1", "RP2", "RP3",
 
-    "PLUS", "MINUS", "TIMES", "F_DIV", "I_DIV", "MODULO",
-    "EQ", "NEQ", "LT", "GT", "LTE", "GTE",
-    "SUBSTITUTION", "AT", "DOT",
-    "BIT_AND", "BIT_OR", "BIT_XOR", "BIT_NOT",
-    "L_SHIFT", "R_SHIFT",
+    "EQ", "NEQ",
+    "ASSIGN", "DOT", "STAR",
 
     "REV_PIPE",
 
@@ -30,22 +25,29 @@ reserved = {
 
     'True': 'TRUE',
     'False': 'FALSE',
+    'None': 'NONE',
 
     'def': 'DEF',
     'class': 'CLASS',
-    'return': 'RETURN',
-    'type': 'TYPE',
+    'pass': 'PASS',
 
     'trait': 'TRAIT',
-    'declare': 'DECLARE',
-    'declare_fn': 'DECLARE_FN',
-    'extends': 'EXTENDS',
-    'typetrace': 'TYPETRACE',
+    'var': 'VAR',
+    'fn': 'FN',
+    'cls_var': 'CLS_VAR',
+    'cls_fn': 'CLS_FN',
+    'static_fn': 'STATIC_FN',
+
+    'obeys': 'OBEYS',
     'policy': 'POLICY',
-    'applies': 'APPLIES',
+    'default': 'DEFAULT',
+    'extends': 'EXTENDS',
+    'implies': 'IMPLIES',
     'generate': 'GENERATE',
+    'trait_of': 'TRAIT_OF',
+    'typename': 'TYPENAME',
     'printinfo': 'PRINTINFO',
-    'satisfies': 'SATISFIES',
+    'typetrace': 'TYPETRACE',
 
     'PROGRAM_BEGIN': 'PROGRAM_BEGIN',
     'PROGRAM_END': 'PROGRAM_END',
@@ -53,8 +55,8 @@ reserved = {
 
 tokens += reserved.values()
 
-t_STRING = r"\"([^\\\"]|\\.)*\" | \'([^\\\']|\\.)*\'"
-t_NUMBER = r'\d+'
+# t_STRING = r"\"([^\\\"]|\\.)*\" | \'([^\\\']|\\.)*\'"
+# t_NUMBER = r'\d+'
 t_S_COLON = r';'
 t_COLON = r':'
 t_COMMA = r','
@@ -67,37 +69,19 @@ t_RP1 = r'\)'
 t_RP2 = r'\}'
 t_RP3 = r'\]'
 
-t_PLUS = r'\+'
-t_MINUS = r'-'
-t_TIMES = r'\*'
-t_F_DIV = r'/'
-t_I_DIV = r'//'
-t_MODULO = r'%'
 t_EQ = r'=='
 t_NEQ = r'!='
-t_LT = r'<'
-t_GT = r'>'
-t_LTE = r'<='
-t_GTE = r'>='
 
-t_SUBSTITUTION = r'='
-t_AT = r'@'
+t_ASSIGN = r'='
 t_DOT = r'\.'
-
-t_BIT_AND = r'&'
-t_BIT_OR = r'\|'
-t_BIT_XOR = r'\^'
-t_BIT_NOT = r'~'
-
-t_L_SHIFT = r'<<'
-t_R_SHIFT = r'>>'
+t_STAR = r'\*'
 
 t_REV_PIPE = r'<\|'
 
 
 def t_WS(t) -> None:
     r'[\s]+'
-    return
+    pass
 
 
 def t_ID(t):
@@ -112,6 +96,22 @@ def t_error(t) -> None:
 
 
 lexer = lex.lex()
+
+
+s1: str = """class AstNode:
+    __slots__ = ()
+
+    name: str = None
+
+    def ast_print(self, indent: int = 0) -> None:
+        print('-' * indent, end='')
+        print(self.name)
+        for slot in self.__slots__:
+            val: AstNode = getattr(self, slot)
+            if val is not None:
+                val.ast_print(indent + 2)
+"""
+
 
 if __name__ == '__main__':
     f = open('testdata.txt', 'r')

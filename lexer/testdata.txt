@@ -5,11 +5,11 @@ PROGRAM_BEGIN;
 
 
 trait StackLike(self):{
-    declare_fn:{
+    fn:{
         append(self, any) -> [self or None];
         pop(self) -> [self or None];
 
-    };declare_fn:{
+    };fn:{
         __len__(self) -> int;
 
 
@@ -17,19 +17,42 @@ trait StackLike(self):{
 
 
 };};trait PointLike(self):{
-    declare:{
+    var:{
         x: int;
         y: int;
+
+
+};};trait AnyRandom(Self):{
+    var:{
+        x: int;
+        y: int;
+        z;
+    };fn:{
+        __init__(self, int, int, any) -> None;
+        __init__(self, int, int) -> None;
+        __init__(self, int) -> None;
+        __init__(self) -> None;
+
+    };cls_fn:{
+        foo(cls, int) -> str;
+        foo(cls, float) -> str;
+
+    };cls_var:{
+        xxx;
+        yyy: int;
+
+    };static_fn:{
+        bar() -> None;
 
 
 
 
 };};trait Addable(self, T):{
-    declare_fn:{
+    fn:{
         __add__(self, T) -> self;
 
 };};trait Multipliable(self, T):{
-    declare_fn:{
+    fn:{
         __mul__(self, T) -> self;
 
 
@@ -47,17 +70,15 @@ printinfo Multipliable(str, int) ;
 printinfo Addable[int](str) ;
 
 
-
-
 trait AddableSubable(self, T) extends Addable[T]:{
-    declare_fn:{
+    fn:{
         __sub__(self, T);
 
 
 
 
 };};trait Fooable(self):{
-    declare_fn:{
+    fn:{
         foo(self, any);
 
 };};printinfo Fooable;
@@ -71,16 +92,16 @@ trait AddableSubable(self, T) extends Addable[T]:{
 
 
 trait FooBarable(self):{
-    declare_fn:{
+    fn:{
         foo(self, any);
         bar(self, any);
 
 };};trait BarBazable(self):{
-    declare_fn:{
+    fn:{
         bar(self, any);
         baz(self, any);
 
-};};printinfo FooBarable and BarBazable;
+};};printinfo [FooBarable and BarBazable];
 
 
 
@@ -90,7 +111,7 @@ trait FooBarable(self):{
 
 
 
-printinfo FooBarable or BarBazable;
+printinfo [FooBarable or BarBazable];
 
 
 
@@ -99,8 +120,8 @@ printinfo FooBarable or BarBazable;
 
 
 
-typetrace(baz <| int) ;
 
+printinfo typetrace(baz <| int) ;
 
 policy Fooo:{
     int -> int;
@@ -110,9 +131,7 @@ policy Fooo:{
 
 };
 
-
-
-};generate Fooo;
+generate Fooo;
 generate FooBarable;
 
 PROGRAM_END;

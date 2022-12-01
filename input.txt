@@ -3,12 +3,16 @@
 # typename 'self' should support .append(x) and .pop() operation
 # and __len__ method
 
+trait any(self):
+    pass
+
 trait StackLike(self):
-    declare_fn:
+    fn:
         append(self, any) -> [self or None]
         pop(self) -> [self or None]
+        popop(self) -> [self or (None and None)]
 
-    declare_fn:
+    fn:
         __len__(self) -> int
 
 
@@ -16,53 +20,78 @@ trait StackLike(self):
 # the instance of the class 'self' should have 'x', 'y' member variables
 
 trait PointLike(self):
-    declare:
+    var:
         x: int
         y: int
+
+
+trait AnyRandom(Self):
+    var:
+        x: int
+        y: int
+        z
+    fn:
+        __init__(self, int, int, any) -> None
+        __init__(self, int, int) -> None
+        __init__(self, int) -> None
+        __init__(self) -> None
+
+    cls_fn:
+        foo(cls, int) -> str
+        foo(cls, float) -> str
+
+    cls_var:
+        xxx
+        yyy: int
+
+    static_fn:
+        bar() -> None
+
+
+t_random = any_random
+
+
+trait decl_var_with_comma(self):
+    var:
+        [x, y, z]: int
 
 
 # 2. traits with 2 or more parameters.
 
 trait Addable(self, T):
-    declare_fn:
+    fn:
         __add__(self, T) -> self
 
 trait Multipliable(self, T):
-    declare_fn:
+    fn:
         __mul__(self, T) -> self
 
 
 # 3. trait(type) expression is evaluated as a boolean.
 
-StackLike(int) # -> False
-StackLike(list) # -> True
+printinfo StackLike(int) # -> False
+printinfo StackLike(list) # -> True
 
-Addable(str, int) # -> False
-Multipliable(str, int) # -> True, since "str" * 3 is a valid expression
-
-
-# 4. trait<>() expression as a semantic sugar.
-
-Addable[int](str) # -> False, exactly same meaning with Addable(str, int)
+printinfo Addable(str, int) # -> False
+printinfo Multipliable(str, int) # -> True, since "str" * 3 is a valid expression
 
 
-# 5. trait<> expression can be used like a unary trait.
+# 4. trait[]() expression as a semantic sugar.
 
-def add_five(x: Addable[int]):
-    return x + 5
+printinfo Addable[int](str) # -> False, exactly same meaning with Addable(str, int)
 
 
 # 6. trait extensions.
 
-trait AddableSubable(self, T) extends Addable(self, T):
-    declare_fn:
+trait AddableSubable(self, T) extends Addable[T]:
+    fn:
         __sub__(self, T)
 
 
 # 7. printinfo operator.
 
 trait Fooable(self):
-    declare_fn:
+    fn:
         foo(self, any)
 
 printinfo Fooable
@@ -76,16 +105,16 @@ printinfo Fooable
 # 8. trait and/or/not operator.
 
 trait FooBarable(self):
-    declare_fn:
+    fn:
         foo(self, any)
         bar(self, any)
 
 trait BarBazable(self):
-    declare_fn:
+    fn:
         bar(self, any)
         baz(self, any)
 
-printinfo FooBarable and BarBazable
+printinfo [FooBarable and BarBazable]
 
 # possible output:
 # """
@@ -95,7 +124,7 @@ printinfo FooBarable and BarBazable
 # member function .baz(any)
 # """
 
-printinfo FooBarable or BarBazable
+printinfo [FooBarable or BarBazable]
 
 # possible output:
 # """
@@ -103,34 +132,33 @@ printinfo FooBarable or BarBazable
 # member function .bar(any)
 # """
 
-# 9. typetrace operator.
 
-def baz(x: int) -> int:
-    return x + 5
-
-typetrace(baz <| int) # -> int
+printinfo typetrace(baz <| int) # -> int
 
 # 10. overloading policies.
-
-def try_lshift(x: any):
-    return x << 2
 
 policy Fooo:
     int -> int
     float -> float
     typename T: Addable[int] -> T
     typename U -> typetrace(try_lshift <| U)
+    default -> any
 
-def bazbaz(x) applies Fooo:
-    if type(x) == int:
-        return x
-    if type(x) == float:
-        return x
-    if type(x) satisfies Addable[int]:
-        return x + 1
-    return x << 2
 
 # 11. generate operator.
 
 generate Fooo
 generate FooBarable
+
+
+# 12. satisfies operator, implies operator.
+
+printinfo [FooBarable and BarBazable] implies [FooBarable or BarBazable]
+
+# 13. obeys operator
+
+trait Trait01(self):
+    static_fn:
+        foo() obeys Fooo
+
+a, b = b, a
