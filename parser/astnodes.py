@@ -83,7 +83,10 @@ class ClassArgs(AstNode):
     def __init__(self, main_arg, sub_args=None) -> None:
         self.main_arg = main_arg
         self.sub_args = sub_args
-        self.COMMA = fw.comma
+        if sub_args is not None:
+            self.COMMA = fw.comma
+        else:
+            self.COMMA = None
 
 
 class MainArg(AstNode):
@@ -103,7 +106,11 @@ class SubArgs(AstNode):
     def __init__(self, necessary_args=None, optional_args=None) -> None:
         self.necessary_args = necessary_args
         self.optional_args = optional_args
-        self.COMMA = fw.comma
+
+        if necessary_args is not None and optional_args is not None:
+            self.COMMA = fw.comma
+        else:
+            self.COMMA = None
 
         if necessary_args is None and optional_args is None:
             raise ValueError('At least one of necessary_args and optional_args must be not None')
@@ -117,7 +124,11 @@ class NecessaryArgs(AstNode):
     def __init__(self, necessary_args=None, necessary_arg=None) -> None:
         self.necessary_args = necessary_args
         self.necessary_arg = necessary_arg
-        self.COMMA = fw.comma
+
+        if necessary_args is not None:
+            self.COMMA = fw.comma
+        else:
+            self.COMMA = None
 
         if necessary_arg is None:
             raise ValueError('necessary_arg must be not None')
@@ -267,15 +278,23 @@ class DeclFnStmt(AstNode):
 
     def __init__(self, fn_id, type_var_args=None,
                  pred_args=None, unary_pred=None) -> None:
+        self.null_init()
+
         self.fn_id = fn_id
-        self.LP3 = fw.lp3
-        self.type_var_args = type_var_args
-        self.RP3 = fw.rp3
+
+        if type_var_args is not None:
+            self.LP3 = fw.lp3
+            self.type_var_args = type_var_args
+            self.RP3 = fw.rp3
+
         self.LP1 = fw.lp1
         self.pred_args = pred_args
         self.RP1 = fw.rp1
-        self.R_ARROW = fw.r_arrow
-        self.unary_pred = unary_pred
+
+        if unary_pred is not None:
+            self.R_ARROW = fw.r_arrow
+            self.unary_pred = unary_pred
+
         self.S_COLON = fw.s_colon
 
 
@@ -299,15 +318,23 @@ class DeclClsFnStmt(AstNode):
 
     def __init__(self, fn_id, type_var_args=None,
                  pred_args=None, unary_pred=None) -> None:
+        self.null_init()
+
         self.fn_id = fn_id
-        self.LP3 = fw.lp3
-        self.type_var_args = type_var_args
-        self.RP3 = fw.rp3
+
+        if type_var_args is not None:
+            self.LP3 = fw.lp3
+            self.type_var_args = type_var_args
+            self.RP3 = fw.rp3
+
         self.LP1 = fw.lp1
         self.pred_args = pred_args
         self.RP1 = fw.rp1
-        self.R_ARROW = fw.r_arrow
-        self.unary_pred = unary_pred
+
+        if unary_pred is not None:
+            self.R_ARROW = fw.r_arrow
+            self.unary_pred = unary_pred
+
         self.S_COLON = fw.s_colon
 
 
@@ -328,7 +355,11 @@ class PredArgs(AstNode):
     def __init__(self, main_pred, next_preds=None) -> None:
         self.main_pred = main_pred
         self.next_preds = next_preds
-        self.COMMA = fw.comma
+
+        if next_preds is not None:
+            self.COMMA = fw.comma
+        else:
+            self.COMMA = None
 
 
 class MainPred(AstNode):
@@ -352,28 +383,29 @@ class NextPreds(AstNode):
                  next_ano_opt_preds=None,
                  starred=False,
                  next_named_preds=None) -> None:
-        if next_ano_nec_preds is not None:
-            self.next_ano_nec_preds = next_ano_nec_preds
-            self.COMMA1 = fw.comma
-        else:
-            self.next_ano_nec_preds = None
-            self.COMMA1 = None
-        if next_ano_opt_preds is not None:
-            self.next_ano_opt_preds = next_ano_opt_preds
-            self.COMMA2 = fw.comma
-        else:
-            self.next_ano_opt_preds = None
-            self.COMMA2 = None
-        if starred:
-            self.STAR = fw.star
-            self.COMMA3 = fw.comma
-        else:
-            self.STAR = None
-            self.COMMA3 = None
         if next_named_preds is not None:
             self.next_named_preds = next_named_preds
+            self.COMMA3 = fw.comma
         else:
             self.next_named_preds = None
+            self.COMMA3 = None
+        if starred:
+            self.STAR = fw.star
+            self.COMMA2 = fw.comma
+        else:
+            self.STAR = None
+            self.COMMA2 = None
+        if next_ano_opt_preds is not None:
+            self.next_ano_opt_preds = next_ano_opt_preds
+            self.COMMA1 = fw.comma
+        else:
+            self.next_ano_opt_preds = None
+            self.COMMA1 = None
+        if next_ano_nec_preds is not None:
+            self.next_ano_nec_preds = next_ano_nec_preds
+        else:
+            self.next_ano_nec_preds = None
+        return
 
 
 class NextAnoNecPreds(AstNode):
@@ -740,8 +772,12 @@ class VarsId(AstNode):
 
     def __init__(self, vars_id=None, var_id=None) -> None:
         self.vars_id = vars_id
-        self.COMMA = fw.comma
         self.var_id = var_id
+
+        if vars_id is not None:
+            self.COMMA = fw.comma
+        else:
+            self.COMMA = None
 
         if var_id is None:
             raise ValueError('var_id must not be None')
@@ -864,8 +900,12 @@ class BooleanExpr(AstNode):
 
     def __init__(self, boolean_expr=None, boolean_expr_a=None) -> None:
         self.boolean_expr = boolean_expr
-        self.OR = fw.or_
         self.boolean_expr_a = boolean_expr_a
+
+        if boolean_expr is not None:
+            self.OR = fw.or_
+        else:
+            self.OR = None
 
         if boolean_expr_a is None:
             raise ValueError('boolean_expr_a must not be None')
@@ -878,8 +918,12 @@ class BooleanExprA(AstNode):
 
     def __init__(self, boolean_expr_a=None, boolean_expr_b=None) -> None:
         self.boolean_expr_a = boolean_expr_a
-        self.XOR = fw.xor
         self.boolean_expr_b = boolean_expr_b
+
+        if boolean_expr_a is not None:
+            self.XOR = fw.xor
+        else:
+            self.XOR = None
 
         if boolean_expr_b is None:
             raise ValueError('boolean_expr_b must not be None')
@@ -892,8 +936,12 @@ class BooleanExprB(AstNode):
 
     def __init__(self, boolean_expr_b=None, boolean_expr_c=None) -> None:
         self.boolean_expr_b = boolean_expr_b
-        self.AND = fw.and_
         self.boolean_expr_c = boolean_expr_c
+
+        if boolean_expr_b is not None:
+            self.AND = fw.and_
+        else:
+            self.AND = None
 
         if boolean_expr_c is None:
             raise ValueError('boolean_expr_c must not be None')
@@ -1053,8 +1101,9 @@ class AssignStmt(AstNode):
 
     def __init__(self, names, assign_expr) -> None:
         self.names = names
-        self.ASSIGN = fw.assign
         self.assign_expr = assign_expr
+        self.ASSIGN = fw.assign
+
         self.S_COLON = fw.s_colon
 
 
@@ -1092,11 +1141,11 @@ class AssignExpr(AstNode):
     name: str = 'assign_expr'
 
     def __init__(self, names=None, assign_expr=None) -> None:
-        if names is not None:
+        if assign_expr is not None:
             self.names = names
             self.ASSIGN = fw.assign
         else:
-            self.names = None
+            self.names = names
             self.ASSIGN = None
 
         self.assign_expr = assign_expr

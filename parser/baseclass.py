@@ -8,10 +8,11 @@ class AstNode:
 
     def ast_print(self, indent: int=0, logger=None) -> None:
         if logger is None:
-            print('-' * indent, end=' ')
+            print('=' * indent, end=' ')
+            print('=' * indent, end=' ')
             print(self.name)
         else:
-            logger.log('-' * indent + ' ' + self.name)
+            logger.log('=' * indent + ' ' + self.name)
         for slot in self.__slots__:
             val: AstNode = getattr(self, slot)
             if val is not None:
@@ -35,9 +36,9 @@ class TermNode(AstNode):
     def ast_print(self, indent: int=0, logger=None) -> None:
         if logger is None:
             print('-' * indent, end=' ')
-            print(self.name)
+            print(self.terminal_name)
         else:
-            logger.log('-' * indent + ' ' + self.name)
+            logger.log('-' * indent + ' ' + self.terminal_name)
 
 
 class IDNode(AstNode):
@@ -50,9 +51,9 @@ class IDNode(AstNode):
     def ast_print(self, indent: int=0, logger=None) -> None:
         if logger is None:
             print('-' * indent, end=' ')
-            print(self.name)
+            print(self.id)
         else:
-            logger.log('-' * indent + ' ' + self.name)
+            logger.log('-' * indent + ' ' + self.id)
 
 
 class Flyweights:
