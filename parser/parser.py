@@ -929,4 +929,8 @@ if __name__ == '__main__':
     from preprocessor.preprocessor import preprocess
     s = preprocess(s)
 
-    parser.parse(s).ast_print()
+    from utils import Logger
+    logger = Logger()
+
+    parser.parse(s).ast_print(logger=logger)
+    logger.write_on_file(filename='output.txt')
