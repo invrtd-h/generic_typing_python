@@ -32,3 +32,6 @@ class Logger:
 
     def log(self, msg: str) -> None:
         self._log += msg + self._end_char
+
+
+logger = Logger()

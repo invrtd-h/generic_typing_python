@@ -153,7 +153,7 @@ assign_expr : names ASSIGN assign_expr
 
 import ply.yacc as yacc
 import lexer.lexer as ll
-from astnodes import *
+from ptnodes import *
 
 tokens = ll.tokens
 
@@ -921,6 +921,11 @@ def p_error(p):
 parser = yacc.yacc()
 
 
+def get_parse_tree(s: str) -> Program:
+    from preprocessor.preprocessor import preprocess
+    return parser.parse(preprocess(s))
+
+
 if __name__ == '__main__':
     f = open("../input.txt", 'r')
     s = f.read()
@@ -929,8 +934,7 @@ if __name__ == '__main__':
     from preprocessor.preprocessor import preprocess
     s = preprocess(s)
 
-    from utils import Logger
-    logger = Logger()
+    from utils import logger
 
-    parser.parse(s).ast_print(logger=logger)
+    parser.parse(s).parse_tree_print(logger=logger)
     logger.write_on_file(filename='output.txt')

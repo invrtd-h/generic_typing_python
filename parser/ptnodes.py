@@ -4,16 +4,16 @@ fw = Flyweights  # alias
 
 
 class Program(AstNode):
-    __slots__ = ('program_begin', 'S_COLON', 'stmts',
-                 'program_end', 'S_COLON2')
+    __slots__ = ('PROGRAM_BEGIN', 'S_COLON', 'stmts',
+                 'PROGRAM_END', 'S_COLON2')
 
     name: str = 'program'
 
     def __init__(self, stmts) -> None:
-        self.program_begin = fw.program_begin
+        self.PROGRAM_BEGIN = fw.program_begin
         self.S_COLON = fw.s_colon
         self.stmts = stmts
-        self.program_end = fw.program_end
+        self.PROGRAM_END = fw.program_end
         self.S_COLON2 = fw.s_colon
 
 
@@ -1153,4 +1153,4 @@ class AssignExpr(AstNode):
 
 if __name__ == '__main__':
     p = Program(Program(Program(None)))
-    p.ast_print()
+    p.parse_tree_print()

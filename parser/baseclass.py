@@ -1,4 +1,4 @@
-from utils import override, Logger
+from utils import override
 
 
 class AstNode:
@@ -6,7 +6,7 @@ class AstNode:
 
     name: str = 'None'
 
-    def ast_print(self, indent: int=0, logger=None) -> None:
+    def parse_tree_print(self, indent: int = 0, logger=None) -> None:
         if logger is None:
             print('=' * indent, end=' ')
             print('=' * indent, end=' ')
@@ -16,7 +16,7 @@ class AstNode:
         for slot in self.__slots__:
             val: AstNode = getattr(self, slot)
             if val is not None:
-                val.ast_print(indent + 2, logger)
+                val.parse_tree_print(indent + 2, logger)
 
     def null_init(self) -> None:
         """
@@ -33,7 +33,7 @@ class TermNode(AstNode):
         self.terminal_name: str = name
 
     @override
-    def ast_print(self, indent: int=0, logger=None) -> None:
+    def parse_tree_print(self, indent: int = 0, logger=None) -> None:
         if logger is None:
             print('-' * indent, end=' ')
             print(self.terminal_name)
@@ -48,7 +48,7 @@ class IDNode(AstNode):
         self.id = id
 
     @override
-    def ast_print(self, indent: int=0, logger=None) -> None:
+    def parse_tree_print(self, indent: int = 0, logger=None) -> None:
         if logger is None:
             print('-' * indent, end=' ')
             print(self.id)
