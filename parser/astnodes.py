@@ -1,4 +1,4 @@
-from baseclass import AstNode, TermNode, Flyweights, IDNode
+from baseclass import AstNode, Flyweights, IDNode
 
 fw = Flyweights  # alias
 
@@ -71,8 +71,8 @@ class TraitID(AstNode):
 
     name: str = 'trait_id'
 
-    def __init__(self, id: IDNode) -> None:
-        self.id: IDNode = id
+    def __init__(self, id: str) -> None:
+        self.id: IDNode = IDNode(id)
 
 
 class ClassArgs(AstNode):
@@ -91,8 +91,8 @@ class MainArg(AstNode):
 
     name: str = 'main_arg'
 
-    def __init__(self, id: IDNode) -> None:
-        self.id = id
+    def __init__(self, id: str) -> None:
+        self.id = IDNode(id)
 
 
 class SubArgs(AstNode):
@@ -128,8 +128,8 @@ class NecessaryArg(AstNode):
 
     name: str = 'necessary_arg'
 
-    def __init__(self, id: IDNode) -> None:
-        self.id = id
+    def __init__(self, id: str) -> None:
+        self.id = IDNode(id)
 
 
 class OptionalArgs(AstNode):
@@ -154,8 +154,8 @@ class OptionalArg(AstNode):
 
     name: str = 'optional_arg'
 
-    def __init__(self, id: IDNode, unary_pred) -> None:
-        self.id = id
+    def __init__(self, id: str, unary_pred) -> None:
+        self.id = IDNode(id)
         self.ASSIGN = fw.assign
         self.unary_pred = unary_pred
 
@@ -187,11 +187,63 @@ class TraitDeclStmt(AstNode):
 
     name: str = 'trait_decl_stmt'
 
-    def __init__(self, decl_type: fw, decl_stmts) -> None:
-        self.decl_type = decl_type
+
+class TraitDeclStmtFn(TraitDeclStmt):
+    __slots__ = ('FN', 'COLON', 'LP2', 'decl_fn_stmts', 'RP2', 'S_COLON')
+
+    def __init__(self, decl_fn_stmts) -> None:
+        self.FN = fw.fn
         self.COLON = fw.colon
         self.LP2 = fw.lp2
-        self.decl_stmts = decl_stmts
+        self.decl_fn_stmts = decl_fn_stmts
+        self.RP2 = fw.rp2
+        self.S_COLON = fw.s_colon
+
+
+class TraitDeclStmtVar(TraitDeclStmt):
+    __slots__ = ('VAR', 'COLON', 'LP2', 'decl_var_stmts', 'RP2', 'S_COLON')
+
+    def __init__(self, decl_var_stmts) -> None:
+        self.VAR = fw.var
+        self.COLON = fw.colon
+        self.LP2 = fw.lp2
+        self.decl_var_stmts = decl_var_stmts
+        self.RP2 = fw.rp2
+        self.S_COLON = fw.s_colon
+
+
+class TraitDeclStmtClsFn(TraitDeclStmt):
+    __slots__ = ('CLS_FN', 'COLON', 'LP2', 'decl_cls_fn_stmts', 'RP2', 'S_COLON')
+
+    def __init__(self, decl_cls_fn_stmts) -> None:
+        self.CLS_FN = fw.cls_fn
+        self.COLON = fw.colon
+        self.LP2 = fw.lp2
+        self.decl_cls_fn_stmts = decl_cls_fn_stmts
+        self.RP2 = fw.rp2
+        self.S_COLON = fw.s_colon
+
+
+class TraitDeclStmtClsVar(TraitDeclStmt):
+    __slots__ = ('CLS_VAR', 'COLON', 'LP2', 'decl_cls_var_stmts', 'RP2', 'S_COLON')
+
+    def __init__(self, decl_cls_var_stmts) -> None:
+        self.CLS_VAR = fw.cls_var
+        self.COLON = fw.colon
+        self.LP2 = fw.lp2
+        self.decl_cls_var_stmts = decl_cls_var_stmts
+        self.RP2 = fw.rp2
+        self.S_COLON = fw.s_colon
+
+
+class TraitDeclStmtStaticFn(TraitDeclStmt):
+    __slots__ = ('STATIC_FN', 'COLON', 'LP2', 'decl_static_fn_stmts', 'RP2', 'S_COLON')
+
+    def __init__(self, decl_static_fn_stmts) -> None:
+        self.STATIC_FN = fw.static_fn
+        self.COLON = fw.colon
+        self.LP2 = fw.lp2
+        self.decl_static_fn_stmts = decl_static_fn_stmts
         self.RP2 = fw.rp2
         self.S_COLON = fw.s_colon
 
@@ -264,8 +316,8 @@ class FnID(AstNode):
 
     name: str = 'fn_id'
 
-    def __init__(self, id: IDNode) -> None:
-        self.id = id
+    def __init__(self, id: str) -> None:
+        self.id = IDNode(id)
 
 
 class PredArgs(AstNode):
@@ -284,8 +336,8 @@ class MainPred(AstNode):
 
     name: str = 'main_pred'
 
-    def __init__(self, id: IDNode) -> None:
-        self.id = id
+    def __init__(self, id: str) -> None:
+        self.id = IDNode(id)
 
 
 class NextPreds(AstNode):
@@ -445,8 +497,8 @@ class ArgName(AstNode):
 
     name: str = 'arg_name'
 
-    def __init__(self, id) -> None:
-        self.id = id
+    def __init__(self, id: str) -> None:
+        self.id = IDNode(id)
 
 
 class TypeVarArgs(AstNode):
@@ -486,8 +538,8 @@ class TypeVarId(AstNode):
 
     name: str = 'type_var_id'
 
-    def __init__(self, id) -> None:
-        self.id = id
+    def __init__(self, id: str) -> None:
+        self.id = IDNode(id)
 
 
 class UnaryPred(AstNode):
@@ -513,8 +565,8 @@ class PredName(AstNode):
 
     name: str = 'pred_name'
 
-    def __init__(self, id) -> None:
-        self.id = id
+    def __init__(self, id: str) -> None:
+        self.id = IDNode(id)
 
 
 class UnnamedPred(AstNode):
@@ -526,7 +578,7 @@ class UnnamedPred(AstNode):
     name: str = 'unnamed_pred'
 
     def __init__(self, *, pred_name=None, args=None, pred_expr=None,
-                    var_expr=None, none_=None) -> None:
+                 var_expr=None, none_=None) -> None:
         self.null_init()
 
         if pred_name is not None:
@@ -633,8 +685,8 @@ class MemberVarName(AstNode):
 
     name: str = 'member_var_name'
 
-    def __init__(self, id) -> None:
-        self.id = id
+    def __init__(self, id: str) -> None:
+        self.id = IDNode(id)
 
 
 class DeclStmts(AstNode):
@@ -688,6 +740,7 @@ class VarsId(AstNode):
 
     def __init__(self, vars_id=None, var_id=None) -> None:
         self.vars_id = vars_id
+        self.COMMA = fw.comma
         self.var_id = var_id
 
         if var_id is None:
@@ -699,8 +752,8 @@ class VarId(AstNode):
 
     name: str = 'var_id'
 
-    def __init__(self, id) -> None:
-        self.id = id
+    def __init__(self, id: str) -> None:
+        self.id = IDNode(id)
 
 
 class DeclStaticFnStmts(AstNode):
@@ -754,8 +807,8 @@ class StaticFnId(AstNode):
 
     name: str = 'static_fn_id'
 
-    def __init__(self, id) -> None:
-        self.id = id
+    def __init__(self, id: str) -> None:
+        self.id = IDNode(id)
 
 
 class PrintStmt(AstNode):
@@ -791,7 +844,7 @@ class ToPrint(AstNode):
         self.null_init()
 
         if id_ is not None:
-            self.ID = id_
+            self.ID = IDNode(id_)
             if boolean_expr is not None or unnamed_pred is not None:
                 raise err
         elif boolean_expr is not None:
@@ -851,11 +904,16 @@ class BooleanExprC(AstNode):
 
     name: str = 'boolean_expr_c'
 
-    def __init__(self, boolean_expr_c=None, is_eq: bool=True, boolean_expr_d=None) -> None:
+    def __init__(self, boolean_expr_c=None, is_eq: bool = True, boolean_expr_d=None) -> None:
         self.boolean_expr_c = boolean_expr_c
-        if is_eq:
+        if boolean_expr_c is None:
+            self.EQ = None
+            self.NEQ = None
+        elif is_eq:
             self.EQ = fw.eq
+            self.NEQ = None
         else:
+            self.EQ = None
             self.NEQ = fw.neq
         self.boolean_expr_d = boolean_expr_d
 
@@ -868,7 +926,7 @@ class BooleanExprD(AstNode):
 
     name: str = 'boolean_expr_d'
 
-    def __init__(self, not_policy: bool=False, boolean_expr_e=None) -> None:
+    def __init__(self, not_policy: bool = False, boolean_expr_e=None) -> None:
         if not_policy:
             self.NOT = fw.not_
         else:
@@ -937,7 +995,7 @@ class AtomicBooleanExprType3(AtomicBooleanExpr):
 class AtomicBooleanExprType4(AtomicBooleanExpr):
     __slots__ = ('LP1', 'unary_pred', 'EQ', 'NEQ', 'unary_pred2', 'RP1')
 
-    def __init__(self, unary_pred, unary_pred2, eq_policy: bool=True) -> None:
+    def __init__(self, unary_pred, unary_pred2, eq_policy: bool = True) -> None:
         self.LP1 = fw.lp1
         self.unary_pred = unary_pred
         if eq_policy:
@@ -953,7 +1011,7 @@ class Constants(AstNode):
 
     name: str = 'constants'
 
-    def __init__(self, is_true: bool=True) -> None:
+    def __init__(self, is_true: bool = True) -> None:
         if is_true:
             self.VALUE = fw.true
         else:
@@ -984,8 +1042,8 @@ class Arg(AstNode):
 
     name: str = 'arg'
 
-    def __init__(self, id) -> None:
-        self.id = id
+    def __init__(self, id: str) -> None:
+        self.id = IDNode(id)
 
 
 class AssignStmt(AstNode):
@@ -1024,8 +1082,8 @@ class Name(AstNode):
 
     name: str = 'name'
 
-    def __init__(self, id) -> None:
-        self.id = id
+    def __init__(self, id: str) -> None:
+        self.id = IDNode(id)
 
 
 class AssignExpr(AstNode):
@@ -1042,9 +1100,6 @@ class AssignExpr(AstNode):
             self.ASSIGN = None
 
         self.assign_expr = assign_expr
-
-        if assign_expr is None:
-            raise ValueError('assign_expr must not be None')
 
 
 if __name__ == '__main__':

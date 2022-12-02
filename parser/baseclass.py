@@ -17,7 +17,6 @@ class AstNode:
     def null_init(self) -> None:
         """
         Initialize all slots to None.
-        :return:
         """
         for slot in self.__slots__:
             setattr(self, slot, None)
@@ -54,20 +53,25 @@ class Flyweights:
     program_begin = TermNode('PROGRAM_BEGIN')
     program_end = TermNode('PROGRAM_END')
 
+    fn = TermNode('fn')
     or_ = TermNode('or')
     and_ = TermNode('and')
     not_ = TermNode('not')
+    var = TermNode('var')
     xor = TermNode('xor')
     none = TermNode('None')
     pass_ = TermNode('pass')
     true = TermNode('True')
     false = TermNode('False')
     trait = TermNode('trait')
+    cls_fn = TermNode('cls_fn')
+    cls_var = TermNode('cls_var')
     extends = TermNode('extends')
     implies = TermNode('implies')
     generate = TermNode('generate')
     trait_of = TermNode('trait_of')
     printinfo = TermNode('printinfo')
+    static_fn = TermNode('static_fn')
 
     s_colon = TermNode(';')
     colon = TermNode(':')
