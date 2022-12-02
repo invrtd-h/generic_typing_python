@@ -41,7 +41,7 @@ lexer = lex.lex()
 
 
 if __name__ == '__main__':
-    from debug02.debug import p_t
+    from debug02.debug_deprecated import p_t
 
     lexer.input(p_t.__doc__.replace('\n', ';'))
 

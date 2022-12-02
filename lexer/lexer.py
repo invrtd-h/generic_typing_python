@@ -13,13 +13,12 @@ tokens = [
     "EQ", "NEQ",
     "ASSIGN", "DOT", "STAR",
 
-    "REV_PIPE",
-
     "ID",
 ]
 
 reserved = {
     'and': 'AND',
+    'xor': 'XOR',
     'or': 'OR',
     'not': 'NOT',
 
@@ -27,8 +26,6 @@ reserved = {
     'False': 'FALSE',
     'None': 'NONE',
 
-    'def': 'DEF',
-    'class': 'CLASS',
     'pass': 'PASS',
 
     'trait': 'TRAIT',
@@ -38,16 +35,11 @@ reserved = {
     'cls_fn': 'CLS_FN',
     'static_fn': 'STATIC_FN',
 
-    'obeys': 'OBEYS',
-    'policy': 'POLICY',
-    'default': 'DEFAULT',
     'extends': 'EXTENDS',
     'implies': 'IMPLIES',
     'generate': 'GENERATE',
     'trait_of': 'TRAIT_OF',
-    'typename': 'TYPENAME',
     'printinfo': 'PRINTINFO',
-    'typetrace': 'TYPETRACE',
 
     'PROGRAM_BEGIN': 'PROGRAM_BEGIN',
     'PROGRAM_END': 'PROGRAM_END',
@@ -75,8 +67,6 @@ t_NEQ = r'!='
 t_ASSIGN = r'='
 t_DOT = r'\.'
 t_STAR = r'\*'
-
-t_REV_PIPE = r'<\|'
 
 
 def t_WS(t) -> None:

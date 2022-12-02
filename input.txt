@@ -31,10 +31,7 @@ trait AnyRandom(self):
         y: int
         z
     fn:
-        __init__(self, int, int, any) -> None
-        __init__(self, int, int) -> None
-        __init__(self, int) -> None
-        __init__(self) -> None
+        __init__(self, =int, =int, =any) -> None
 
     cls_fn:
         foo(cls, int) -> str
@@ -133,18 +130,6 @@ printinfo [FooBarable or BarBazable]
 # """
 
 
-printinfo typetrace(baz <| int) # -> int
-
-# 10. overloading policies.
-
-policy Fooo:
-    int -> int
-    float -> float
-    typename T: Addable[int] -> T
-    typename U -> typetrace(try_lshift <| U)
-    default -> any
-
-
 # 11. generate operator.
 
 generate Fooo
@@ -154,12 +139,6 @@ generate FooBarable
 # 12. implies operator.
 
 printinfo [FooBarable and BarBazable] implies [FooBarable or BarBazable]
-
-# 13. obeys operator.
-
-trait Trait01(self):
-    static_fn:
-        foo() obeys Fooo
 
 a, b = b, a
 
@@ -171,3 +150,9 @@ trait DefaultArgsExample(self, arg_a, arg_b, arg_c=int, arg_d=float):
 trait TraitWithAllOptionalArgs(self, arg_a=int, arg_b=str):
     fn:
         whatever(self, int, int, =int, =int, *, a:=int, b:int)
+
+
+# 15. traits with generic type variable.
+trait GenericTrait(self):
+    fn:
+        foo[T](self, T) -> T

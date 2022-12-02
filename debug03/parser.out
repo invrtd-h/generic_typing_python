@@ -1,0 +1,4357 @@
+Created by PLY version 3.11 (http://www.dabeaz.com/ply)
+
+Grammar
+
+Rule 0     S' -> Program
+Rule 1     Program -> PROGRAM_BEGIN S_COLON stmts PROGRAM_END S_COLON
+Rule 2     Program -> WS
+Rule 3     stmts -> stmts stmt
+Rule 4     stmts -> stmt
+Rule 5     stmt -> trait_decl
+Rule 6     stmt -> print_stmt
+Rule 7     stmt -> generate_stmt
+Rule 8     stmt -> assign_stmt
+Rule 9     stmt -> S_COLON
+Rule 10    trait_decl -> TRAIT trait_id LP1 class_args RP1 COLON LP2 trait_decl_stmts RP2 S_COLON
+Rule 11    trait_decl -> TRAIT trait_id LP1 class_args RP1 EXTENDS unary_pred COLON LP2 trait_decl_stmts RP2 S_COLON
+Rule 12    trait_id -> ID
+Rule 13    class_args -> main_arg COMMA sub_args
+Rule 14    class_args -> main_arg
+Rule 15    main_arg -> ID
+Rule 16    sub_args -> necessary_args COMMA optional_args
+Rule 17    sub_args -> necessary_args
+Rule 18    sub_args -> optional_args
+Rule 19    necessary_args -> necessary_args COMMA necessary_arg
+Rule 20    necessary_args -> necessary_arg
+Rule 21    necessary_arg -> ID
+Rule 22    optional_args -> optional_args COMMA optional_arg
+Rule 23    optional_args -> optional_arg
+Rule 24    optional_arg -> ID ASSIGN unary_pred
+Rule 25    trait_decl_stmts -> trait_decl_stmts trait_decl_stmt
+Rule 26    trait_decl_stmts -> trait_decl_stmt
+Rule 27    trait_decl_stmts -> PASS S_COLON
+Rule 28    trait_decl_stmt -> FN COLON LP2 decl_fn_stmts RP2 S_COLON
+Rule 29    trait_decl_stmt -> VAR COLON LP2 decl_stmts RP2 S_COLON
+Rule 30    trait_decl_stmt -> CLS_FN COLON LP2 decl_cls_fn_stmts RP2 S_COLON
+Rule 31    trait_decl_stmt -> CLS_VAR COLON LP2 decl_stmts RP2 S_COLON
+Rule 32    trait_decl_stmt -> STATIC_FN COLON LP2 decl_static_fn_stmts RP2 S_COLON
+Rule 33    decl_fn_stmts -> decl_fn_stmts decl_fn_stmt
+Rule 34    decl_fn_stmts -> decl_fn_stmt
+Rule 35    decl_fn_stmt -> fn_id LP1 pred_args RP1 S_COLON
+Rule 36    decl_fn_stmt -> fn_id LP1 pred_args RP1 R_ARROW unary_pred S_COLON
+Rule 37    decl_fn_stmt -> fn_id LP3 type_var_args RP3 LP1 pred_args RP1 S_COLON
+Rule 38    decl_fn_stmt -> fn_id LP3 type_var_args RP3 LP1 pred_args RP1 R_ARROW unary_pred S_COLON
+Rule 39    decl_cls_fn_stmts -> decl_cls_fn_stmts decl_cls_fn_stmt
+Rule 40    decl_cls_fn_stmts -> decl_cls_fn_stmt
+Rule 41    decl_cls_fn_stmt -> fn_id LP1 pred_args RP1 S_COLON
+Rule 42    decl_cls_fn_stmt -> fn_id LP1 pred_args RP1 R_ARROW unary_pred S_COLON
+Rule 43    decl_cls_fn_stmt -> fn_id LP3 type_var_args RP3 LP1 pred_args RP1 S_COLON
+Rule 44    decl_cls_fn_stmt -> fn_id LP3 type_var_args RP3 LP1 pred_args RP1 R_ARROW unary_pred S_COLON
+Rule 45    fn_id -> ID
+Rule 46    pred_args -> main_pred COMMA next_preds
+Rule 47    pred_args -> main_pred
+Rule 48    main_pred -> ID
+Rule 49    next_preds -> next_anonymous_necessary_preds COMMA next_anonymous_opt_preds COMMA STAR COMMA next_named_preds
+Rule 50    next_preds -> next_anonymous_necessary_preds COMMA next_anonymous_opt_preds COMMA STAR
+Rule 51    next_preds -> next_anonymous_necessary_preds COMMA next_anonymous_opt_preds
+Rule 52    next_preds -> next_anonymous_necessary_preds COMMA STAR COMMA next_named_preds
+Rule 53    next_preds -> next_anonymous_necessary_preds COMMA STAR
+Rule 54    next_preds -> next_anonymous_necessary_preds
+Rule 55    next_preds -> next_anonymous_opt_preds COMMA STAR COMMA next_named_preds
+Rule 56    next_preds -> next_anonymous_opt_preds COMMA STAR
+Rule 57    next_preds -> next_anonymous_opt_preds
+Rule 58    next_preds -> STAR next_named_preds
+Rule 59    next_preds -> STAR
+Rule 60    next_anonymous_necessary_preds -> next_anonymous_necessary_preds COMMA next_anonymous_necessary_pred
+Rule 61    next_anonymous_necessary_preds -> next_anonymous_necessary_pred
+Rule 62    next_anonymous_necessary_pred -> unary_pred
+Rule 63    next_anonymous_opt_preds -> next_anonymous_opt_preds COMMA next_anonymous_opt_pred
+Rule 64    next_anonymous_opt_preds -> next_anonymous_opt_pred
+Rule 65    next_anonymous_opt_pred -> ASSIGN unary_pred
+Rule 66    next_named_preds -> next_named_preds COMMA next_named_pred
+Rule 67    next_named_preds -> next_named_pred
+Rule 68    next_named_pred -> next_named_necessary_pred
+Rule 69    next_named_pred -> next_named_opt_pred
+Rule 70    next_named_necessary_pred -> arg_name COLON unary_pred
+Rule 71    next_named_opt_pred -> arg_name COLON ASSIGN unary_pred
+Rule 72    arg_name -> ID
+Rule 73    type_var_args -> type_var_args COMMA type_var_arg
+Rule 74    type_var_args -> type_var_arg
+Rule 75    type_var_arg -> type_var_id
+Rule 76    type_var_arg -> type_var_id COLON unary_pred
+Rule 77    type_var_id -> ID
+Rule 78    unary_pred -> pred_name
+Rule 79    unary_pred -> unnamed_pred
+Rule 80    unnamed_pred -> pred_name LP3 args RP3
+Rule 81    unnamed_pred -> LP3 pred_expr RP3
+Rule 82    unnamed_pred -> TRAIT_OF LP1 var_expr RP1
+Rule 83    unnamed_pred -> NONE
+Rule 84    pred_name -> ID
+Rule 85    pred_expr -> pred_expr OR pred_expr_a
+Rule 86    pred_expr -> pred_expr_a
+Rule 87    pred_expr_a -> pred_expr_a AND pred_expr_b
+Rule 88    pred_expr_a -> pred_expr_b
+Rule 89    pred_expr_b -> NOT pred_expr_b
+Rule 90    pred_expr_b -> pred_expr_c
+Rule 91    pred_expr_c -> unary_pred
+Rule 92    pred_expr_c -> LP1 pred_expr RP1
+Rule 93    var_expr -> unary_pred DOT member_var_name
+Rule 94    member_var_name -> ID
+Rule 95    decl_stmts -> decl_stmts decl_stmt
+Rule 96    decl_stmts -> decl_stmt
+Rule 97    decl_stmt -> var_id S_COLON
+Rule 98    decl_stmt -> var_id COLON unary_pred S_COLON
+Rule 99    decl_stmt -> LP3 vars_id RP3 S_COLON
+Rule 100   decl_stmt -> LP3 vars_id RP3 COLON unary_pred S_COLON
+Rule 101   vars_id -> vars_id COMMA var_id
+Rule 102   vars_id -> var_id
+Rule 103   var_id -> ID
+Rule 104   decl_static_fn_stmts -> decl_static_fn_stmts decl_static_fn_stmt
+Rule 105   decl_static_fn_stmts -> decl_static_fn_stmt
+Rule 106   decl_static_fn_stmt -> static_fn_id LP1 next_preds RP1 S_COLON
+Rule 107   decl_static_fn_stmt -> static_fn_id LP1 next_preds RP1 R_ARROW unary_pred S_COLON
+Rule 108   decl_static_fn_stmt -> static_fn_id LP3 type_var_args RP3 LP1 next_preds RP1 S_COLON
+Rule 109   decl_static_fn_stmt -> static_fn_id LP3 type_var_args RP3 LP1 next_preds RP1 R_ARROW unary_pred S_COLON
+Rule 110   decl_static_fn_stmt -> static_fn_id LP1 RP1 S_COLON
+Rule 111   decl_static_fn_stmt -> static_fn_id LP1 RP1 R_ARROW unary_pred S_COLON
+Rule 112   decl_static_fn_stmt -> static_fn_id LP3 type_var_args RP3 LP1 RP1 S_COLON
+Rule 113   decl_static_fn_stmt -> static_fn_id LP3 type_var_args RP3 LP1 RP1 R_ARROW unary_pred S_COLON
+Rule 114   static_fn_id -> ID
+Rule 115   print_stmt -> PRINTINFO to_print S_COLON
+Rule 116   generate_stmt -> GENERATE to_print S_COLON
+Rule 117   to_print -> ID
+Rule 118   to_print -> boolean_expr
+Rule 119   to_print -> unnamed_pred
+Rule 120   to_print -> unary_pred DOT member_fn_name
+Rule 121   boolean_expr -> boolean_expr OR boolean_expr_a
+Rule 122   boolean_expr -> boolean_expr_a
+Rule 123   boolean_expr_a -> boolean_expr_a XOR boolean_expr_b
+Rule 124   boolean_expr_a -> boolean_expr_b
+Rule 125   boolean_expr_b -> boolean_expr_b AND boolean_expr_c
+Rule 126   boolean_expr_b -> boolean_expr_c
+Rule 127   boolean_expr_c -> boolean_expr_c EQ boolean_expr_d
+Rule 128   boolean_expr_c -> boolean_expr_c NEQ boolean_expr_d
+Rule 129   boolean_expr_c -> boolean_expr_d
+Rule 130   boolean_expr_d -> NOT boolean_expr_e
+Rule 131   boolean_expr_d -> boolean_expr_e
+Rule 132   boolean_expr_e -> atomic_boolean_expr
+Rule 133   boolean_expr_e -> LP1 boolean_expr RP1
+Rule 134   atomic_boolean_expr -> constants
+Rule 135   atomic_boolean_expr -> unary_pred LP1 args RP1
+Rule 136   atomic_boolean_expr -> unary_pred IMPLIES unary_pred
+Rule 137   atomic_boolean_expr -> LP1 unary_pred EQ unary_pred RP1
+Rule 138   atomic_boolean_expr -> LP1 unary_pred NEQ unary_pred RP1
+Rule 139   constants -> TRUE
+Rule 140   constants -> FALSE
+Rule 141   args -> args COMMA arg
+Rule 142   args -> arg
+Rule 143   arg -> ID
+Rule 144   member_fn_name -> ID
+Rule 145   assign_stmt -> names ASSIGN assign_expr S_COLON
+Rule 146   names -> names COMMA name
+Rule 147   names -> name
+Rule 148   name -> ID
+Rule 149   assign_expr -> names ASSIGN assign_expr
+Rule 150   assign_expr -> names
+
+Terminals, with rules where they appear
+
+AND                  : 87 125
+ASSIGN               : 24 65 71 145 149
+CLS_FN               : 30
+CLS_VAR              : 31
+COLON                : 10 11 28 29 30 31 32 70 71 76 98 100
+COMMA                : 13 16 19 22 46 49 49 49 50 50 51 52 52 53 55 55 56 60 63 66 73 101 141 146
+DOT                  : 93 120
+EQ                   : 127 137
+EXTENDS              : 11
+FALSE                : 140
+FN                   : 28
+GENERATE             : 116
+ID                   : 12 15 21 24 45 48 72 77 84 94 103 114 117 143 144 148
+IMPLIES              : 136
+LP1                  : 10 11 35 36 37 38 41 42 43 44 82 92 106 107 108 109 110 111 112 113 133 135 137 138
+LP2                  : 10 11 28 29 30 31 32
+LP3                  : 37 38 43 44 80 81 99 100 108 109 112 113
+NEQ                  : 128 138
+NONE                 : 83
+NOT                  : 89 130
+OR                   : 85 121
+PASS                 : 27
+PRINTINFO            : 115
+PROGRAM_BEGIN        : 1
+PROGRAM_END          : 1
+RP1                  : 10 11 35 36 37 38 41 42 43 44 82 92 106 107 108 109 110 111 112 113 133 135 137 138
+RP2                  : 10 11 28 29 30 31 32
+RP3                  : 37 38 43 44 80 81 99 100 108 109 112 113
+R_ARROW              : 36 38 42 44 107 109 111 113
+STAR                 : 49 50 52 53 55 56 58 59
+STATIC_FN            : 32
+S_COLON              : 1 1 9 10 11 27 28 29 30 31 32 35 36 37 38 41 42 43 44 97 98 99 100 106 107 108 109 110 111 112 113 115 116 145
+TRAIT                : 10 11
+TRAIT_OF             : 82
+TRUE                 : 139
+VAR                  : 29
+WS                   : 2
+XOR                  : 123
+error                : 
+
+Nonterminals, with rules where they appear
+
+Program              : 0
+arg                  : 141 142
+arg_name             : 70 71
+args                 : 80 135 141
+assign_expr          : 145 149
+assign_stmt          : 8
+atomic_boolean_expr  : 132
+boolean_expr         : 118 121 133
+boolean_expr_a       : 121 122 123
+boolean_expr_b       : 123 124 125
+boolean_expr_c       : 125 126 127 128
+boolean_expr_d       : 127 128 129
+boolean_expr_e       : 130 131
+class_args           : 10 11
+constants            : 134
+decl_cls_fn_stmt     : 39 40
+decl_cls_fn_stmts    : 30 39
+decl_fn_stmt         : 33 34
+decl_fn_stmts        : 28 33
+decl_static_fn_stmt  : 104 105
+decl_static_fn_stmts : 32 104
+decl_stmt            : 95 96
+decl_stmts           : 29 31 95
+fn_id                : 35 36 37 38 41 42 43 44
+generate_stmt        : 7
+main_arg             : 13 14
+main_pred            : 46 47
+member_fn_name       : 120
+member_var_name      : 93
+name                 : 146 147
+names                : 145 146 149 150
+necessary_arg        : 19 20
+necessary_args       : 16 17 19
+next_anonymous_necessary_pred : 60 61
+next_anonymous_necessary_preds : 49 50 51 52 53 54 60
+next_anonymous_opt_pred : 63 64
+next_anonymous_opt_preds : 49 50 51 55 56 57 63
+next_named_necessary_pred : 68
+next_named_opt_pred  : 69
+next_named_pred      : 66 67
+next_named_preds     : 49 52 55 58 66
+next_preds           : 46 106 107 108 109
+optional_arg         : 22 23
+optional_args        : 16 18 22
+pred_args            : 35 36 37 38 41 42 43 44
+pred_expr            : 81 85 92
+pred_expr_a          : 85 86 87
+pred_expr_b          : 87 88 89
+pred_expr_c          : 90
+pred_name            : 78 80
+print_stmt           : 6
+static_fn_id         : 106 107 108 109 110 111 112 113
+stmt                 : 3 4
+stmts                : 1 3
+sub_args             : 13
+to_print             : 115 116
+trait_decl           : 5
+trait_decl_stmt      : 25 26
+trait_decl_stmts     : 10 11 25
+trait_id             : 10 11
+type_var_arg         : 73 74
+type_var_args        : 37 38 43 44 73 108 109 112 113
+type_var_id          : 75 76
+unary_pred           : 11 24 36 38 42 44 62 65 70 71 76 91 93 98 100 107 109 111 113 120 135 136 136 137 137 138 138
+unnamed_pred         : 79 119
+var_expr             : 82
+var_id               : 97 98 101 102
+vars_id              : 99 100 101
+
+Parsing method: LALR
+
+state 0
+
+    (0) S' -> . Program
+    (1) Program -> . PROGRAM_BEGIN S_COLON stmts PROGRAM_END S_COLON
+    (2) Program -> . WS
+
+    PROGRAM_BEGIN   shift and go to state 2
+    WS              shift and go to state 3
+
+    Program                        shift and go to state 1
+
+state 1
+
+    (0) S' -> Program .
+
+
+
+state 2
+
+    (1) Program -> PROGRAM_BEGIN . S_COLON stmts PROGRAM_END S_COLON
+
+    S_COLON         shift and go to state 4
+
+
+state 3
+
+    (2) Program -> WS .
+
+    $end            reduce using rule 2 (Program -> WS .)
+
+
+state 4
+
+    (1) Program -> PROGRAM_BEGIN S_COLON . stmts PROGRAM_END S_COLON
+    (3) stmts -> . stmts stmt
+    (4) stmts -> . stmt
+    (5) stmt -> . trait_decl
+    (6) stmt -> . print_stmt
+    (7) stmt -> . generate_stmt
+    (8) stmt -> . assign_stmt
+    (9) stmt -> . S_COLON
+    (10) trait_decl -> . TRAIT trait_id LP1 class_args RP1 COLON LP2 trait_decl_stmts RP2 S_COLON
+    (11) trait_decl -> . TRAIT trait_id LP1 class_args RP1 EXTENDS unary_pred COLON LP2 trait_decl_stmts RP2 S_COLON
+    (115) print_stmt -> . PRINTINFO to_print S_COLON
+    (116) generate_stmt -> . GENERATE to_print S_COLON
+    (145) assign_stmt -> . names ASSIGN assign_expr S_COLON
+    (146) names -> . names COMMA name
+    (147) names -> . name
+    (148) name -> . ID
+
+    S_COLON         shift and go to state 5
+    TRAIT           shift and go to state 12
+    PRINTINFO       shift and go to state 13
+    GENERATE        shift and go to state 14
+    ID              shift and go to state 17
+
+    stmts                          shift and go to state 6
+    stmt                           shift and go to state 7
+    trait_decl                     shift and go to state 8
+    print_stmt                     shift and go to state 9
+    generate_stmt                  shift and go to state 10
+    assign_stmt                    shift and go to state 11
+    names                          shift and go to state 15
+    name                           shift and go to state 16
+
+state 5
+
+    (9) stmt -> S_COLON .
+
+    PROGRAM_END     reduce using rule 9 (stmt -> S_COLON .)
+    S_COLON         reduce using rule 9 (stmt -> S_COLON .)
+    TRAIT           reduce using rule 9 (stmt -> S_COLON .)
+    PRINTINFO       reduce using rule 9 (stmt -> S_COLON .)
+    GENERATE        reduce using rule 9 (stmt -> S_COLON .)
+    ID              reduce using rule 9 (stmt -> S_COLON .)
+
+
+state 6
+
+    (1) Program -> PROGRAM_BEGIN S_COLON stmts . PROGRAM_END S_COLON
+    (3) stmts -> stmts . stmt
+    (5) stmt -> . trait_decl
+    (6) stmt -> . print_stmt
+    (7) stmt -> . generate_stmt
+    (8) stmt -> . assign_stmt
+    (9) stmt -> . S_COLON
+    (10) trait_decl -> . TRAIT trait_id LP1 class_args RP1 COLON LP2 trait_decl_stmts RP2 S_COLON
+    (11) trait_decl -> . TRAIT trait_id LP1 class_args RP1 EXTENDS unary_pred COLON LP2 trait_decl_stmts RP2 S_COLON
+    (115) print_stmt -> . PRINTINFO to_print S_COLON
+    (116) generate_stmt -> . GENERATE to_print S_COLON
+    (145) assign_stmt -> . names ASSIGN assign_expr S_COLON
+    (146) names -> . names COMMA name
+    (147) names -> . name
+    (148) name -> . ID
+
+    PROGRAM_END     shift and go to state 18
+    S_COLON         shift and go to state 5
+    TRAIT           shift and go to state 12
+    PRINTINFO       shift and go to state 13
+    GENERATE        shift and go to state 14
+    ID              shift and go to state 17
+
+    stmt                           shift and go to state 19
+    trait_decl                     shift and go to state 8
+    print_stmt                     shift and go to state 9
+    generate_stmt                  shift and go to state 10
+    assign_stmt                    shift and go to state 11
+    names                          shift and go to state 15
+    name                           shift and go to state 16
+
+state 7
+
+    (4) stmts -> stmt .
+
+    PROGRAM_END     reduce using rule 4 (stmts -> stmt .)
+    S_COLON         reduce using rule 4 (stmts -> stmt .)
+    TRAIT           reduce using rule 4 (stmts -> stmt .)
+    PRINTINFO       reduce using rule 4 (stmts -> stmt .)
+    GENERATE        reduce using rule 4 (stmts -> stmt .)
+    ID              reduce using rule 4 (stmts -> stmt .)
+
+
+state 8
+
+    (5) stmt -> trait_decl .
+
+    PROGRAM_END     reduce using rule 5 (stmt -> trait_decl .)
+    S_COLON         reduce using rule 5 (stmt -> trait_decl .)
+    TRAIT           reduce using rule 5 (stmt -> trait_decl .)
+    PRINTINFO       reduce using rule 5 (stmt -> trait_decl .)
+    GENERATE        reduce using rule 5 (stmt -> trait_decl .)
+    ID              reduce using rule 5 (stmt -> trait_decl .)
+
+
+state 9
+
+    (6) stmt -> print_stmt .
+
+    PROGRAM_END     reduce using rule 6 (stmt -> print_stmt .)
+    S_COLON         reduce using rule 6 (stmt -> print_stmt .)
+    TRAIT           reduce using rule 6 (stmt -> print_stmt .)
+    PRINTINFO       reduce using rule 6 (stmt -> print_stmt .)
+    GENERATE        reduce using rule 6 (stmt -> print_stmt .)
+    ID              reduce using rule 6 (stmt -> print_stmt .)
+
+
+state 10
+
+    (7) stmt -> generate_stmt .
+
+    PROGRAM_END     reduce using rule 7 (stmt -> generate_stmt .)
+    S_COLON         reduce using rule 7 (stmt -> generate_stmt .)
+    TRAIT           reduce using rule 7 (stmt -> generate_stmt .)
+    PRINTINFO       reduce using rule 7 (stmt -> generate_stmt .)
+    GENERATE        reduce using rule 7 (stmt -> generate_stmt .)
+    ID              reduce using rule 7 (stmt -> generate_stmt .)
+
+
+state 11
+
+    (8) stmt -> assign_stmt .
+
+    PROGRAM_END     reduce using rule 8 (stmt -> assign_stmt .)
+    S_COLON         reduce using rule 8 (stmt -> assign_stmt .)
+    TRAIT           reduce using rule 8 (stmt -> assign_stmt .)
+    PRINTINFO       reduce using rule 8 (stmt -> assign_stmt .)
+    GENERATE        reduce using rule 8 (stmt -> assign_stmt .)
+    ID              reduce using rule 8 (stmt -> assign_stmt .)
+
+
+state 12
+
+    (10) trait_decl -> TRAIT . trait_id LP1 class_args RP1 COLON LP2 trait_decl_stmts RP2 S_COLON
+    (11) trait_decl -> TRAIT . trait_id LP1 class_args RP1 EXTENDS unary_pred COLON LP2 trait_decl_stmts RP2 S_COLON
+    (12) trait_id -> . ID
+
+    ID              shift and go to state 21
+
+    trait_id                       shift and go to state 20
+
+state 13
+
+    (115) print_stmt -> PRINTINFO . to_print S_COLON
+    (117) to_print -> . ID
+    (118) to_print -> . boolean_expr
+    (119) to_print -> . unnamed_pred
+    (120) to_print -> . unary_pred DOT member_fn_name
+    (121) boolean_expr -> . boolean_expr OR boolean_expr_a
+    (122) boolean_expr -> . boolean_expr_a
+    (80) unnamed_pred -> . pred_name LP3 args RP3
+    (81) unnamed_pred -> . LP3 pred_expr RP3
+    (82) unnamed_pred -> . TRAIT_OF LP1 var_expr RP1
+    (83) unnamed_pred -> . NONE
+    (78) unary_pred -> . pred_name
+    (79) unary_pred -> . unnamed_pred
+    (123) boolean_expr_a -> . boolean_expr_a XOR boolean_expr_b
+    (124) boolean_expr_a -> . boolean_expr_b
+    (84) pred_name -> . ID
+    (125) boolean_expr_b -> . boolean_expr_b AND boolean_expr_c
+    (126) boolean_expr_b -> . boolean_expr_c
+    (127) boolean_expr_c -> . boolean_expr_c EQ boolean_expr_d
+    (128) boolean_expr_c -> . boolean_expr_c NEQ boolean_expr_d
+    (129) boolean_expr_c -> . boolean_expr_d
+    (130) boolean_expr_d -> . NOT boolean_expr_e
+    (131) boolean_expr_d -> . boolean_expr_e
+    (132) boolean_expr_e -> . atomic_boolean_expr
+    (133) boolean_expr_e -> . LP1 boolean_expr RP1
+    (134) atomic_boolean_expr -> . constants
+    (135) atomic_boolean_expr -> . unary_pred LP1 args RP1
+    (136) atomic_boolean_expr -> . unary_pred IMPLIES unary_pred
+    (137) atomic_boolean_expr -> . LP1 unary_pred EQ unary_pred RP1
+    (138) atomic_boolean_expr -> . LP1 unary_pred NEQ unary_pred RP1
+    (139) constants -> . TRUE
+    (140) constants -> . FALSE
+
+    ID              shift and go to state 23
+    LP3             shift and go to state 29
+    TRAIT_OF        shift and go to state 30
+    NONE            shift and go to state 32
+    NOT             shift and go to state 36
+    LP1             shift and go to state 31
+    TRUE            shift and go to state 40
+    FALSE           shift and go to state 41
+
+    to_print                       shift and go to state 22
+    boolean_expr                   shift and go to state 24
+    unnamed_pred                   shift and go to state 25
+    unary_pred                     shift and go to state 26
+    boolean_expr_a                 shift and go to state 27
+    pred_name                      shift and go to state 28
+    boolean_expr_b                 shift and go to state 33
+    boolean_expr_c                 shift and go to state 34
+    boolean_expr_d                 shift and go to state 35
+    boolean_expr_e                 shift and go to state 37
+    atomic_boolean_expr            shift and go to state 38
+    constants                      shift and go to state 39
+
+state 14
+
+    (116) generate_stmt -> GENERATE . to_print S_COLON
+    (117) to_print -> . ID
+    (118) to_print -> . boolean_expr
+    (119) to_print -> . unnamed_pred
+    (120) to_print -> . unary_pred DOT member_fn_name
+    (121) boolean_expr -> . boolean_expr OR boolean_expr_a
+    (122) boolean_expr -> . boolean_expr_a
+    (80) unnamed_pred -> . pred_name LP3 args RP3
+    (81) unnamed_pred -> . LP3 pred_expr RP3
+    (82) unnamed_pred -> . TRAIT_OF LP1 var_expr RP1
+    (83) unnamed_pred -> . NONE
+    (78) unary_pred -> . pred_name
+    (79) unary_pred -> . unnamed_pred
+    (123) boolean_expr_a -> . boolean_expr_a XOR boolean_expr_b
+    (124) boolean_expr_a -> . boolean_expr_b
+    (84) pred_name -> . ID
+    (125) boolean_expr_b -> . boolean_expr_b AND boolean_expr_c
+    (126) boolean_expr_b -> . boolean_expr_c
+    (127) boolean_expr_c -> . boolean_expr_c EQ boolean_expr_d
+    (128) boolean_expr_c -> . boolean_expr_c NEQ boolean_expr_d
+    (129) boolean_expr_c -> . boolean_expr_d
+    (130) boolean_expr_d -> . NOT boolean_expr_e
+    (131) boolean_expr_d -> . boolean_expr_e
+    (132) boolean_expr_e -> . atomic_boolean_expr
+    (133) boolean_expr_e -> . LP1 boolean_expr RP1
+    (134) atomic_boolean_expr -> . constants
+    (135) atomic_boolean_expr -> . unary_pred LP1 args RP1
+    (136) atomic_boolean_expr -> . unary_pred IMPLIES unary_pred
+    (137) atomic_boolean_expr -> . LP1 unary_pred EQ unary_pred RP1
+    (138) atomic_boolean_expr -> . LP1 unary_pred NEQ unary_pred RP1
+    (139) constants -> . TRUE
+    (140) constants -> . FALSE
+
+    ID              shift and go to state 23
+    LP3             shift and go to state 29
+    TRAIT_OF        shift and go to state 30
+    NONE            shift and go to state 32
+    NOT             shift and go to state 36
+    LP1             shift and go to state 31
+    TRUE            shift and go to state 40
+    FALSE           shift and go to state 41
+
+    to_print                       shift and go to state 42
+    boolean_expr                   shift and go to state 24
+    unnamed_pred                   shift and go to state 25
+    unary_pred                     shift and go to state 26
+    boolean_expr_a                 shift and go to state 27
+    pred_name                      shift and go to state 28
+    boolean_expr_b                 shift and go to state 33
+    boolean_expr_c                 shift and go to state 34
+    boolean_expr_d                 shift and go to state 35
+    boolean_expr_e                 shift and go to state 37
+    atomic_boolean_expr            shift and go to state 38
+    constants                      shift and go to state 39
+
+state 15
+
+    (145) assign_stmt -> names . ASSIGN assign_expr S_COLON
+    (146) names -> names . COMMA name
+
+    ASSIGN          shift and go to state 43
+    COMMA           shift and go to state 44
+
+
+state 16
+
+    (147) names -> name .
+
+    ASSIGN          reduce using rule 147 (names -> name .)
+    COMMA           reduce using rule 147 (names -> name .)
+    S_COLON         reduce using rule 147 (names -> name .)
+
+
+state 17
+
+    (148) name -> ID .
+
+    ASSIGN          reduce using rule 148 (name -> ID .)
+    COMMA           reduce using rule 148 (name -> ID .)
+    S_COLON         reduce using rule 148 (name -> ID .)
+
+
+state 18
+
+    (1) Program -> PROGRAM_BEGIN S_COLON stmts PROGRAM_END . S_COLON
+
+    S_COLON         shift and go to state 45
+
+
+state 19
+
+    (3) stmts -> stmts stmt .
+
+    PROGRAM_END     reduce using rule 3 (stmts -> stmts stmt .)
+    S_COLON         reduce using rule 3 (stmts -> stmts stmt .)
+    TRAIT           reduce using rule 3 (stmts -> stmts stmt .)
+    PRINTINFO       reduce using rule 3 (stmts -> stmts stmt .)
+    GENERATE        reduce using rule 3 (stmts -> stmts stmt .)
+    ID              reduce using rule 3 (stmts -> stmts stmt .)
+
+
+state 20
+
+    (10) trait_decl -> TRAIT trait_id . LP1 class_args RP1 COLON LP2 trait_decl_stmts RP2 S_COLON
+    (11) trait_decl -> TRAIT trait_id . LP1 class_args RP1 EXTENDS unary_pred COLON LP2 trait_decl_stmts RP2 S_COLON
+
+    LP1             shift and go to state 46
+
+
+state 21
+
+    (12) trait_id -> ID .
+
+    LP1             reduce using rule 12 (trait_id -> ID .)
+
+
+state 22
+
+    (115) print_stmt -> PRINTINFO to_print . S_COLON
+
+    S_COLON         shift and go to state 47
+
+
+state 23
+
+    (117) to_print -> ID .
+    (84) pred_name -> ID .
+
+    S_COLON         reduce using rule 117 (to_print -> ID .)
+    LP3             reduce using rule 84 (pred_name -> ID .)
+    DOT             reduce using rule 84 (pred_name -> ID .)
+    LP1             reduce using rule 84 (pred_name -> ID .)
+    IMPLIES         reduce using rule 84 (pred_name -> ID .)
+
+
+state 24
+
+    (118) to_print -> boolean_expr .
+    (121) boolean_expr -> boolean_expr . OR boolean_expr_a
+
+    S_COLON         reduce using rule 118 (to_print -> boolean_expr .)
+    OR              shift and go to state 48
+
+
+state 25
+
+    (119) to_print -> unnamed_pred .
+    (79) unary_pred -> unnamed_pred .
+
+    S_COLON         reduce using rule 119 (to_print -> unnamed_pred .)
+    DOT             reduce using rule 79 (unary_pred -> unnamed_pred .)
+    LP1             reduce using rule 79 (unary_pred -> unnamed_pred .)
+    IMPLIES         reduce using rule 79 (unary_pred -> unnamed_pred .)
+
+
+state 26
+
+    (120) to_print -> unary_pred . DOT member_fn_name
+    (135) atomic_boolean_expr -> unary_pred . LP1 args RP1
+    (136) atomic_boolean_expr -> unary_pred . IMPLIES unary_pred
+
+    DOT             shift and go to state 49
+    LP1             shift and go to state 50
+    IMPLIES         shift and go to state 51
+
+
+state 27
+
+    (122) boolean_expr -> boolean_expr_a .
+    (123) boolean_expr_a -> boolean_expr_a . XOR boolean_expr_b
+
+    OR              reduce using rule 122 (boolean_expr -> boolean_expr_a .)
+    S_COLON         reduce using rule 122 (boolean_expr -> boolean_expr_a .)
+    RP1             reduce using rule 122 (boolean_expr -> boolean_expr_a .)
+    XOR             shift and go to state 52
+
+
+state 28
+
+    (80) unnamed_pred -> pred_name . LP3 args RP3
+    (78) unary_pred -> pred_name .
+
+    LP3             shift and go to state 53
+    DOT             reduce using rule 78 (unary_pred -> pred_name .)
+    LP1             reduce using rule 78 (unary_pred -> pred_name .)
+    IMPLIES         reduce using rule 78 (unary_pred -> pred_name .)
+
+
+state 29
+
+    (81) unnamed_pred -> LP3 . pred_expr RP3
+    (85) pred_expr -> . pred_expr OR pred_expr_a
+    (86) pred_expr -> . pred_expr_a
+    (87) pred_expr_a -> . pred_expr_a AND pred_expr_b
+    (88) pred_expr_a -> . pred_expr_b
+    (89) pred_expr_b -> . NOT pred_expr_b
+    (90) pred_expr_b -> . pred_expr_c
+    (91) pred_expr_c -> . unary_pred
+    (92) pred_expr_c -> . LP1 pred_expr RP1
+    (78) unary_pred -> . pred_name
+    (79) unary_pred -> . unnamed_pred
+    (84) pred_name -> . ID
+    (80) unnamed_pred -> . pred_name LP3 args RP3
+    (81) unnamed_pred -> . LP3 pred_expr RP3
+    (82) unnamed_pred -> . TRAIT_OF LP1 var_expr RP1
+    (83) unnamed_pred -> . NONE
+
+    NOT             shift and go to state 57
+    LP1             shift and go to state 60
+    ID              shift and go to state 63
+    LP3             shift and go to state 29
+    TRAIT_OF        shift and go to state 30
+    NONE            shift and go to state 32
+
+    pred_expr                      shift and go to state 54
+    pred_expr_a                    shift and go to state 55
+    pred_expr_b                    shift and go to state 56
+    pred_expr_c                    shift and go to state 58
+    unary_pred                     shift and go to state 59
+    pred_name                      shift and go to state 61
+    unnamed_pred                   shift and go to state 62
+
+state 30
+
+    (82) unnamed_pred -> TRAIT_OF . LP1 var_expr RP1
+
+    LP1             shift and go to state 64
+
+
+state 31
+
+    (133) boolean_expr_e -> LP1 . boolean_expr RP1
+    (137) atomic_boolean_expr -> LP1 . unary_pred EQ unary_pred RP1
+    (138) atomic_boolean_expr -> LP1 . unary_pred NEQ unary_pred RP1
+    (121) boolean_expr -> . boolean_expr OR boolean_expr_a
+    (122) boolean_expr -> . boolean_expr_a
+    (78) unary_pred -> . pred_name
+    (79) unary_pred -> . unnamed_pred
+    (123) boolean_expr_a -> . boolean_expr_a XOR boolean_expr_b
+    (124) boolean_expr_a -> . boolean_expr_b
+    (84) pred_name -> . ID
+    (80) unnamed_pred -> . pred_name LP3 args RP3
+    (81) unnamed_pred -> . LP3 pred_expr RP3
+    (82) unnamed_pred -> . TRAIT_OF LP1 var_expr RP1
+    (83) unnamed_pred -> . NONE
+    (125) boolean_expr_b -> . boolean_expr_b AND boolean_expr_c
+    (126) boolean_expr_b -> . boolean_expr_c
+    (127) boolean_expr_c -> . boolean_expr_c EQ boolean_expr_d
+    (128) boolean_expr_c -> . boolean_expr_c NEQ boolean_expr_d
+    (129) boolean_expr_c -> . boolean_expr_d
+    (130) boolean_expr_d -> . NOT boolean_expr_e
+    (131) boolean_expr_d -> . boolean_expr_e
+    (132) boolean_expr_e -> . atomic_boolean_expr
+    (133) boolean_expr_e -> . LP1 boolean_expr RP1
+    (134) atomic_boolean_expr -> . constants
+    (135) atomic_boolean_expr -> . unary_pred LP1 args RP1
+    (136) atomic_boolean_expr -> . unary_pred IMPLIES unary_pred
+    (137) atomic_boolean_expr -> . LP1 unary_pred EQ unary_pred RP1
+    (138) atomic_boolean_expr -> . LP1 unary_pred NEQ unary_pred RP1
+    (139) constants -> . TRUE
+    (140) constants -> . FALSE
+
+    ID              shift and go to state 63
+    LP3             shift and go to state 29
+    TRAIT_OF        shift and go to state 30
+    NONE            shift and go to state 32
+    NOT             shift and go to state 36
+    LP1             shift and go to state 31
+    TRUE            shift and go to state 40
+    FALSE           shift and go to state 41
+
+    boolean_expr                   shift and go to state 65
+    unary_pred                     shift and go to state 66
+    boolean_expr_a                 shift and go to state 27
+    pred_name                      shift and go to state 61
+    unnamed_pred                   shift and go to state 62
+    boolean_expr_b                 shift and go to state 33
+    boolean_expr_c                 shift and go to state 34
+    boolean_expr_d                 shift and go to state 35
+    boolean_expr_e                 shift and go to state 37
+    atomic_boolean_expr            shift and go to state 38
+    constants                      shift and go to state 39
+
+state 32
+
+    (83) unnamed_pred -> NONE .
+
+    S_COLON         reduce using rule 83 (unnamed_pred -> NONE .)
+    DOT             reduce using rule 83 (unnamed_pred -> NONE .)
+    LP1             reduce using rule 83 (unnamed_pred -> NONE .)
+    IMPLIES         reduce using rule 83 (unnamed_pred -> NONE .)
+    AND             reduce using rule 83 (unnamed_pred -> NONE .)
+    RP3             reduce using rule 83 (unnamed_pred -> NONE .)
+    OR              reduce using rule 83 (unnamed_pred -> NONE .)
+    EQ              reduce using rule 83 (unnamed_pred -> NONE .)
+    NEQ             reduce using rule 83 (unnamed_pred -> NONE .)
+    XOR             reduce using rule 83 (unnamed_pred -> NONE .)
+    RP1             reduce using rule 83 (unnamed_pred -> NONE .)
+    COLON           reduce using rule 83 (unnamed_pred -> NONE .)
+    COMMA           reduce using rule 83 (unnamed_pred -> NONE .)
+
+
+state 33
+
+    (124) boolean_expr_a -> boolean_expr_b .
+    (125) boolean_expr_b -> boolean_expr_b . AND boolean_expr_c
+
+    XOR             reduce using rule 124 (boolean_expr_a -> boolean_expr_b .)
+    OR              reduce using rule 124 (boolean_expr_a -> boolean_expr_b .)
+    S_COLON         reduce using rule 124 (boolean_expr_a -> boolean_expr_b .)
+    RP1             reduce using rule 124 (boolean_expr_a -> boolean_expr_b .)
+    AND             shift and go to state 67
+
+
+state 34
+
+    (126) boolean_expr_b -> boolean_expr_c .
+    (127) boolean_expr_c -> boolean_expr_c . EQ boolean_expr_d
+    (128) boolean_expr_c -> boolean_expr_c . NEQ boolean_expr_d
+
+    AND             reduce using rule 126 (boolean_expr_b -> boolean_expr_c .)
+    XOR             reduce using rule 126 (boolean_expr_b -> boolean_expr_c .)
+    OR              reduce using rule 126 (boolean_expr_b -> boolean_expr_c .)
+    S_COLON         reduce using rule 126 (boolean_expr_b -> boolean_expr_c .)
+    RP1             reduce using rule 126 (boolean_expr_b -> boolean_expr_c .)
+    EQ              shift and go to state 68
+    NEQ             shift and go to state 69
+
+
+state 35
+
+    (129) boolean_expr_c -> boolean_expr_d .
+
+    EQ              reduce using rule 129 (boolean_expr_c -> boolean_expr_d .)
+    NEQ             reduce using rule 129 (boolean_expr_c -> boolean_expr_d .)
+    AND             reduce using rule 129 (boolean_expr_c -> boolean_expr_d .)
+    XOR             reduce using rule 129 (boolean_expr_c -> boolean_expr_d .)
+    OR              reduce using rule 129 (boolean_expr_c -> boolean_expr_d .)
+    S_COLON         reduce using rule 129 (boolean_expr_c -> boolean_expr_d .)
+    RP1             reduce using rule 129 (boolean_expr_c -> boolean_expr_d .)
+
+
+state 36
+
+    (130) boolean_expr_d -> NOT . boolean_expr_e
+    (132) boolean_expr_e -> . atomic_boolean_expr
+    (133) boolean_expr_e -> . LP1 boolean_expr RP1
+    (134) atomic_boolean_expr -> . constants
+    (135) atomic_boolean_expr -> . unary_pred LP1 args RP1
+    (136) atomic_boolean_expr -> . unary_pred IMPLIES unary_pred
+    (137) atomic_boolean_expr -> . LP1 unary_pred EQ unary_pred RP1
+    (138) atomic_boolean_expr -> . LP1 unary_pred NEQ unary_pred RP1
+    (139) constants -> . TRUE
+    (140) constants -> . FALSE
+    (78) unary_pred -> . pred_name
+    (79) unary_pred -> . unnamed_pred
+    (84) pred_name -> . ID
+    (80) unnamed_pred -> . pred_name LP3 args RP3
+    (81) unnamed_pred -> . LP3 pred_expr RP3
+    (82) unnamed_pred -> . TRAIT_OF LP1 var_expr RP1
+    (83) unnamed_pred -> . NONE
+
+    LP1             shift and go to state 31
+    TRUE            shift and go to state 40
+    FALSE           shift and go to state 41
+    ID              shift and go to state 63
+    LP3             shift and go to state 29
+    TRAIT_OF        shift and go to state 30
+    NONE            shift and go to state 32
+
+    boolean_expr_e                 shift and go to state 70
+    atomic_boolean_expr            shift and go to state 38
+    constants                      shift and go to state 39
+    unary_pred                     shift and go to state 71
+    pred_name                      shift and go to state 61
+    unnamed_pred                   shift and go to state 62
+
+state 37
+
+    (131) boolean_expr_d -> boolean_expr_e .
+
+    EQ              reduce using rule 131 (boolean_expr_d -> boolean_expr_e .)
+    NEQ             reduce using rule 131 (boolean_expr_d -> boolean_expr_e .)
+    AND             reduce using rule 131 (boolean_expr_d -> boolean_expr_e .)
+    XOR             reduce using rule 131 (boolean_expr_d -> boolean_expr_e .)
+    OR              reduce using rule 131 (boolean_expr_d -> boolean_expr_e .)
+    S_COLON         reduce using rule 131 (boolean_expr_d -> boolean_expr_e .)
+    RP1             reduce using rule 131 (boolean_expr_d -> boolean_expr_e .)
+
+
+state 38
+
+    (132) boolean_expr_e -> atomic_boolean_expr .
+
+    EQ              reduce using rule 132 (boolean_expr_e -> atomic_boolean_expr .)
+    NEQ             reduce using rule 132 (boolean_expr_e -> atomic_boolean_expr .)
+    AND             reduce using rule 132 (boolean_expr_e -> atomic_boolean_expr .)
+    XOR             reduce using rule 132 (boolean_expr_e -> atomic_boolean_expr .)
+    OR              reduce using rule 132 (boolean_expr_e -> atomic_boolean_expr .)
+    S_COLON         reduce using rule 132 (boolean_expr_e -> atomic_boolean_expr .)
+    RP1             reduce using rule 132 (boolean_expr_e -> atomic_boolean_expr .)
+
+
+state 39
+
+    (134) atomic_boolean_expr -> constants .
+
+    EQ              reduce using rule 134 (atomic_boolean_expr -> constants .)
+    NEQ             reduce using rule 134 (atomic_boolean_expr -> constants .)
+    AND             reduce using rule 134 (atomic_boolean_expr -> constants .)
+    XOR             reduce using rule 134 (atomic_boolean_expr -> constants .)
+    OR              reduce using rule 134 (atomic_boolean_expr -> constants .)
+    S_COLON         reduce using rule 134 (atomic_boolean_expr -> constants .)
+    RP1             reduce using rule 134 (atomic_boolean_expr -> constants .)
+
+
+state 40
+
+    (139) constants -> TRUE .
+
+    EQ              reduce using rule 139 (constants -> TRUE .)
+    NEQ             reduce using rule 139 (constants -> TRUE .)
+    AND             reduce using rule 139 (constants -> TRUE .)
+    XOR             reduce using rule 139 (constants -> TRUE .)
+    OR              reduce using rule 139 (constants -> TRUE .)
+    S_COLON         reduce using rule 139 (constants -> TRUE .)
+    RP1             reduce using rule 139 (constants -> TRUE .)
+
+
+state 41
+
+    (140) constants -> FALSE .
+
+    EQ              reduce using rule 140 (constants -> FALSE .)
+    NEQ             reduce using rule 140 (constants -> FALSE .)
+    AND             reduce using rule 140 (constants -> FALSE .)
+    XOR             reduce using rule 140 (constants -> FALSE .)
+    OR              reduce using rule 140 (constants -> FALSE .)
+    S_COLON         reduce using rule 140 (constants -> FALSE .)
+    RP1             reduce using rule 140 (constants -> FALSE .)
+
+
+state 42
+
+    (116) generate_stmt -> GENERATE to_print . S_COLON
+
+    S_COLON         shift and go to state 72
+
+
+state 43
+
+    (145) assign_stmt -> names ASSIGN . assign_expr S_COLON
+    (149) assign_expr -> . names ASSIGN assign_expr
+    (150) assign_expr -> . names
+    (146) names -> . names COMMA name
+    (147) names -> . name
+    (148) name -> . ID
+
+    ID              shift and go to state 17
+
+    names                          shift and go to state 73
+    assign_expr                    shift and go to state 74
+    name                           shift and go to state 16
+
+state 44
+
+    (146) names -> names COMMA . name
+    (148) name -> . ID
+
+    ID              shift and go to state 17
+
+    name                           shift and go to state 75
+
+state 45
+
+    (1) Program -> PROGRAM_BEGIN S_COLON stmts PROGRAM_END S_COLON .
+
+    $end            reduce using rule 1 (Program -> PROGRAM_BEGIN S_COLON stmts PROGRAM_END S_COLON .)
+
+
+state 46
+
+    (10) trait_decl -> TRAIT trait_id LP1 . class_args RP1 COLON LP2 trait_decl_stmts RP2 S_COLON
+    (11) trait_decl -> TRAIT trait_id LP1 . class_args RP1 EXTENDS unary_pred COLON LP2 trait_decl_stmts RP2 S_COLON
+    (13) class_args -> . main_arg COMMA sub_args
+    (14) class_args -> . main_arg
+    (15) main_arg -> . ID
+
+    ID              shift and go to state 78
+
+    class_args                     shift and go to state 76
+    main_arg                       shift and go to state 77
+
+state 47
+
+    (115) print_stmt -> PRINTINFO to_print S_COLON .
+
+    PROGRAM_END     reduce using rule 115 (print_stmt -> PRINTINFO to_print S_COLON .)
+    S_COLON         reduce using rule 115 (print_stmt -> PRINTINFO to_print S_COLON .)
+    TRAIT           reduce using rule 115 (print_stmt -> PRINTINFO to_print S_COLON .)
+    PRINTINFO       reduce using rule 115 (print_stmt -> PRINTINFO to_print S_COLON .)
+    GENERATE        reduce using rule 115 (print_stmt -> PRINTINFO to_print S_COLON .)
+    ID              reduce using rule 115 (print_stmt -> PRINTINFO to_print S_COLON .)
+
+
+state 48
+
+    (121) boolean_expr -> boolean_expr OR . boolean_expr_a
+    (123) boolean_expr_a -> . boolean_expr_a XOR boolean_expr_b
+    (124) boolean_expr_a -> . boolean_expr_b
+    (125) boolean_expr_b -> . boolean_expr_b AND boolean_expr_c
+    (126) boolean_expr_b -> . boolean_expr_c
+    (127) boolean_expr_c -> . boolean_expr_c EQ boolean_expr_d
+    (128) boolean_expr_c -> . boolean_expr_c NEQ boolean_expr_d
+    (129) boolean_expr_c -> . boolean_expr_d
+    (130) boolean_expr_d -> . NOT boolean_expr_e
+    (131) boolean_expr_d -> . boolean_expr_e
+    (132) boolean_expr_e -> . atomic_boolean_expr
+    (133) boolean_expr_e -> . LP1 boolean_expr RP1
+    (134) atomic_boolean_expr -> . constants
+    (135) atomic_boolean_expr -> . unary_pred LP1 args RP1
+    (136) atomic_boolean_expr -> . unary_pred IMPLIES unary_pred
+    (137) atomic_boolean_expr -> . LP1 unary_pred EQ unary_pred RP1
+    (138) atomic_boolean_expr -> . LP1 unary_pred NEQ unary_pred RP1
+    (139) constants -> . TRUE
+    (140) constants -> . FALSE
+    (78) unary_pred -> . pred_name
+    (79) unary_pred -> . unnamed_pred
+    (84) pred_name -> . ID
+    (80) unnamed_pred -> . pred_name LP3 args RP3
+    (81) unnamed_pred -> . LP3 pred_expr RP3
+    (82) unnamed_pred -> . TRAIT_OF LP1 var_expr RP1
+    (83) unnamed_pred -> . NONE
+
+    NOT             shift and go to state 36
+    LP1             shift and go to state 31
+    TRUE            shift and go to state 40
+    FALSE           shift and go to state 41
+    ID              shift and go to state 63
+    LP3             shift and go to state 29
+    TRAIT_OF        shift and go to state 30
+    NONE            shift and go to state 32
+
+    boolean_expr_a                 shift and go to state 79
+    boolean_expr_b                 shift and go to state 33
+    boolean_expr_c                 shift and go to state 34
+    boolean_expr_d                 shift and go to state 35
+    boolean_expr_e                 shift and go to state 37
+    atomic_boolean_expr            shift and go to state 38
+    constants                      shift and go to state 39
+    unary_pred                     shift and go to state 71
+    pred_name                      shift and go to state 61
+    unnamed_pred                   shift and go to state 62
+
+state 49
+
+    (120) to_print -> unary_pred DOT . member_fn_name
+    (144) member_fn_name -> . ID
+
+    ID              shift and go to state 81
+
+    member_fn_name                 shift and go to state 80
+
+state 50
+
+    (135) atomic_boolean_expr -> unary_pred LP1 . args RP1
+    (141) args -> . args COMMA arg
+    (142) args -> . arg
+    (143) arg -> . ID
+
+    ID              shift and go to state 84
+
+    args                           shift and go to state 82
+    arg                            shift and go to state 83
+
+state 51
+
+    (136) atomic_boolean_expr -> unary_pred IMPLIES . unary_pred
+    (78) unary_pred -> . pred_name
+    (79) unary_pred -> . unnamed_pred
+    (84) pred_name -> . ID
+    (80) unnamed_pred -> . pred_name LP3 args RP3
+    (81) unnamed_pred -> . LP3 pred_expr RP3
+    (82) unnamed_pred -> . TRAIT_OF LP1 var_expr RP1
+    (83) unnamed_pred -> . NONE
+
+    ID              shift and go to state 63
+    LP3             shift and go to state 29
+    TRAIT_OF        shift and go to state 30
+    NONE            shift and go to state 32
+
+    unary_pred                     shift and go to state 85
+    pred_name                      shift and go to state 61
+    unnamed_pred                   shift and go to state 62
+
+state 52
+
+    (123) boolean_expr_a -> boolean_expr_a XOR . boolean_expr_b
+    (125) boolean_expr_b -> . boolean_expr_b AND boolean_expr_c
+    (126) boolean_expr_b -> . boolean_expr_c
+    (127) boolean_expr_c -> . boolean_expr_c EQ boolean_expr_d
+    (128) boolean_expr_c -> . boolean_expr_c NEQ boolean_expr_d
+    (129) boolean_expr_c -> . boolean_expr_d
+    (130) boolean_expr_d -> . NOT boolean_expr_e
+    (131) boolean_expr_d -> . boolean_expr_e
+    (132) boolean_expr_e -> . atomic_boolean_expr
+    (133) boolean_expr_e -> . LP1 boolean_expr RP1
+    (134) atomic_boolean_expr -> . constants
+    (135) atomic_boolean_expr -> . unary_pred LP1 args RP1
+    (136) atomic_boolean_expr -> . unary_pred IMPLIES unary_pred
+    (137) atomic_boolean_expr -> . LP1 unary_pred EQ unary_pred RP1
+    (138) atomic_boolean_expr -> . LP1 unary_pred NEQ unary_pred RP1
+    (139) constants -> . TRUE
+    (140) constants -> . FALSE
+    (78) unary_pred -> . pred_name
+    (79) unary_pred -> . unnamed_pred
+    (84) pred_name -> . ID
+    (80) unnamed_pred -> . pred_name LP3 args RP3
+    (81) unnamed_pred -> . LP3 pred_expr RP3
+    (82) unnamed_pred -> . TRAIT_OF LP1 var_expr RP1
+    (83) unnamed_pred -> . NONE
+
+    NOT             shift and go to state 36
+    LP1             shift and go to state 31
+    TRUE            shift and go to state 40
+    FALSE           shift and go to state 41
+    ID              shift and go to state 63
+    LP3             shift and go to state 29
+    TRAIT_OF        shift and go to state 30
+    NONE            shift and go to state 32
+
+    boolean_expr_b                 shift and go to state 86
+    boolean_expr_c                 shift and go to state 34
+    boolean_expr_d                 shift and go to state 35
+    boolean_expr_e                 shift and go to state 37
+    atomic_boolean_expr            shift and go to state 38
+    constants                      shift and go to state 39
+    unary_pred                     shift and go to state 71
+    pred_name                      shift and go to state 61
+    unnamed_pred                   shift and go to state 62
+
+state 53
+
+    (80) unnamed_pred -> pred_name LP3 . args RP3
+    (141) args -> . args COMMA arg
+    (142) args -> . arg
+    (143) arg -> . ID
+
+    ID              shift and go to state 84
+
+    args                           shift and go to state 87
+    arg                            shift and go to state 83
+
+state 54
+
+    (81) unnamed_pred -> LP3 pred_expr . RP3
+    (85) pred_expr -> pred_expr . OR pred_expr_a
+
+    RP3             shift and go to state 88
+    OR              shift and go to state 89
+
+
+state 55
+
+    (86) pred_expr -> pred_expr_a .
+    (87) pred_expr_a -> pred_expr_a . AND pred_expr_b
+
+    RP3             reduce using rule 86 (pred_expr -> pred_expr_a .)
+    OR              reduce using rule 86 (pred_expr -> pred_expr_a .)
+    RP1             reduce using rule 86 (pred_expr -> pred_expr_a .)
+    AND             shift and go to state 90
+
+
+state 56
+
+    (88) pred_expr_a -> pred_expr_b .
+
+    AND             reduce using rule 88 (pred_expr_a -> pred_expr_b .)
+    RP3             reduce using rule 88 (pred_expr_a -> pred_expr_b .)
+    OR              reduce using rule 88 (pred_expr_a -> pred_expr_b .)
+    RP1             reduce using rule 88 (pred_expr_a -> pred_expr_b .)
+
+
+state 57
+
+    (89) pred_expr_b -> NOT . pred_expr_b
+    (89) pred_expr_b -> . NOT pred_expr_b
+    (90) pred_expr_b -> . pred_expr_c
+    (91) pred_expr_c -> . unary_pred
+    (92) pred_expr_c -> . LP1 pred_expr RP1
+    (78) unary_pred -> . pred_name
+    (79) unary_pred -> . unnamed_pred
+    (84) pred_name -> . ID
+    (80) unnamed_pred -> . pred_name LP3 args RP3
+    (81) unnamed_pred -> . LP3 pred_expr RP3
+    (82) unnamed_pred -> . TRAIT_OF LP1 var_expr RP1
+    (83) unnamed_pred -> . NONE
+
+    NOT             shift and go to state 57
+    LP1             shift and go to state 60
+    ID              shift and go to state 63
+    LP3             shift and go to state 29
+    TRAIT_OF        shift and go to state 30
+    NONE            shift and go to state 32
+
+    pred_expr_b                    shift and go to state 91
+    pred_expr_c                    shift and go to state 58
+    unary_pred                     shift and go to state 59
+    pred_name                      shift and go to state 61
+    unnamed_pred                   shift and go to state 62
+
+state 58
+
+    (90) pred_expr_b -> pred_expr_c .
+
+    AND             reduce using rule 90 (pred_expr_b -> pred_expr_c .)
+    RP3             reduce using rule 90 (pred_expr_b -> pred_expr_c .)
+    OR              reduce using rule 90 (pred_expr_b -> pred_expr_c .)
+    RP1             reduce using rule 90 (pred_expr_b -> pred_expr_c .)
+
+
+state 59
+
+    (91) pred_expr_c -> unary_pred .
+
+    AND             reduce using rule 91 (pred_expr_c -> unary_pred .)
+    RP3             reduce using rule 91 (pred_expr_c -> unary_pred .)
+    OR              reduce using rule 91 (pred_expr_c -> unary_pred .)
+    RP1             reduce using rule 91 (pred_expr_c -> unary_pred .)
+
+
+state 60
+
+    (92) pred_expr_c -> LP1 . pred_expr RP1
+    (85) pred_expr -> . pred_expr OR pred_expr_a
+    (86) pred_expr -> . pred_expr_a
+    (87) pred_expr_a -> . pred_expr_a AND pred_expr_b
+    (88) pred_expr_a -> . pred_expr_b
+    (89) pred_expr_b -> . NOT pred_expr_b
+    (90) pred_expr_b -> . pred_expr_c
+    (91) pred_expr_c -> . unary_pred
+    (92) pred_expr_c -> . LP1 pred_expr RP1
+    (78) unary_pred -> . pred_name
+    (79) unary_pred -> . unnamed_pred
+    (84) pred_name -> . ID
+    (80) unnamed_pred -> . pred_name LP3 args RP3
+    (81) unnamed_pred -> . LP3 pred_expr RP3
+    (82) unnamed_pred -> . TRAIT_OF LP1 var_expr RP1
+    (83) unnamed_pred -> . NONE
+
+    NOT             shift and go to state 57
+    LP1             shift and go to state 60
+    ID              shift and go to state 63
+    LP3             shift and go to state 29
+    TRAIT_OF        shift and go to state 30
+    NONE            shift and go to state 32
+
+    pred_expr                      shift and go to state 92
+    pred_expr_a                    shift and go to state 55
+    pred_expr_b                    shift and go to state 56
+    pred_expr_c                    shift and go to state 58
+    unary_pred                     shift and go to state 59
+    pred_name                      shift and go to state 61
+    unnamed_pred                   shift and go to state 62
+
+state 61
+
+    (78) unary_pred -> pred_name .
+    (80) unnamed_pred -> pred_name . LP3 args RP3
+
+    AND             reduce using rule 78 (unary_pred -> pred_name .)
+    RP3             reduce using rule 78 (unary_pred -> pred_name .)
+    OR              reduce using rule 78 (unary_pred -> pred_name .)
+    EQ              reduce using rule 78 (unary_pred -> pred_name .)
+    NEQ             reduce using rule 78 (unary_pred -> pred_name .)
+    LP1             reduce using rule 78 (unary_pred -> pred_name .)
+    IMPLIES         reduce using rule 78 (unary_pred -> pred_name .)
+    XOR             reduce using rule 78 (unary_pred -> pred_name .)
+    S_COLON         reduce using rule 78 (unary_pred -> pred_name .)
+    RP1             reduce using rule 78 (unary_pred -> pred_name .)
+    DOT             reduce using rule 78 (unary_pred -> pred_name .)
+    COLON           reduce using rule 78 (unary_pred -> pred_name .)
+    COMMA           reduce using rule 78 (unary_pred -> pred_name .)
+    LP3             shift and go to state 53
+
+
+state 62
+
+    (79) unary_pred -> unnamed_pred .
+
+    AND             reduce using rule 79 (unary_pred -> unnamed_pred .)
+    RP3             reduce using rule 79 (unary_pred -> unnamed_pred .)
+    OR              reduce using rule 79 (unary_pred -> unnamed_pred .)
+    EQ              reduce using rule 79 (unary_pred -> unnamed_pred .)
+    NEQ             reduce using rule 79 (unary_pred -> unnamed_pred .)
+    LP1             reduce using rule 79 (unary_pred -> unnamed_pred .)
+    IMPLIES         reduce using rule 79 (unary_pred -> unnamed_pred .)
+    XOR             reduce using rule 79 (unary_pred -> unnamed_pred .)
+    S_COLON         reduce using rule 79 (unary_pred -> unnamed_pred .)
+    RP1             reduce using rule 79 (unary_pred -> unnamed_pred .)
+    DOT             reduce using rule 79 (unary_pred -> unnamed_pred .)
+    COLON           reduce using rule 79 (unary_pred -> unnamed_pred .)
+    COMMA           reduce using rule 79 (unary_pred -> unnamed_pred .)
+
+
+state 63
+
+    (84) pred_name -> ID .
+
+    LP3             reduce using rule 84 (pred_name -> ID .)
+    AND             reduce using rule 84 (pred_name -> ID .)
+    RP3             reduce using rule 84 (pred_name -> ID .)
+    OR              reduce using rule 84 (pred_name -> ID .)
+    EQ              reduce using rule 84 (pred_name -> ID .)
+    NEQ             reduce using rule 84 (pred_name -> ID .)
+    LP1             reduce using rule 84 (pred_name -> ID .)
+    IMPLIES         reduce using rule 84 (pred_name -> ID .)
+    XOR             reduce using rule 84 (pred_name -> ID .)
+    S_COLON         reduce using rule 84 (pred_name -> ID .)
+    RP1             reduce using rule 84 (pred_name -> ID .)
+    DOT             reduce using rule 84 (pred_name -> ID .)
+    COLON           reduce using rule 84 (pred_name -> ID .)
+    COMMA           reduce using rule 84 (pred_name -> ID .)
+
+
+state 64
+
+    (82) unnamed_pred -> TRAIT_OF LP1 . var_expr RP1
+    (93) var_expr -> . unary_pred DOT member_var_name
+    (78) unary_pred -> . pred_name
+    (79) unary_pred -> . unnamed_pred
+    (84) pred_name -> . ID
+    (80) unnamed_pred -> . pred_name LP3 args RP3
+    (81) unnamed_pred -> . LP3 pred_expr RP3
+    (82) unnamed_pred -> . TRAIT_OF LP1 var_expr RP1
+    (83) unnamed_pred -> . NONE
+
+    ID              shift and go to state 63
+    LP3             shift and go to state 29
+    TRAIT_OF        shift and go to state 30
+    NONE            shift and go to state 32
+
+    var_expr                       shift and go to state 93
+    unary_pred                     shift and go to state 94
+    pred_name                      shift and go to state 61
+    unnamed_pred                   shift and go to state 62
+
+state 65
+
+    (133) boolean_expr_e -> LP1 boolean_expr . RP1
+    (121) boolean_expr -> boolean_expr . OR boolean_expr_a
+
+    RP1             shift and go to state 95
+    OR              shift and go to state 48
+
+
+state 66
+
+    (137) atomic_boolean_expr -> LP1 unary_pred . EQ unary_pred RP1
+    (138) atomic_boolean_expr -> LP1 unary_pred . NEQ unary_pred RP1
+    (135) atomic_boolean_expr -> unary_pred . LP1 args RP1
+    (136) atomic_boolean_expr -> unary_pred . IMPLIES unary_pred
+
+    EQ              shift and go to state 96
+    NEQ             shift and go to state 97
+    LP1             shift and go to state 50
+    IMPLIES         shift and go to state 51
+
+
+state 67
+
+    (125) boolean_expr_b -> boolean_expr_b AND . boolean_expr_c
+    (127) boolean_expr_c -> . boolean_expr_c EQ boolean_expr_d
+    (128) boolean_expr_c -> . boolean_expr_c NEQ boolean_expr_d
+    (129) boolean_expr_c -> . boolean_expr_d
+    (130) boolean_expr_d -> . NOT boolean_expr_e
+    (131) boolean_expr_d -> . boolean_expr_e
+    (132) boolean_expr_e -> . atomic_boolean_expr
+    (133) boolean_expr_e -> . LP1 boolean_expr RP1
+    (134) atomic_boolean_expr -> . constants
+    (135) atomic_boolean_expr -> . unary_pred LP1 args RP1
+    (136) atomic_boolean_expr -> . unary_pred IMPLIES unary_pred
+    (137) atomic_boolean_expr -> . LP1 unary_pred EQ unary_pred RP1
+    (138) atomic_boolean_expr -> . LP1 unary_pred NEQ unary_pred RP1
+    (139) constants -> . TRUE
+    (140) constants -> . FALSE
+    (78) unary_pred -> . pred_name
+    (79) unary_pred -> . unnamed_pred
+    (84) pred_name -> . ID
+    (80) unnamed_pred -> . pred_name LP3 args RP3
+    (81) unnamed_pred -> . LP3 pred_expr RP3
+    (82) unnamed_pred -> . TRAIT_OF LP1 var_expr RP1
+    (83) unnamed_pred -> . NONE
+
+    NOT             shift and go to state 36
+    LP1             shift and go to state 31
+    TRUE            shift and go to state 40
+    FALSE           shift and go to state 41
+    ID              shift and go to state 63
+    LP3             shift and go to state 29
+    TRAIT_OF        shift and go to state 30
+    NONE            shift and go to state 32
+
+    boolean_expr_c                 shift and go to state 98
+    boolean_expr_d                 shift and go to state 35
+    boolean_expr_e                 shift and go to state 37
+    atomic_boolean_expr            shift and go to state 38
+    constants                      shift and go to state 39
+    unary_pred                     shift and go to state 71
+    pred_name                      shift and go to state 61
+    unnamed_pred                   shift and go to state 62
+
+state 68
+
+    (127) boolean_expr_c -> boolean_expr_c EQ . boolean_expr_d
+    (130) boolean_expr_d -> . NOT boolean_expr_e
+    (131) boolean_expr_d -> . boolean_expr_e
+    (132) boolean_expr_e -> . atomic_boolean_expr
+    (133) boolean_expr_e -> . LP1 boolean_expr RP1
+    (134) atomic_boolean_expr -> . constants
+    (135) atomic_boolean_expr -> . unary_pred LP1 args RP1
+    (136) atomic_boolean_expr -> . unary_pred IMPLIES unary_pred
+    (137) atomic_boolean_expr -> . LP1 unary_pred EQ unary_pred RP1
+    (138) atomic_boolean_expr -> . LP1 unary_pred NEQ unary_pred RP1
+    (139) constants -> . TRUE
+    (140) constants -> . FALSE
+    (78) unary_pred -> . pred_name
+    (79) unary_pred -> . unnamed_pred
+    (84) pred_name -> . ID
+    (80) unnamed_pred -> . pred_name LP3 args RP3
+    (81) unnamed_pred -> . LP3 pred_expr RP3
+    (82) unnamed_pred -> . TRAIT_OF LP1 var_expr RP1
+    (83) unnamed_pred -> . NONE
+
+    NOT             shift and go to state 36
+    LP1             shift and go to state 31
+    TRUE            shift and go to state 40
+    FALSE           shift and go to state 41
+    ID              shift and go to state 63
+    LP3             shift and go to state 29
+    TRAIT_OF        shift and go to state 30
+    NONE            shift and go to state 32
+
+    boolean_expr_d                 shift and go to state 99
+    boolean_expr_e                 shift and go to state 37
+    atomic_boolean_expr            shift and go to state 38
+    constants                      shift and go to state 39
+    unary_pred                     shift and go to state 71
+    pred_name                      shift and go to state 61
+    unnamed_pred                   shift and go to state 62
+
+state 69
+
+    (128) boolean_expr_c -> boolean_expr_c NEQ . boolean_expr_d
+    (130) boolean_expr_d -> . NOT boolean_expr_e
+    (131) boolean_expr_d -> . boolean_expr_e
+    (132) boolean_expr_e -> . atomic_boolean_expr
+    (133) boolean_expr_e -> . LP1 boolean_expr RP1
+    (134) atomic_boolean_expr -> . constants
+    (135) atomic_boolean_expr -> . unary_pred LP1 args RP1
+    (136) atomic_boolean_expr -> . unary_pred IMPLIES unary_pred
+    (137) atomic_boolean_expr -> . LP1 unary_pred EQ unary_pred RP1
+    (138) atomic_boolean_expr -> . LP1 unary_pred NEQ unary_pred RP1
+    (139) constants -> . TRUE
+    (140) constants -> . FALSE
+    (78) unary_pred -> . pred_name
+    (79) unary_pred -> . unnamed_pred
+    (84) pred_name -> . ID
+    (80) unnamed_pred -> . pred_name LP3 args RP3
+    (81) unnamed_pred -> . LP3 pred_expr RP3
+    (82) unnamed_pred -> . TRAIT_OF LP1 var_expr RP1
+    (83) unnamed_pred -> . NONE
+
+    NOT             shift and go to state 36
+    LP1             shift and go to state 31
+    TRUE            shift and go to state 40
+    FALSE           shift and go to state 41
+    ID              shift and go to state 63
+    LP3             shift and go to state 29
+    TRAIT_OF        shift and go to state 30
+    NONE            shift and go to state 32
+
+    boolean_expr_d                 shift and go to state 100
+    boolean_expr_e                 shift and go to state 37
+    atomic_boolean_expr            shift and go to state 38
+    constants                      shift and go to state 39
+    unary_pred                     shift and go to state 71
+    pred_name                      shift and go to state 61
+    unnamed_pred                   shift and go to state 62
+
+state 70
+
+    (130) boolean_expr_d -> NOT boolean_expr_e .
+
+    EQ              reduce using rule 130 (boolean_expr_d -> NOT boolean_expr_e .)
+    NEQ             reduce using rule 130 (boolean_expr_d -> NOT boolean_expr_e .)
+    AND             reduce using rule 130 (boolean_expr_d -> NOT boolean_expr_e .)
+    XOR             reduce using rule 130 (boolean_expr_d -> NOT boolean_expr_e .)
+    OR              reduce using rule 130 (boolean_expr_d -> NOT boolean_expr_e .)
+    S_COLON         reduce using rule 130 (boolean_expr_d -> NOT boolean_expr_e .)
+    RP1             reduce using rule 130 (boolean_expr_d -> NOT boolean_expr_e .)
+
+
+state 71
+
+    (135) atomic_boolean_expr -> unary_pred . LP1 args RP1
+    (136) atomic_boolean_expr -> unary_pred . IMPLIES unary_pred
+
+    LP1             shift and go to state 50
+    IMPLIES         shift and go to state 51
+
+
+state 72
+
+    (116) generate_stmt -> GENERATE to_print S_COLON .
+
+    PROGRAM_END     reduce using rule 116 (generate_stmt -> GENERATE to_print S_COLON .)
+    S_COLON         reduce using rule 116 (generate_stmt -> GENERATE to_print S_COLON .)
+    TRAIT           reduce using rule 116 (generate_stmt -> GENERATE to_print S_COLON .)
+    PRINTINFO       reduce using rule 116 (generate_stmt -> GENERATE to_print S_COLON .)
+    GENERATE        reduce using rule 116 (generate_stmt -> GENERATE to_print S_COLON .)
+    ID              reduce using rule 116 (generate_stmt -> GENERATE to_print S_COLON .)
+
+
+state 73
+
+    (149) assign_expr -> names . ASSIGN assign_expr
+    (150) assign_expr -> names .
+    (146) names -> names . COMMA name
+
+    ASSIGN          shift and go to state 101
+    S_COLON         reduce using rule 150 (assign_expr -> names .)
+    COMMA           shift and go to state 44
+
+
+state 74
+
+    (145) assign_stmt -> names ASSIGN assign_expr . S_COLON
+
+    S_COLON         shift and go to state 102
+
+
+state 75
+
+    (146) names -> names COMMA name .
+
+    ASSIGN          reduce using rule 146 (names -> names COMMA name .)
+    COMMA           reduce using rule 146 (names -> names COMMA name .)
+    S_COLON         reduce using rule 146 (names -> names COMMA name .)
+
+
+state 76
+
+    (10) trait_decl -> TRAIT trait_id LP1 class_args . RP1 COLON LP2 trait_decl_stmts RP2 S_COLON
+    (11) trait_decl -> TRAIT trait_id LP1 class_args . RP1 EXTENDS unary_pred COLON LP2 trait_decl_stmts RP2 S_COLON
+
+    RP1             shift and go to state 103
+
+
+state 77
+
+    (13) class_args -> main_arg . COMMA sub_args
+    (14) class_args -> main_arg .
+
+    COMMA           shift and go to state 104
+    RP1             reduce using rule 14 (class_args -> main_arg .)
+
+
+state 78
+
+    (15) main_arg -> ID .
+
+    COMMA           reduce using rule 15 (main_arg -> ID .)
+    RP1             reduce using rule 15 (main_arg -> ID .)
+
+
+state 79
+
+    (121) boolean_expr -> boolean_expr OR boolean_expr_a .
+    (123) boolean_expr_a -> boolean_expr_a . XOR boolean_expr_b
+
+    OR              reduce using rule 121 (boolean_expr -> boolean_expr OR boolean_expr_a .)
+    S_COLON         reduce using rule 121 (boolean_expr -> boolean_expr OR boolean_expr_a .)
+    RP1             reduce using rule 121 (boolean_expr -> boolean_expr OR boolean_expr_a .)
+    XOR             shift and go to state 52
+
+
+state 80
+
+    (120) to_print -> unary_pred DOT member_fn_name .
+
+    S_COLON         reduce using rule 120 (to_print -> unary_pred DOT member_fn_name .)
+
+
+state 81
+
+    (144) member_fn_name -> ID .
+
+    S_COLON         reduce using rule 144 (member_fn_name -> ID .)
+
+
+state 82
+
+    (135) atomic_boolean_expr -> unary_pred LP1 args . RP1
+    (141) args -> args . COMMA arg
+
+    RP1             shift and go to state 105
+    COMMA           shift and go to state 106
+
+
+state 83
+
+    (142) args -> arg .
+
+    RP1             reduce using rule 142 (args -> arg .)
+    COMMA           reduce using rule 142 (args -> arg .)
+    RP3             reduce using rule 142 (args -> arg .)
+
+
+state 84
+
+    (143) arg -> ID .
+
+    RP1             reduce using rule 143 (arg -> ID .)
+    COMMA           reduce using rule 143 (arg -> ID .)
+    RP3             reduce using rule 143 (arg -> ID .)
+
+
+state 85
+
+    (136) atomic_boolean_expr -> unary_pred IMPLIES unary_pred .
+
+    EQ              reduce using rule 136 (atomic_boolean_expr -> unary_pred IMPLIES unary_pred .)
+    NEQ             reduce using rule 136 (atomic_boolean_expr -> unary_pred IMPLIES unary_pred .)
+    AND             reduce using rule 136 (atomic_boolean_expr -> unary_pred IMPLIES unary_pred .)
+    XOR             reduce using rule 136 (atomic_boolean_expr -> unary_pred IMPLIES unary_pred .)
+    OR              reduce using rule 136 (atomic_boolean_expr -> unary_pred IMPLIES unary_pred .)
+    S_COLON         reduce using rule 136 (atomic_boolean_expr -> unary_pred IMPLIES unary_pred .)
+    RP1             reduce using rule 136 (atomic_boolean_expr -> unary_pred IMPLIES unary_pred .)
+
+
+state 86
+
+    (123) boolean_expr_a -> boolean_expr_a XOR boolean_expr_b .
+    (125) boolean_expr_b -> boolean_expr_b . AND boolean_expr_c
+
+    XOR             reduce using rule 123 (boolean_expr_a -> boolean_expr_a XOR boolean_expr_b .)
+    OR              reduce using rule 123 (boolean_expr_a -> boolean_expr_a XOR boolean_expr_b .)
+    S_COLON         reduce using rule 123 (boolean_expr_a -> boolean_expr_a XOR boolean_expr_b .)
+    RP1             reduce using rule 123 (boolean_expr_a -> boolean_expr_a XOR boolean_expr_b .)
+    AND             shift and go to state 67
+
+
+state 87
+
+    (80) unnamed_pred -> pred_name LP3 args . RP3
+    (141) args -> args . COMMA arg
+
+    RP3             shift and go to state 107
+    COMMA           shift and go to state 106
+
+
+state 88
+
+    (81) unnamed_pred -> LP3 pred_expr RP3 .
+
+    S_COLON         reduce using rule 81 (unnamed_pred -> LP3 pred_expr RP3 .)
+    DOT             reduce using rule 81 (unnamed_pred -> LP3 pred_expr RP3 .)
+    LP1             reduce using rule 81 (unnamed_pred -> LP3 pred_expr RP3 .)
+    IMPLIES         reduce using rule 81 (unnamed_pred -> LP3 pred_expr RP3 .)
+    AND             reduce using rule 81 (unnamed_pred -> LP3 pred_expr RP3 .)
+    RP3             reduce using rule 81 (unnamed_pred -> LP3 pred_expr RP3 .)
+    OR              reduce using rule 81 (unnamed_pred -> LP3 pred_expr RP3 .)
+    EQ              reduce using rule 81 (unnamed_pred -> LP3 pred_expr RP3 .)
+    NEQ             reduce using rule 81 (unnamed_pred -> LP3 pred_expr RP3 .)
+    XOR             reduce using rule 81 (unnamed_pred -> LP3 pred_expr RP3 .)
+    RP1             reduce using rule 81 (unnamed_pred -> LP3 pred_expr RP3 .)
+    COLON           reduce using rule 81 (unnamed_pred -> LP3 pred_expr RP3 .)
+    COMMA           reduce using rule 81 (unnamed_pred -> LP3 pred_expr RP3 .)
+
+
+state 89
+
+    (85) pred_expr -> pred_expr OR . pred_expr_a
+    (87) pred_expr_a -> . pred_expr_a AND pred_expr_b
+    (88) pred_expr_a -> . pred_expr_b
+    (89) pred_expr_b -> . NOT pred_expr_b
+    (90) pred_expr_b -> . pred_expr_c
+    (91) pred_expr_c -> . unary_pred
+    (92) pred_expr_c -> . LP1 pred_expr RP1
+    (78) unary_pred -> . pred_name
+    (79) unary_pred -> . unnamed_pred
+    (84) pred_name -> . ID
+    (80) unnamed_pred -> . pred_name LP3 args RP3
+    (81) unnamed_pred -> . LP3 pred_expr RP3
+    (82) unnamed_pred -> . TRAIT_OF LP1 var_expr RP1
+    (83) unnamed_pred -> . NONE
+
+    NOT             shift and go to state 57
+    LP1             shift and go to state 60
+    ID              shift and go to state 63
+    LP3             shift and go to state 29
+    TRAIT_OF        shift and go to state 30
+    NONE            shift and go to state 32
+
+    pred_expr_a                    shift and go to state 108
+    pred_expr_b                    shift and go to state 56
+    pred_expr_c                    shift and go to state 58
+    unary_pred                     shift and go to state 59
+    pred_name                      shift and go to state 61
+    unnamed_pred                   shift and go to state 62
+
+state 90
+
+    (87) pred_expr_a -> pred_expr_a AND . pred_expr_b
+    (89) pred_expr_b -> . NOT pred_expr_b
+    (90) pred_expr_b -> . pred_expr_c
+    (91) pred_expr_c -> . unary_pred
+    (92) pred_expr_c -> . LP1 pred_expr RP1
+    (78) unary_pred -> . pred_name
+    (79) unary_pred -> . unnamed_pred
+    (84) pred_name -> . ID
+    (80) unnamed_pred -> . pred_name LP3 args RP3
+    (81) unnamed_pred -> . LP3 pred_expr RP3
+    (82) unnamed_pred -> . TRAIT_OF LP1 var_expr RP1
+    (83) unnamed_pred -> . NONE
+
+    NOT             shift and go to state 57
+    LP1             shift and go to state 60
+    ID              shift and go to state 63
+    LP3             shift and go to state 29
+    TRAIT_OF        shift and go to state 30
+    NONE            shift and go to state 32
+
+    pred_expr_b                    shift and go to state 109
+    pred_expr_c                    shift and go to state 58
+    unary_pred                     shift and go to state 59
+    pred_name                      shift and go to state 61
+    unnamed_pred                   shift and go to state 62
+
+state 91
+
+    (89) pred_expr_b -> NOT pred_expr_b .
+
+    AND             reduce using rule 89 (pred_expr_b -> NOT pred_expr_b .)
+    RP3             reduce using rule 89 (pred_expr_b -> NOT pred_expr_b .)
+    OR              reduce using rule 89 (pred_expr_b -> NOT pred_expr_b .)
+    RP1             reduce using rule 89 (pred_expr_b -> NOT pred_expr_b .)
+
+
+state 92
+
+    (92) pred_expr_c -> LP1 pred_expr . RP1
+    (85) pred_expr -> pred_expr . OR pred_expr_a
+
+    RP1             shift and go to state 110
+    OR              shift and go to state 89
+
+
+state 93
+
+    (82) unnamed_pred -> TRAIT_OF LP1 var_expr . RP1
+
+    RP1             shift and go to state 111
+
+
+state 94
+
+    (93) var_expr -> unary_pred . DOT member_var_name
+
+    DOT             shift and go to state 112
+
+
+state 95
+
+    (133) boolean_expr_e -> LP1 boolean_expr RP1 .
+
+    EQ              reduce using rule 133 (boolean_expr_e -> LP1 boolean_expr RP1 .)
+    NEQ             reduce using rule 133 (boolean_expr_e -> LP1 boolean_expr RP1 .)
+    AND             reduce using rule 133 (boolean_expr_e -> LP1 boolean_expr RP1 .)
+    XOR             reduce using rule 133 (boolean_expr_e -> LP1 boolean_expr RP1 .)
+    OR              reduce using rule 133 (boolean_expr_e -> LP1 boolean_expr RP1 .)
+    S_COLON         reduce using rule 133 (boolean_expr_e -> LP1 boolean_expr RP1 .)
+    RP1             reduce using rule 133 (boolean_expr_e -> LP1 boolean_expr RP1 .)
+
+
+state 96
+
+    (137) atomic_boolean_expr -> LP1 unary_pred EQ . unary_pred RP1
+    (78) unary_pred -> . pred_name
+    (79) unary_pred -> . unnamed_pred
+    (84) pred_name -> . ID
+    (80) unnamed_pred -> . pred_name LP3 args RP3
+    (81) unnamed_pred -> . LP3 pred_expr RP3
+    (82) unnamed_pred -> . TRAIT_OF LP1 var_expr RP1
+    (83) unnamed_pred -> . NONE
+
+    ID              shift and go to state 63
+    LP3             shift and go to state 29
+    TRAIT_OF        shift and go to state 30
+    NONE            shift and go to state 32
+
+    unary_pred                     shift and go to state 113
+    pred_name                      shift and go to state 61
+    unnamed_pred                   shift and go to state 62
+
+state 97
+
+    (138) atomic_boolean_expr -> LP1 unary_pred NEQ . unary_pred RP1
+    (78) unary_pred -> . pred_name
+    (79) unary_pred -> . unnamed_pred
+    (84) pred_name -> . ID
+    (80) unnamed_pred -> . pred_name LP3 args RP3
+    (81) unnamed_pred -> . LP3 pred_expr RP3
+    (82) unnamed_pred -> . TRAIT_OF LP1 var_expr RP1
+    (83) unnamed_pred -> . NONE
+
+    ID              shift and go to state 63
+    LP3             shift and go to state 29
+    TRAIT_OF        shift and go to state 30
+    NONE            shift and go to state 32
+
+    unary_pred                     shift and go to state 114
+    pred_name                      shift and go to state 61
+    unnamed_pred                   shift and go to state 62
+
+state 98
+
+    (125) boolean_expr_b -> boolean_expr_b AND boolean_expr_c .
+    (127) boolean_expr_c -> boolean_expr_c . EQ boolean_expr_d
+    (128) boolean_expr_c -> boolean_expr_c . NEQ boolean_expr_d
+
+    AND             reduce using rule 125 (boolean_expr_b -> boolean_expr_b AND boolean_expr_c .)
+    XOR             reduce using rule 125 (boolean_expr_b -> boolean_expr_b AND boolean_expr_c .)
+    OR              reduce using rule 125 (boolean_expr_b -> boolean_expr_b AND boolean_expr_c .)
+    S_COLON         reduce using rule 125 (boolean_expr_b -> boolean_expr_b AND boolean_expr_c .)
+    RP1             reduce using rule 125 (boolean_expr_b -> boolean_expr_b AND boolean_expr_c .)
+    EQ              shift and go to state 68
+    NEQ             shift and go to state 69
+
+
+state 99
+
+    (127) boolean_expr_c -> boolean_expr_c EQ boolean_expr_d .
+
+    EQ              reduce using rule 127 (boolean_expr_c -> boolean_expr_c EQ boolean_expr_d .)
+    NEQ             reduce using rule 127 (boolean_expr_c -> boolean_expr_c EQ boolean_expr_d .)
+    AND             reduce using rule 127 (boolean_expr_c -> boolean_expr_c EQ boolean_expr_d .)
+    XOR             reduce using rule 127 (boolean_expr_c -> boolean_expr_c EQ boolean_expr_d .)
+    OR              reduce using rule 127 (boolean_expr_c -> boolean_expr_c EQ boolean_expr_d .)
+    S_COLON         reduce using rule 127 (boolean_expr_c -> boolean_expr_c EQ boolean_expr_d .)
+    RP1             reduce using rule 127 (boolean_expr_c -> boolean_expr_c EQ boolean_expr_d .)
+
+
+state 100
+
+    (128) boolean_expr_c -> boolean_expr_c NEQ boolean_expr_d .
+
+    EQ              reduce using rule 128 (boolean_expr_c -> boolean_expr_c NEQ boolean_expr_d .)
+    NEQ             reduce using rule 128 (boolean_expr_c -> boolean_expr_c NEQ boolean_expr_d .)
+    AND             reduce using rule 128 (boolean_expr_c -> boolean_expr_c NEQ boolean_expr_d .)
+    XOR             reduce using rule 128 (boolean_expr_c -> boolean_expr_c NEQ boolean_expr_d .)
+    OR              reduce using rule 128 (boolean_expr_c -> boolean_expr_c NEQ boolean_expr_d .)
+    S_COLON         reduce using rule 128 (boolean_expr_c -> boolean_expr_c NEQ boolean_expr_d .)
+    RP1             reduce using rule 128 (boolean_expr_c -> boolean_expr_c NEQ boolean_expr_d .)
+
+
+state 101
+
+    (149) assign_expr -> names ASSIGN . assign_expr
+    (149) assign_expr -> . names ASSIGN assign_expr
+    (150) assign_expr -> . names
+    (146) names -> . names COMMA name
+    (147) names -> . name
+    (148) name -> . ID
+
+    ID              shift and go to state 17
+
+    names                          shift and go to state 73
+    assign_expr                    shift and go to state 115
+    name                           shift and go to state 16
+
+state 102
+
+    (145) assign_stmt -> names ASSIGN assign_expr S_COLON .
+
+    PROGRAM_END     reduce using rule 145 (assign_stmt -> names ASSIGN assign_expr S_COLON .)
+    S_COLON         reduce using rule 145 (assign_stmt -> names ASSIGN assign_expr S_COLON .)
+    TRAIT           reduce using rule 145 (assign_stmt -> names ASSIGN assign_expr S_COLON .)
+    PRINTINFO       reduce using rule 145 (assign_stmt -> names ASSIGN assign_expr S_COLON .)
+    GENERATE        reduce using rule 145 (assign_stmt -> names ASSIGN assign_expr S_COLON .)
+    ID              reduce using rule 145 (assign_stmt -> names ASSIGN assign_expr S_COLON .)
+
+
+state 103
+
+    (10) trait_decl -> TRAIT trait_id LP1 class_args RP1 . COLON LP2 trait_decl_stmts RP2 S_COLON
+    (11) trait_decl -> TRAIT trait_id LP1 class_args RP1 . EXTENDS unary_pred COLON LP2 trait_decl_stmts RP2 S_COLON
+
+    COLON           shift and go to state 116
+    EXTENDS         shift and go to state 117
+
+
+state 104
+
+    (13) class_args -> main_arg COMMA . sub_args
+    (16) sub_args -> . necessary_args COMMA optional_args
+    (17) sub_args -> . necessary_args
+    (18) sub_args -> . optional_args
+    (19) necessary_args -> . necessary_args COMMA necessary_arg
+    (20) necessary_args -> . necessary_arg
+    (22) optional_args -> . optional_args COMMA optional_arg
+    (23) optional_args -> . optional_arg
+    (21) necessary_arg -> . ID
+    (24) optional_arg -> . ID ASSIGN unary_pred
+
+    ID              shift and go to state 123
+
+    sub_args                       shift and go to state 118
+    necessary_args                 shift and go to state 119
+    optional_args                  shift and go to state 120
+    necessary_arg                  shift and go to state 121
+    optional_arg                   shift and go to state 122
+
+state 105
+
+    (135) atomic_boolean_expr -> unary_pred LP1 args RP1 .
+
+    EQ              reduce using rule 135 (atomic_boolean_expr -> unary_pred LP1 args RP1 .)
+    NEQ             reduce using rule 135 (atomic_boolean_expr -> unary_pred LP1 args RP1 .)
+    AND             reduce using rule 135 (atomic_boolean_expr -> unary_pred LP1 args RP1 .)
+    XOR             reduce using rule 135 (atomic_boolean_expr -> unary_pred LP1 args RP1 .)
+    OR              reduce using rule 135 (atomic_boolean_expr -> unary_pred LP1 args RP1 .)
+    S_COLON         reduce using rule 135 (atomic_boolean_expr -> unary_pred LP1 args RP1 .)
+    RP1             reduce using rule 135 (atomic_boolean_expr -> unary_pred LP1 args RP1 .)
+
+
+state 106
+
+    (141) args -> args COMMA . arg
+    (143) arg -> . ID
+
+    ID              shift and go to state 84
+
+    arg                            shift and go to state 124
+
+state 107
+
+    (80) unnamed_pred -> pred_name LP3 args RP3 .
+
+    S_COLON         reduce using rule 80 (unnamed_pred -> pred_name LP3 args RP3 .)
+    DOT             reduce using rule 80 (unnamed_pred -> pred_name LP3 args RP3 .)
+    LP1             reduce using rule 80 (unnamed_pred -> pred_name LP3 args RP3 .)
+    IMPLIES         reduce using rule 80 (unnamed_pred -> pred_name LP3 args RP3 .)
+    AND             reduce using rule 80 (unnamed_pred -> pred_name LP3 args RP3 .)
+    RP3             reduce using rule 80 (unnamed_pred -> pred_name LP3 args RP3 .)
+    OR              reduce using rule 80 (unnamed_pred -> pred_name LP3 args RP3 .)
+    EQ              reduce using rule 80 (unnamed_pred -> pred_name LP3 args RP3 .)
+    NEQ             reduce using rule 80 (unnamed_pred -> pred_name LP3 args RP3 .)
+    XOR             reduce using rule 80 (unnamed_pred -> pred_name LP3 args RP3 .)
+    RP1             reduce using rule 80 (unnamed_pred -> pred_name LP3 args RP3 .)
+    COLON           reduce using rule 80 (unnamed_pred -> pred_name LP3 args RP3 .)
+    COMMA           reduce using rule 80 (unnamed_pred -> pred_name LP3 args RP3 .)
+
+
+state 108
+
+    (85) pred_expr -> pred_expr OR pred_expr_a .
+    (87) pred_expr_a -> pred_expr_a . AND pred_expr_b
+
+    RP3             reduce using rule 85 (pred_expr -> pred_expr OR pred_expr_a .)
+    OR              reduce using rule 85 (pred_expr -> pred_expr OR pred_expr_a .)
+    RP1             reduce using rule 85 (pred_expr -> pred_expr OR pred_expr_a .)
+    AND             shift and go to state 90
+
+
+state 109
+
+    (87) pred_expr_a -> pred_expr_a AND pred_expr_b .
+
+    AND             reduce using rule 87 (pred_expr_a -> pred_expr_a AND pred_expr_b .)
+    RP3             reduce using rule 87 (pred_expr_a -> pred_expr_a AND pred_expr_b .)
+    OR              reduce using rule 87 (pred_expr_a -> pred_expr_a AND pred_expr_b .)
+    RP1             reduce using rule 87 (pred_expr_a -> pred_expr_a AND pred_expr_b .)
+
+
+state 110
+
+    (92) pred_expr_c -> LP1 pred_expr RP1 .
+
+    AND             reduce using rule 92 (pred_expr_c -> LP1 pred_expr RP1 .)
+    RP3             reduce using rule 92 (pred_expr_c -> LP1 pred_expr RP1 .)
+    OR              reduce using rule 92 (pred_expr_c -> LP1 pred_expr RP1 .)
+    RP1             reduce using rule 92 (pred_expr_c -> LP1 pred_expr RP1 .)
+
+
+state 111
+
+    (82) unnamed_pred -> TRAIT_OF LP1 var_expr RP1 .
+
+    S_COLON         reduce using rule 82 (unnamed_pred -> TRAIT_OF LP1 var_expr RP1 .)
+    DOT             reduce using rule 82 (unnamed_pred -> TRAIT_OF LP1 var_expr RP1 .)
+    LP1             reduce using rule 82 (unnamed_pred -> TRAIT_OF LP1 var_expr RP1 .)
+    IMPLIES         reduce using rule 82 (unnamed_pred -> TRAIT_OF LP1 var_expr RP1 .)
+    AND             reduce using rule 82 (unnamed_pred -> TRAIT_OF LP1 var_expr RP1 .)
+    RP3             reduce using rule 82 (unnamed_pred -> TRAIT_OF LP1 var_expr RP1 .)
+    OR              reduce using rule 82 (unnamed_pred -> TRAIT_OF LP1 var_expr RP1 .)
+    EQ              reduce using rule 82 (unnamed_pred -> TRAIT_OF LP1 var_expr RP1 .)
+    NEQ             reduce using rule 82 (unnamed_pred -> TRAIT_OF LP1 var_expr RP1 .)
+    XOR             reduce using rule 82 (unnamed_pred -> TRAIT_OF LP1 var_expr RP1 .)
+    RP1             reduce using rule 82 (unnamed_pred -> TRAIT_OF LP1 var_expr RP1 .)
+    COLON           reduce using rule 82 (unnamed_pred -> TRAIT_OF LP1 var_expr RP1 .)
+    COMMA           reduce using rule 82 (unnamed_pred -> TRAIT_OF LP1 var_expr RP1 .)
+
+
+state 112
+
+    (93) var_expr -> unary_pred DOT . member_var_name
+    (94) member_var_name -> . ID
+
+    ID              shift and go to state 126
+
+    member_var_name                shift and go to state 125
+
+state 113
+
+    (137) atomic_boolean_expr -> LP1 unary_pred EQ unary_pred . RP1
+
+    RP1             shift and go to state 127
+
+
+state 114
+
+    (138) atomic_boolean_expr -> LP1 unary_pred NEQ unary_pred . RP1
+
+    RP1             shift and go to state 128
+
+
+state 115
+
+    (149) assign_expr -> names ASSIGN assign_expr .
+
+    S_COLON         reduce using rule 149 (assign_expr -> names ASSIGN assign_expr .)
+
+
+state 116
+
+    (10) trait_decl -> TRAIT trait_id LP1 class_args RP1 COLON . LP2 trait_decl_stmts RP2 S_COLON
+
+    LP2             shift and go to state 129
+
+
+state 117
+
+    (11) trait_decl -> TRAIT trait_id LP1 class_args RP1 EXTENDS . unary_pred COLON LP2 trait_decl_stmts RP2 S_COLON
+    (78) unary_pred -> . pred_name
+    (79) unary_pred -> . unnamed_pred
+    (84) pred_name -> . ID
+    (80) unnamed_pred -> . pred_name LP3 args RP3
+    (81) unnamed_pred -> . LP3 pred_expr RP3
+    (82) unnamed_pred -> . TRAIT_OF LP1 var_expr RP1
+    (83) unnamed_pred -> . NONE
+
+    ID              shift and go to state 63
+    LP3             shift and go to state 29
+    TRAIT_OF        shift and go to state 30
+    NONE            shift and go to state 32
+
+    unary_pred                     shift and go to state 130
+    pred_name                      shift and go to state 61
+    unnamed_pred                   shift and go to state 62
+
+state 118
+
+    (13) class_args -> main_arg COMMA sub_args .
+
+    RP1             reduce using rule 13 (class_args -> main_arg COMMA sub_args .)
+
+
+state 119
+
+    (16) sub_args -> necessary_args . COMMA optional_args
+    (17) sub_args -> necessary_args .
+    (19) necessary_args -> necessary_args . COMMA necessary_arg
+
+    COMMA           shift and go to state 131
+    RP1             reduce using rule 17 (sub_args -> necessary_args .)
+
+
+state 120
+
+    (18) sub_args -> optional_args .
+    (22) optional_args -> optional_args . COMMA optional_arg
+
+    RP1             reduce using rule 18 (sub_args -> optional_args .)
+    COMMA           shift and go to state 132
+
+
+state 121
+
+    (20) necessary_args -> necessary_arg .
+
+    COMMA           reduce using rule 20 (necessary_args -> necessary_arg .)
+    RP1             reduce using rule 20 (necessary_args -> necessary_arg .)
+
+
+state 122
+
+    (23) optional_args -> optional_arg .
+
+    COMMA           reduce using rule 23 (optional_args -> optional_arg .)
+    RP1             reduce using rule 23 (optional_args -> optional_arg .)
+
+
+state 123
+
+    (21) necessary_arg -> ID .
+    (24) optional_arg -> ID . ASSIGN unary_pred
+
+    COMMA           reduce using rule 21 (necessary_arg -> ID .)
+    RP1             reduce using rule 21 (necessary_arg -> ID .)
+    ASSIGN          shift and go to state 133
+
+
+state 124
+
+    (141) args -> args COMMA arg .
+
+    RP1             reduce using rule 141 (args -> args COMMA arg .)
+    COMMA           reduce using rule 141 (args -> args COMMA arg .)
+    RP3             reduce using rule 141 (args -> args COMMA arg .)
+
+
+state 125
+
+    (93) var_expr -> unary_pred DOT member_var_name .
+
+    RP1             reduce using rule 93 (var_expr -> unary_pred DOT member_var_name .)
+
+
+state 126
+
+    (94) member_var_name -> ID .
+
+    RP1             reduce using rule 94 (member_var_name -> ID .)
+
+
+state 127
+
+    (137) atomic_boolean_expr -> LP1 unary_pred EQ unary_pred RP1 .
+
+    EQ              reduce using rule 137 (atomic_boolean_expr -> LP1 unary_pred EQ unary_pred RP1 .)
+    NEQ             reduce using rule 137 (atomic_boolean_expr -> LP1 unary_pred EQ unary_pred RP1 .)
+    AND             reduce using rule 137 (atomic_boolean_expr -> LP1 unary_pred EQ unary_pred RP1 .)
+    XOR             reduce using rule 137 (atomic_boolean_expr -> LP1 unary_pred EQ unary_pred RP1 .)
+    OR              reduce using rule 137 (atomic_boolean_expr -> LP1 unary_pred EQ unary_pred RP1 .)
+    S_COLON         reduce using rule 137 (atomic_boolean_expr -> LP1 unary_pred EQ unary_pred RP1 .)
+    RP1             reduce using rule 137 (atomic_boolean_expr -> LP1 unary_pred EQ unary_pred RP1 .)
+
+
+state 128
+
+    (138) atomic_boolean_expr -> LP1 unary_pred NEQ unary_pred RP1 .
+
+    EQ              reduce using rule 138 (atomic_boolean_expr -> LP1 unary_pred NEQ unary_pred RP1 .)
+    NEQ             reduce using rule 138 (atomic_boolean_expr -> LP1 unary_pred NEQ unary_pred RP1 .)
+    AND             reduce using rule 138 (atomic_boolean_expr -> LP1 unary_pred NEQ unary_pred RP1 .)
+    XOR             reduce using rule 138 (atomic_boolean_expr -> LP1 unary_pred NEQ unary_pred RP1 .)
+    OR              reduce using rule 138 (atomic_boolean_expr -> LP1 unary_pred NEQ unary_pred RP1 .)
+    S_COLON         reduce using rule 138 (atomic_boolean_expr -> LP1 unary_pred NEQ unary_pred RP1 .)
+    RP1             reduce using rule 138 (atomic_boolean_expr -> LP1 unary_pred NEQ unary_pred RP1 .)
+
+
+state 129
+
+    (10) trait_decl -> TRAIT trait_id LP1 class_args RP1 COLON LP2 . trait_decl_stmts RP2 S_COLON
+    (25) trait_decl_stmts -> . trait_decl_stmts trait_decl_stmt
+    (26) trait_decl_stmts -> . trait_decl_stmt
+    (27) trait_decl_stmts -> . PASS S_COLON
+    (28) trait_decl_stmt -> . FN COLON LP2 decl_fn_stmts RP2 S_COLON
+    (29) trait_decl_stmt -> . VAR COLON LP2 decl_stmts RP2 S_COLON
+    (30) trait_decl_stmt -> . CLS_FN COLON LP2 decl_cls_fn_stmts RP2 S_COLON
+    (31) trait_decl_stmt -> . CLS_VAR COLON LP2 decl_stmts RP2 S_COLON
+    (32) trait_decl_stmt -> . STATIC_FN COLON LP2 decl_static_fn_stmts RP2 S_COLON
+
+    PASS            shift and go to state 136
+    FN              shift and go to state 137
+    VAR             shift and go to state 138
+    CLS_FN          shift and go to state 139
+    CLS_VAR         shift and go to state 140
+    STATIC_FN       shift and go to state 141
+
+    trait_decl_stmts               shift and go to state 134
+    trait_decl_stmt                shift and go to state 135
+
+state 130
+
+    (11) trait_decl -> TRAIT trait_id LP1 class_args RP1 EXTENDS unary_pred . COLON LP2 trait_decl_stmts RP2 S_COLON
+
+    COLON           shift and go to state 142
+
+
+state 131
+
+    (16) sub_args -> necessary_args COMMA . optional_args
+    (19) necessary_args -> necessary_args COMMA . necessary_arg
+    (22) optional_args -> . optional_args COMMA optional_arg
+    (23) optional_args -> . optional_arg
+    (21) necessary_arg -> . ID
+    (24) optional_arg -> . ID ASSIGN unary_pred
+
+    ID              shift and go to state 123
+
+    optional_args                  shift and go to state 143
+    necessary_arg                  shift and go to state 144
+    optional_arg                   shift and go to state 122
+
+state 132
+
+    (22) optional_args -> optional_args COMMA . optional_arg
+    (24) optional_arg -> . ID ASSIGN unary_pred
+
+    ID              shift and go to state 146
+
+    optional_arg                   shift and go to state 145
+
+state 133
+
+    (24) optional_arg -> ID ASSIGN . unary_pred
+    (78) unary_pred -> . pred_name
+    (79) unary_pred -> . unnamed_pred
+    (84) pred_name -> . ID
+    (80) unnamed_pred -> . pred_name LP3 args RP3
+    (81) unnamed_pred -> . LP3 pred_expr RP3
+    (82) unnamed_pred -> . TRAIT_OF LP1 var_expr RP1
+    (83) unnamed_pred -> . NONE
+
+    ID              shift and go to state 63
+    LP3             shift and go to state 29
+    TRAIT_OF        shift and go to state 30
+    NONE            shift and go to state 32
+
+    unary_pred                     shift and go to state 147
+    pred_name                      shift and go to state 61
+    unnamed_pred                   shift and go to state 62
+
+state 134
+
+    (10) trait_decl -> TRAIT trait_id LP1 class_args RP1 COLON LP2 trait_decl_stmts . RP2 S_COLON
+    (25) trait_decl_stmts -> trait_decl_stmts . trait_decl_stmt
+    (28) trait_decl_stmt -> . FN COLON LP2 decl_fn_stmts RP2 S_COLON
+    (29) trait_decl_stmt -> . VAR COLON LP2 decl_stmts RP2 S_COLON
+    (30) trait_decl_stmt -> . CLS_FN COLON LP2 decl_cls_fn_stmts RP2 S_COLON
+    (31) trait_decl_stmt -> . CLS_VAR COLON LP2 decl_stmts RP2 S_COLON
+    (32) trait_decl_stmt -> . STATIC_FN COLON LP2 decl_static_fn_stmts RP2 S_COLON
+
+    RP2             shift and go to state 148
+    FN              shift and go to state 137
+    VAR             shift and go to state 138
+    CLS_FN          shift and go to state 139
+    CLS_VAR         shift and go to state 140
+    STATIC_FN       shift and go to state 141
+
+    trait_decl_stmt                shift and go to state 149
+
+state 135
+
+    (26) trait_decl_stmts -> trait_decl_stmt .
+
+    RP2             reduce using rule 26 (trait_decl_stmts -> trait_decl_stmt .)
+    FN              reduce using rule 26 (trait_decl_stmts -> trait_decl_stmt .)
+    VAR             reduce using rule 26 (trait_decl_stmts -> trait_decl_stmt .)
+    CLS_FN          reduce using rule 26 (trait_decl_stmts -> trait_decl_stmt .)
+    CLS_VAR         reduce using rule 26 (trait_decl_stmts -> trait_decl_stmt .)
+    STATIC_FN       reduce using rule 26 (trait_decl_stmts -> trait_decl_stmt .)
+
+
+state 136
+
+    (27) trait_decl_stmts -> PASS . S_COLON
+
+    S_COLON         shift and go to state 150
+
+
+state 137
+
+    (28) trait_decl_stmt -> FN . COLON LP2 decl_fn_stmts RP2 S_COLON
+
+    COLON           shift and go to state 151
+
+
+state 138
+
+    (29) trait_decl_stmt -> VAR . COLON LP2 decl_stmts RP2 S_COLON
+
+    COLON           shift and go to state 152
+
+
+state 139
+
+    (30) trait_decl_stmt -> CLS_FN . COLON LP2 decl_cls_fn_stmts RP2 S_COLON
+
+    COLON           shift and go to state 153
+
+
+state 140
+
+    (31) trait_decl_stmt -> CLS_VAR . COLON LP2 decl_stmts RP2 S_COLON
+
+    COLON           shift and go to state 154
+
+
+state 141
+
+    (32) trait_decl_stmt -> STATIC_FN . COLON LP2 decl_static_fn_stmts RP2 S_COLON
+
+    COLON           shift and go to state 155
+
+
+state 142
+
+    (11) trait_decl -> TRAIT trait_id LP1 class_args RP1 EXTENDS unary_pred COLON . LP2 trait_decl_stmts RP2 S_COLON
+
+    LP2             shift and go to state 156
+
+
+state 143
+
+    (16) sub_args -> necessary_args COMMA optional_args .
+    (22) optional_args -> optional_args . COMMA optional_arg
+
+    RP1             reduce using rule 16 (sub_args -> necessary_args COMMA optional_args .)
+    COMMA           shift and go to state 132
+
+
+state 144
+
+    (19) necessary_args -> necessary_args COMMA necessary_arg .
+
+    COMMA           reduce using rule 19 (necessary_args -> necessary_args COMMA necessary_arg .)
+    RP1             reduce using rule 19 (necessary_args -> necessary_args COMMA necessary_arg .)
+
+
+state 145
+
+    (22) optional_args -> optional_args COMMA optional_arg .
+
+    COMMA           reduce using rule 22 (optional_args -> optional_args COMMA optional_arg .)
+    RP1             reduce using rule 22 (optional_args -> optional_args COMMA optional_arg .)
+
+
+state 146
+
+    (24) optional_arg -> ID . ASSIGN unary_pred
+
+    ASSIGN          shift and go to state 133
+
+
+state 147
+
+    (24) optional_arg -> ID ASSIGN unary_pred .
+
+    COMMA           reduce using rule 24 (optional_arg -> ID ASSIGN unary_pred .)
+    RP1             reduce using rule 24 (optional_arg -> ID ASSIGN unary_pred .)
+
+
+state 148
+
+    (10) trait_decl -> TRAIT trait_id LP1 class_args RP1 COLON LP2 trait_decl_stmts RP2 . S_COLON
+
+    S_COLON         shift and go to state 157
+
+
+state 149
+
+    (25) trait_decl_stmts -> trait_decl_stmts trait_decl_stmt .
+
+    RP2             reduce using rule 25 (trait_decl_stmts -> trait_decl_stmts trait_decl_stmt .)
+    FN              reduce using rule 25 (trait_decl_stmts -> trait_decl_stmts trait_decl_stmt .)
+    VAR             reduce using rule 25 (trait_decl_stmts -> trait_decl_stmts trait_decl_stmt .)
+    CLS_FN          reduce using rule 25 (trait_decl_stmts -> trait_decl_stmts trait_decl_stmt .)
+    CLS_VAR         reduce using rule 25 (trait_decl_stmts -> trait_decl_stmts trait_decl_stmt .)
+    STATIC_FN       reduce using rule 25 (trait_decl_stmts -> trait_decl_stmts trait_decl_stmt .)
+
+
+state 150
+
+    (27) trait_decl_stmts -> PASS S_COLON .
+
+    RP2             reduce using rule 27 (trait_decl_stmts -> PASS S_COLON .)
+    FN              reduce using rule 27 (trait_decl_stmts -> PASS S_COLON .)
+    VAR             reduce using rule 27 (trait_decl_stmts -> PASS S_COLON .)
+    CLS_FN          reduce using rule 27 (trait_decl_stmts -> PASS S_COLON .)
+    CLS_VAR         reduce using rule 27 (trait_decl_stmts -> PASS S_COLON .)
+    STATIC_FN       reduce using rule 27 (trait_decl_stmts -> PASS S_COLON .)
+
+
+state 151
+
+    (28) trait_decl_stmt -> FN COLON . LP2 decl_fn_stmts RP2 S_COLON
+
+    LP2             shift and go to state 158
+
+
+state 152
+
+    (29) trait_decl_stmt -> VAR COLON . LP2 decl_stmts RP2 S_COLON
+
+    LP2             shift and go to state 159
+
+
+state 153
+
+    (30) trait_decl_stmt -> CLS_FN COLON . LP2 decl_cls_fn_stmts RP2 S_COLON
+
+    LP2             shift and go to state 160
+
+
+state 154
+
+    (31) trait_decl_stmt -> CLS_VAR COLON . LP2 decl_stmts RP2 S_COLON
+
+    LP2             shift and go to state 161
+
+
+state 155
+
+    (32) trait_decl_stmt -> STATIC_FN COLON . LP2 decl_static_fn_stmts RP2 S_COLON
+
+    LP2             shift and go to state 162
+
+
+state 156
+
+    (11) trait_decl -> TRAIT trait_id LP1 class_args RP1 EXTENDS unary_pred COLON LP2 . trait_decl_stmts RP2 S_COLON
+    (25) trait_decl_stmts -> . trait_decl_stmts trait_decl_stmt
+    (26) trait_decl_stmts -> . trait_decl_stmt
+    (27) trait_decl_stmts -> . PASS S_COLON
+    (28) trait_decl_stmt -> . FN COLON LP2 decl_fn_stmts RP2 S_COLON
+    (29) trait_decl_stmt -> . VAR COLON LP2 decl_stmts RP2 S_COLON
+    (30) trait_decl_stmt -> . CLS_FN COLON LP2 decl_cls_fn_stmts RP2 S_COLON
+    (31) trait_decl_stmt -> . CLS_VAR COLON LP2 decl_stmts RP2 S_COLON
+    (32) trait_decl_stmt -> . STATIC_FN COLON LP2 decl_static_fn_stmts RP2 S_COLON
+
+    PASS            shift and go to state 136
+    FN              shift and go to state 137
+    VAR             shift and go to state 138
+    CLS_FN          shift and go to state 139
+    CLS_VAR         shift and go to state 140
+    STATIC_FN       shift and go to state 141
+
+    trait_decl_stmts               shift and go to state 163
+    trait_decl_stmt                shift and go to state 135
+
+state 157
+
+    (10) trait_decl -> TRAIT trait_id LP1 class_args RP1 COLON LP2 trait_decl_stmts RP2 S_COLON .
+
+    PROGRAM_END     reduce using rule 10 (trait_decl -> TRAIT trait_id LP1 class_args RP1 COLON LP2 trait_decl_stmts RP2 S_COLON .)
+    S_COLON         reduce using rule 10 (trait_decl -> TRAIT trait_id LP1 class_args RP1 COLON LP2 trait_decl_stmts RP2 S_COLON .)
+    TRAIT           reduce using rule 10 (trait_decl -> TRAIT trait_id LP1 class_args RP1 COLON LP2 trait_decl_stmts RP2 S_COLON .)
+    PRINTINFO       reduce using rule 10 (trait_decl -> TRAIT trait_id LP1 class_args RP1 COLON LP2 trait_decl_stmts RP2 S_COLON .)
+    GENERATE        reduce using rule 10 (trait_decl -> TRAIT trait_id LP1 class_args RP1 COLON LP2 trait_decl_stmts RP2 S_COLON .)
+    ID              reduce using rule 10 (trait_decl -> TRAIT trait_id LP1 class_args RP1 COLON LP2 trait_decl_stmts RP2 S_COLON .)
+
+
+state 158
+
+    (28) trait_decl_stmt -> FN COLON LP2 . decl_fn_stmts RP2 S_COLON
+    (33) decl_fn_stmts -> . decl_fn_stmts decl_fn_stmt
+    (34) decl_fn_stmts -> . decl_fn_stmt
+    (35) decl_fn_stmt -> . fn_id LP1 pred_args RP1 S_COLON
+    (36) decl_fn_stmt -> . fn_id LP1 pred_args RP1 R_ARROW unary_pred S_COLON
+    (37) decl_fn_stmt -> . fn_id LP3 type_var_args RP3 LP1 pred_args RP1 S_COLON
+    (38) decl_fn_stmt -> . fn_id LP3 type_var_args RP3 LP1 pred_args RP1 R_ARROW unary_pred S_COLON
+    (45) fn_id -> . ID
+
+    ID              shift and go to state 167
+
+    decl_fn_stmts                  shift and go to state 164
+    decl_fn_stmt                   shift and go to state 165
+    fn_id                          shift and go to state 166
+
+state 159
+
+    (29) trait_decl_stmt -> VAR COLON LP2 . decl_stmts RP2 S_COLON
+    (95) decl_stmts -> . decl_stmts decl_stmt
+    (96) decl_stmts -> . decl_stmt
+    (97) decl_stmt -> . var_id S_COLON
+    (98) decl_stmt -> . var_id COLON unary_pred S_COLON
+    (99) decl_stmt -> . LP3 vars_id RP3 S_COLON
+    (100) decl_stmt -> . LP3 vars_id RP3 COLON unary_pred S_COLON
+    (103) var_id -> . ID
+
+    LP3             shift and go to state 171
+    ID              shift and go to state 172
+
+    decl_stmts                     shift and go to state 168
+    decl_stmt                      shift and go to state 169
+    var_id                         shift and go to state 170
+
+state 160
+
+    (30) trait_decl_stmt -> CLS_FN COLON LP2 . decl_cls_fn_stmts RP2 S_COLON
+    (39) decl_cls_fn_stmts -> . decl_cls_fn_stmts decl_cls_fn_stmt
+    (40) decl_cls_fn_stmts -> . decl_cls_fn_stmt
+    (41) decl_cls_fn_stmt -> . fn_id LP1 pred_args RP1 S_COLON
+    (42) decl_cls_fn_stmt -> . fn_id LP1 pred_args RP1 R_ARROW unary_pred S_COLON
+    (43) decl_cls_fn_stmt -> . fn_id LP3 type_var_args RP3 LP1 pred_args RP1 S_COLON
+    (44) decl_cls_fn_stmt -> . fn_id LP3 type_var_args RP3 LP1 pred_args RP1 R_ARROW unary_pred S_COLON
+    (45) fn_id -> . ID
+
+    ID              shift and go to state 167
+
+    decl_cls_fn_stmts              shift and go to state 173
+    decl_cls_fn_stmt               shift and go to state 174
+    fn_id                          shift and go to state 175
+
+state 161
+
+    (31) trait_decl_stmt -> CLS_VAR COLON LP2 . decl_stmts RP2 S_COLON
+    (95) decl_stmts -> . decl_stmts decl_stmt
+    (96) decl_stmts -> . decl_stmt
+    (97) decl_stmt -> . var_id S_COLON
+    (98) decl_stmt -> . var_id COLON unary_pred S_COLON
+    (99) decl_stmt -> . LP3 vars_id RP3 S_COLON
+    (100) decl_stmt -> . LP3 vars_id RP3 COLON unary_pred S_COLON
+    (103) var_id -> . ID
+
+    LP3             shift and go to state 171
+    ID              shift and go to state 172
+
+    decl_stmts                     shift and go to state 176
+    decl_stmt                      shift and go to state 169
+    var_id                         shift and go to state 170
+
+state 162
+
+    (32) trait_decl_stmt -> STATIC_FN COLON LP2 . decl_static_fn_stmts RP2 S_COLON
+    (104) decl_static_fn_stmts -> . decl_static_fn_stmts decl_static_fn_stmt
+    (105) decl_static_fn_stmts -> . decl_static_fn_stmt
+    (106) decl_static_fn_stmt -> . static_fn_id LP1 next_preds RP1 S_COLON
+    (107) decl_static_fn_stmt -> . static_fn_id LP1 next_preds RP1 R_ARROW unary_pred S_COLON
+    (108) decl_static_fn_stmt -> . static_fn_id LP3 type_var_args RP3 LP1 next_preds RP1 S_COLON
+    (109) decl_static_fn_stmt -> . static_fn_id LP3 type_var_args RP3 LP1 next_preds RP1 R_ARROW unary_pred S_COLON
+    (110) decl_static_fn_stmt -> . static_fn_id LP1 RP1 S_COLON
+    (111) decl_static_fn_stmt -> . static_fn_id LP1 RP1 R_ARROW unary_pred S_COLON
+    (112) decl_static_fn_stmt -> . static_fn_id LP3 type_var_args RP3 LP1 RP1 S_COLON
+    (113) decl_static_fn_stmt -> . static_fn_id LP3 type_var_args RP3 LP1 RP1 R_ARROW unary_pred S_COLON
+    (114) static_fn_id -> . ID
+
+    ID              shift and go to state 180
+
+    decl_static_fn_stmts           shift and go to state 177
+    decl_static_fn_stmt            shift and go to state 178
+    static_fn_id                   shift and go to state 179
+
+state 163
+
+    (11) trait_decl -> TRAIT trait_id LP1 class_args RP1 EXTENDS unary_pred COLON LP2 trait_decl_stmts . RP2 S_COLON
+    (25) trait_decl_stmts -> trait_decl_stmts . trait_decl_stmt
+    (28) trait_decl_stmt -> . FN COLON LP2 decl_fn_stmts RP2 S_COLON
+    (29) trait_decl_stmt -> . VAR COLON LP2 decl_stmts RP2 S_COLON
+    (30) trait_decl_stmt -> . CLS_FN COLON LP2 decl_cls_fn_stmts RP2 S_COLON
+    (31) trait_decl_stmt -> . CLS_VAR COLON LP2 decl_stmts RP2 S_COLON
+    (32) trait_decl_stmt -> . STATIC_FN COLON LP2 decl_static_fn_stmts RP2 S_COLON
+
+    RP2             shift and go to state 181
+    FN              shift and go to state 137
+    VAR             shift and go to state 138
+    CLS_FN          shift and go to state 139
+    CLS_VAR         shift and go to state 140
+    STATIC_FN       shift and go to state 141
+
+    trait_decl_stmt                shift and go to state 149
+
+state 164
+
+    (28) trait_decl_stmt -> FN COLON LP2 decl_fn_stmts . RP2 S_COLON
+    (33) decl_fn_stmts -> decl_fn_stmts . decl_fn_stmt
+    (35) decl_fn_stmt -> . fn_id LP1 pred_args RP1 S_COLON
+    (36) decl_fn_stmt -> . fn_id LP1 pred_args RP1 R_ARROW unary_pred S_COLON
+    (37) decl_fn_stmt -> . fn_id LP3 type_var_args RP3 LP1 pred_args RP1 S_COLON
+    (38) decl_fn_stmt -> . fn_id LP3 type_var_args RP3 LP1 pred_args RP1 R_ARROW unary_pred S_COLON
+    (45) fn_id -> . ID
+
+    RP2             shift and go to state 182
+    ID              shift and go to state 167
+
+    decl_fn_stmt                   shift and go to state 183
+    fn_id                          shift and go to state 166
+
+state 165
+
+    (34) decl_fn_stmts -> decl_fn_stmt .
+
+    RP2             reduce using rule 34 (decl_fn_stmts -> decl_fn_stmt .)
+    ID              reduce using rule 34 (decl_fn_stmts -> decl_fn_stmt .)
+
+
+state 166
+
+    (35) decl_fn_stmt -> fn_id . LP1 pred_args RP1 S_COLON
+    (36) decl_fn_stmt -> fn_id . LP1 pred_args RP1 R_ARROW unary_pred S_COLON
+    (37) decl_fn_stmt -> fn_id . LP3 type_var_args RP3 LP1 pred_args RP1 S_COLON
+    (38) decl_fn_stmt -> fn_id . LP3 type_var_args RP3 LP1 pred_args RP1 R_ARROW unary_pred S_COLON
+
+    LP1             shift and go to state 184
+    LP3             shift and go to state 185
+
+
+state 167
+
+    (45) fn_id -> ID .
+
+    LP1             reduce using rule 45 (fn_id -> ID .)
+    LP3             reduce using rule 45 (fn_id -> ID .)
+
+
+state 168
+
+    (29) trait_decl_stmt -> VAR COLON LP2 decl_stmts . RP2 S_COLON
+    (95) decl_stmts -> decl_stmts . decl_stmt
+    (97) decl_stmt -> . var_id S_COLON
+    (98) decl_stmt -> . var_id COLON unary_pred S_COLON
+    (99) decl_stmt -> . LP3 vars_id RP3 S_COLON
+    (100) decl_stmt -> . LP3 vars_id RP3 COLON unary_pred S_COLON
+    (103) var_id -> . ID
+
+    RP2             shift and go to state 186
+    LP3             shift and go to state 171
+    ID              shift and go to state 172
+
+    decl_stmt                      shift and go to state 187
+    var_id                         shift and go to state 170
+
+state 169
+
+    (96) decl_stmts -> decl_stmt .
+
+    RP2             reduce using rule 96 (decl_stmts -> decl_stmt .)
+    LP3             reduce using rule 96 (decl_stmts -> decl_stmt .)
+    ID              reduce using rule 96 (decl_stmts -> decl_stmt .)
+
+
+state 170
+
+    (97) decl_stmt -> var_id . S_COLON
+    (98) decl_stmt -> var_id . COLON unary_pred S_COLON
+
+    S_COLON         shift and go to state 188
+    COLON           shift and go to state 189
+
+
+state 171
+
+    (99) decl_stmt -> LP3 . vars_id RP3 S_COLON
+    (100) decl_stmt -> LP3 . vars_id RP3 COLON unary_pred S_COLON
+    (101) vars_id -> . vars_id COMMA var_id
+    (102) vars_id -> . var_id
+    (103) var_id -> . ID
+
+    ID              shift and go to state 172
+
+    vars_id                        shift and go to state 190
+    var_id                         shift and go to state 191
+
+state 172
+
+    (103) var_id -> ID .
+
+    S_COLON         reduce using rule 103 (var_id -> ID .)
+    COLON           reduce using rule 103 (var_id -> ID .)
+    RP3             reduce using rule 103 (var_id -> ID .)
+    COMMA           reduce using rule 103 (var_id -> ID .)
+
+
+state 173
+
+    (30) trait_decl_stmt -> CLS_FN COLON LP2 decl_cls_fn_stmts . RP2 S_COLON
+    (39) decl_cls_fn_stmts -> decl_cls_fn_stmts . decl_cls_fn_stmt
+    (41) decl_cls_fn_stmt -> . fn_id LP1 pred_args RP1 S_COLON
+    (42) decl_cls_fn_stmt -> . fn_id LP1 pred_args RP1 R_ARROW unary_pred S_COLON
+    (43) decl_cls_fn_stmt -> . fn_id LP3 type_var_args RP3 LP1 pred_args RP1 S_COLON
+    (44) decl_cls_fn_stmt -> . fn_id LP3 type_var_args RP3 LP1 pred_args RP1 R_ARROW unary_pred S_COLON
+    (45) fn_id -> . ID
+
+    RP2             shift and go to state 192
+    ID              shift and go to state 167
+
+    decl_cls_fn_stmt               shift and go to state 193
+    fn_id                          shift and go to state 175
+
+state 174
+
+    (40) decl_cls_fn_stmts -> decl_cls_fn_stmt .
+
+    RP2             reduce using rule 40 (decl_cls_fn_stmts -> decl_cls_fn_stmt .)
+    ID              reduce using rule 40 (decl_cls_fn_stmts -> decl_cls_fn_stmt .)
+
+
+state 175
+
+    (41) decl_cls_fn_stmt -> fn_id . LP1 pred_args RP1 S_COLON
+    (42) decl_cls_fn_stmt -> fn_id . LP1 pred_args RP1 R_ARROW unary_pred S_COLON
+    (43) decl_cls_fn_stmt -> fn_id . LP3 type_var_args RP3 LP1 pred_args RP1 S_COLON
+    (44) decl_cls_fn_stmt -> fn_id . LP3 type_var_args RP3 LP1 pred_args RP1 R_ARROW unary_pred S_COLON
+
+    LP1             shift and go to state 194
+    LP3             shift and go to state 195
+
+
+state 176
+
+    (31) trait_decl_stmt -> CLS_VAR COLON LP2 decl_stmts . RP2 S_COLON
+    (95) decl_stmts -> decl_stmts . decl_stmt
+    (97) decl_stmt -> . var_id S_COLON
+    (98) decl_stmt -> . var_id COLON unary_pred S_COLON
+    (99) decl_stmt -> . LP3 vars_id RP3 S_COLON
+    (100) decl_stmt -> . LP3 vars_id RP3 COLON unary_pred S_COLON
+    (103) var_id -> . ID
+
+    RP2             shift and go to state 196
+    LP3             shift and go to state 171
+    ID              shift and go to state 172
+
+    decl_stmt                      shift and go to state 187
+    var_id                         shift and go to state 170
+
+state 177
+
+    (32) trait_decl_stmt -> STATIC_FN COLON LP2 decl_static_fn_stmts . RP2 S_COLON
+    (104) decl_static_fn_stmts -> decl_static_fn_stmts . decl_static_fn_stmt
+    (106) decl_static_fn_stmt -> . static_fn_id LP1 next_preds RP1 S_COLON
+    (107) decl_static_fn_stmt -> . static_fn_id LP1 next_preds RP1 R_ARROW unary_pred S_COLON
+    (108) decl_static_fn_stmt -> . static_fn_id LP3 type_var_args RP3 LP1 next_preds RP1 S_COLON
+    (109) decl_static_fn_stmt -> . static_fn_id LP3 type_var_args RP3 LP1 next_preds RP1 R_ARROW unary_pred S_COLON
+    (110) decl_static_fn_stmt -> . static_fn_id LP1 RP1 S_COLON
+    (111) decl_static_fn_stmt -> . static_fn_id LP1 RP1 R_ARROW unary_pred S_COLON
+    (112) decl_static_fn_stmt -> . static_fn_id LP3 type_var_args RP3 LP1 RP1 S_COLON
+    (113) decl_static_fn_stmt -> . static_fn_id LP3 type_var_args RP3 LP1 RP1 R_ARROW unary_pred S_COLON
+    (114) static_fn_id -> . ID
+
+    RP2             shift and go to state 197
+    ID              shift and go to state 180
+
+    decl_static_fn_stmt            shift and go to state 198
+    static_fn_id                   shift and go to state 179
+
+state 178
+
+    (105) decl_static_fn_stmts -> decl_static_fn_stmt .
+
+    RP2             reduce using rule 105 (decl_static_fn_stmts -> decl_static_fn_stmt .)
+    ID              reduce using rule 105 (decl_static_fn_stmts -> decl_static_fn_stmt .)
+
+
+state 179
+
+    (106) decl_static_fn_stmt -> static_fn_id . LP1 next_preds RP1 S_COLON
+    (107) decl_static_fn_stmt -> static_fn_id . LP1 next_preds RP1 R_ARROW unary_pred S_COLON
+    (108) decl_static_fn_stmt -> static_fn_id . LP3 type_var_args RP3 LP1 next_preds RP1 S_COLON
+    (109) decl_static_fn_stmt -> static_fn_id . LP3 type_var_args RP3 LP1 next_preds RP1 R_ARROW unary_pred S_COLON
+    (110) decl_static_fn_stmt -> static_fn_id . LP1 RP1 S_COLON
+    (111) decl_static_fn_stmt -> static_fn_id . LP1 RP1 R_ARROW unary_pred S_COLON
+    (112) decl_static_fn_stmt -> static_fn_id . LP3 type_var_args RP3 LP1 RP1 S_COLON
+    (113) decl_static_fn_stmt -> static_fn_id . LP3 type_var_args RP3 LP1 RP1 R_ARROW unary_pred S_COLON
+
+    LP1             shift and go to state 199
+    LP3             shift and go to state 200
+
+
+state 180
+
+    (114) static_fn_id -> ID .
+
+    LP1             reduce using rule 114 (static_fn_id -> ID .)
+    LP3             reduce using rule 114 (static_fn_id -> ID .)
+
+
+state 181
+
+    (11) trait_decl -> TRAIT trait_id LP1 class_args RP1 EXTENDS unary_pred COLON LP2 trait_decl_stmts RP2 . S_COLON
+
+    S_COLON         shift and go to state 201
+
+
+state 182
+
+    (28) trait_decl_stmt -> FN COLON LP2 decl_fn_stmts RP2 . S_COLON
+
+    S_COLON         shift and go to state 202
+
+
+state 183
+
+    (33) decl_fn_stmts -> decl_fn_stmts decl_fn_stmt .
+
+    RP2             reduce using rule 33 (decl_fn_stmts -> decl_fn_stmts decl_fn_stmt .)
+    ID              reduce using rule 33 (decl_fn_stmts -> decl_fn_stmts decl_fn_stmt .)
+
+
+state 184
+
+    (35) decl_fn_stmt -> fn_id LP1 . pred_args RP1 S_COLON
+    (36) decl_fn_stmt -> fn_id LP1 . pred_args RP1 R_ARROW unary_pred S_COLON
+    (46) pred_args -> . main_pred COMMA next_preds
+    (47) pred_args -> . main_pred
+    (48) main_pred -> . ID
+
+    ID              shift and go to state 205
+
+    pred_args                      shift and go to state 203
+    main_pred                      shift and go to state 204
+
+state 185
+
+    (37) decl_fn_stmt -> fn_id LP3 . type_var_args RP3 LP1 pred_args RP1 S_COLON
+    (38) decl_fn_stmt -> fn_id LP3 . type_var_args RP3 LP1 pred_args RP1 R_ARROW unary_pred S_COLON
+    (73) type_var_args -> . type_var_args COMMA type_var_arg
+    (74) type_var_args -> . type_var_arg
+    (75) type_var_arg -> . type_var_id
+    (76) type_var_arg -> . type_var_id COLON unary_pred
+    (77) type_var_id -> . ID
+
+    ID              shift and go to state 209
+
+    type_var_args                  shift and go to state 206
+    type_var_arg                   shift and go to state 207
+    type_var_id                    shift and go to state 208
+
+state 186
+
+    (29) trait_decl_stmt -> VAR COLON LP2 decl_stmts RP2 . S_COLON
+
+    S_COLON         shift and go to state 210
+
+
+state 187
+
+    (95) decl_stmts -> decl_stmts decl_stmt .
+
+    RP2             reduce using rule 95 (decl_stmts -> decl_stmts decl_stmt .)
+    LP3             reduce using rule 95 (decl_stmts -> decl_stmts decl_stmt .)
+    ID              reduce using rule 95 (decl_stmts -> decl_stmts decl_stmt .)
+
+
+state 188
+
+    (97) decl_stmt -> var_id S_COLON .
+
+    RP2             reduce using rule 97 (decl_stmt -> var_id S_COLON .)
+    LP3             reduce using rule 97 (decl_stmt -> var_id S_COLON .)
+    ID              reduce using rule 97 (decl_stmt -> var_id S_COLON .)
+
+
+state 189
+
+    (98) decl_stmt -> var_id COLON . unary_pred S_COLON
+    (78) unary_pred -> . pred_name
+    (79) unary_pred -> . unnamed_pred
+    (84) pred_name -> . ID
+    (80) unnamed_pred -> . pred_name LP3 args RP3
+    (81) unnamed_pred -> . LP3 pred_expr RP3
+    (82) unnamed_pred -> . TRAIT_OF LP1 var_expr RP1
+    (83) unnamed_pred -> . NONE
+
+    ID              shift and go to state 63
+    LP3             shift and go to state 29
+    TRAIT_OF        shift and go to state 30
+    NONE            shift and go to state 32
+
+    unary_pred                     shift and go to state 211
+    pred_name                      shift and go to state 61
+    unnamed_pred                   shift and go to state 62
+
+state 190
+
+    (99) decl_stmt -> LP3 vars_id . RP3 S_COLON
+    (100) decl_stmt -> LP3 vars_id . RP3 COLON unary_pred S_COLON
+    (101) vars_id -> vars_id . COMMA var_id
+
+    RP3             shift and go to state 212
+    COMMA           shift and go to state 213
+
+
+state 191
+
+    (102) vars_id -> var_id .
+
+    RP3             reduce using rule 102 (vars_id -> var_id .)
+    COMMA           reduce using rule 102 (vars_id -> var_id .)
+
+
+state 192
+
+    (30) trait_decl_stmt -> CLS_FN COLON LP2 decl_cls_fn_stmts RP2 . S_COLON
+
+    S_COLON         shift and go to state 214
+
+
+state 193
+
+    (39) decl_cls_fn_stmts -> decl_cls_fn_stmts decl_cls_fn_stmt .
+
+    RP2             reduce using rule 39 (decl_cls_fn_stmts -> decl_cls_fn_stmts decl_cls_fn_stmt .)
+    ID              reduce using rule 39 (decl_cls_fn_stmts -> decl_cls_fn_stmts decl_cls_fn_stmt .)
+
+
+state 194
+
+    (41) decl_cls_fn_stmt -> fn_id LP1 . pred_args RP1 S_COLON
+    (42) decl_cls_fn_stmt -> fn_id LP1 . pred_args RP1 R_ARROW unary_pred S_COLON
+    (46) pred_args -> . main_pred COMMA next_preds
+    (47) pred_args -> . main_pred
+    (48) main_pred -> . ID
+
+    ID              shift and go to state 205
+
+    pred_args                      shift and go to state 215
+    main_pred                      shift and go to state 204
+
+state 195
+
+    (43) decl_cls_fn_stmt -> fn_id LP3 . type_var_args RP3 LP1 pred_args RP1 S_COLON
+    (44) decl_cls_fn_stmt -> fn_id LP3 . type_var_args RP3 LP1 pred_args RP1 R_ARROW unary_pred S_COLON
+    (73) type_var_args -> . type_var_args COMMA type_var_arg
+    (74) type_var_args -> . type_var_arg
+    (75) type_var_arg -> . type_var_id
+    (76) type_var_arg -> . type_var_id COLON unary_pred
+    (77) type_var_id -> . ID
+
+    ID              shift and go to state 209
+
+    type_var_args                  shift and go to state 216
+    type_var_arg                   shift and go to state 207
+    type_var_id                    shift and go to state 208
+
+state 196
+
+    (31) trait_decl_stmt -> CLS_VAR COLON LP2 decl_stmts RP2 . S_COLON
+
+    S_COLON         shift and go to state 217
+
+
+state 197
+
+    (32) trait_decl_stmt -> STATIC_FN COLON LP2 decl_static_fn_stmts RP2 . S_COLON
+
+    S_COLON         shift and go to state 218
+
+
+state 198
+
+    (104) decl_static_fn_stmts -> decl_static_fn_stmts decl_static_fn_stmt .
+
+    RP2             reduce using rule 104 (decl_static_fn_stmts -> decl_static_fn_stmts decl_static_fn_stmt .)
+    ID              reduce using rule 104 (decl_static_fn_stmts -> decl_static_fn_stmts decl_static_fn_stmt .)
+
+
+state 199
+
+    (106) decl_static_fn_stmt -> static_fn_id LP1 . next_preds RP1 S_COLON
+    (107) decl_static_fn_stmt -> static_fn_id LP1 . next_preds RP1 R_ARROW unary_pred S_COLON
+    (110) decl_static_fn_stmt -> static_fn_id LP1 . RP1 S_COLON
+    (111) decl_static_fn_stmt -> static_fn_id LP1 . RP1 R_ARROW unary_pred S_COLON
+    (49) next_preds -> . next_anonymous_necessary_preds COMMA next_anonymous_opt_preds COMMA STAR COMMA next_named_preds
+    (50) next_preds -> . next_anonymous_necessary_preds COMMA next_anonymous_opt_preds COMMA STAR
+    (51) next_preds -> . next_anonymous_necessary_preds COMMA next_anonymous_opt_preds
+    (52) next_preds -> . next_anonymous_necessary_preds COMMA STAR COMMA next_named_preds
+    (53) next_preds -> . next_anonymous_necessary_preds COMMA STAR
+    (54) next_preds -> . next_anonymous_necessary_preds
+    (55) next_preds -> . next_anonymous_opt_preds COMMA STAR COMMA next_named_preds
+    (56) next_preds -> . next_anonymous_opt_preds COMMA STAR
+    (57) next_preds -> . next_anonymous_opt_preds
+    (58) next_preds -> . STAR next_named_preds
+    (59) next_preds -> . STAR
+    (60) next_anonymous_necessary_preds -> . next_anonymous_necessary_preds COMMA next_anonymous_necessary_pred
+    (61) next_anonymous_necessary_preds -> . next_anonymous_necessary_pred
+    (63) next_anonymous_opt_preds -> . next_anonymous_opt_preds COMMA next_anonymous_opt_pred
+    (64) next_anonymous_opt_preds -> . next_anonymous_opt_pred
+    (62) next_anonymous_necessary_pred -> . unary_pred
+    (65) next_anonymous_opt_pred -> . ASSIGN unary_pred
+    (78) unary_pred -> . pred_name
+    (79) unary_pred -> . unnamed_pred
+    (84) pred_name -> . ID
+    (80) unnamed_pred -> . pred_name LP3 args RP3
+    (81) unnamed_pred -> . LP3 pred_expr RP3
+    (82) unnamed_pred -> . TRAIT_OF LP1 var_expr RP1
+    (83) unnamed_pred -> . NONE
+
+    RP1             shift and go to state 220
+    STAR            shift and go to state 224
+    ASSIGN          shift and go to state 227
+    ID              shift and go to state 63
+    LP3             shift and go to state 29
+    TRAIT_OF        shift and go to state 30
+    NONE            shift and go to state 32
+
+    next_preds                     shift and go to state 219
+    unary_pred                     shift and go to state 221
+    next_anonymous_necessary_preds shift and go to state 222
+    next_anonymous_opt_preds       shift and go to state 223
+    next_anonymous_necessary_pred  shift and go to state 225
+    next_anonymous_opt_pred        shift and go to state 226
+    pred_name                      shift and go to state 61
+    unnamed_pred                   shift and go to state 62
+
+state 200
+
+    (108) decl_static_fn_stmt -> static_fn_id LP3 . type_var_args RP3 LP1 next_preds RP1 S_COLON
+    (109) decl_static_fn_stmt -> static_fn_id LP3 . type_var_args RP3 LP1 next_preds RP1 R_ARROW unary_pred S_COLON
+    (112) decl_static_fn_stmt -> static_fn_id LP3 . type_var_args RP3 LP1 RP1 S_COLON
+    (113) decl_static_fn_stmt -> static_fn_id LP3 . type_var_args RP3 LP1 RP1 R_ARROW unary_pred S_COLON
+    (73) type_var_args -> . type_var_args COMMA type_var_arg
+    (74) type_var_args -> . type_var_arg
+    (75) type_var_arg -> . type_var_id
+    (76) type_var_arg -> . type_var_id COLON unary_pred
+    (77) type_var_id -> . ID
+
+    ID              shift and go to state 209
+
+    type_var_args                  shift and go to state 228
+    type_var_arg                   shift and go to state 207
+    type_var_id                    shift and go to state 208
+
+state 201
+
+    (11) trait_decl -> TRAIT trait_id LP1 class_args RP1 EXTENDS unary_pred COLON LP2 trait_decl_stmts RP2 S_COLON .
+
+    PROGRAM_END     reduce using rule 11 (trait_decl -> TRAIT trait_id LP1 class_args RP1 EXTENDS unary_pred COLON LP2 trait_decl_stmts RP2 S_COLON .)
+    S_COLON         reduce using rule 11 (trait_decl -> TRAIT trait_id LP1 class_args RP1 EXTENDS unary_pred COLON LP2 trait_decl_stmts RP2 S_COLON .)
+    TRAIT           reduce using rule 11 (trait_decl -> TRAIT trait_id LP1 class_args RP1 EXTENDS unary_pred COLON LP2 trait_decl_stmts RP2 S_COLON .)
+    PRINTINFO       reduce using rule 11 (trait_decl -> TRAIT trait_id LP1 class_args RP1 EXTENDS unary_pred COLON LP2 trait_decl_stmts RP2 S_COLON .)
+    GENERATE        reduce using rule 11 (trait_decl -> TRAIT trait_id LP1 class_args RP1 EXTENDS unary_pred COLON LP2 trait_decl_stmts RP2 S_COLON .)
+    ID              reduce using rule 11 (trait_decl -> TRAIT trait_id LP1 class_args RP1 EXTENDS unary_pred COLON LP2 trait_decl_stmts RP2 S_COLON .)
+
+
+state 202
+
+    (28) trait_decl_stmt -> FN COLON LP2 decl_fn_stmts RP2 S_COLON .
+
+    RP2             reduce using rule 28 (trait_decl_stmt -> FN COLON LP2 decl_fn_stmts RP2 S_COLON .)
+    FN              reduce using rule 28 (trait_decl_stmt -> FN COLON LP2 decl_fn_stmts RP2 S_COLON .)
+    VAR             reduce using rule 28 (trait_decl_stmt -> FN COLON LP2 decl_fn_stmts RP2 S_COLON .)
+    CLS_FN          reduce using rule 28 (trait_decl_stmt -> FN COLON LP2 decl_fn_stmts RP2 S_COLON .)
+    CLS_VAR         reduce using rule 28 (trait_decl_stmt -> FN COLON LP2 decl_fn_stmts RP2 S_COLON .)
+    STATIC_FN       reduce using rule 28 (trait_decl_stmt -> FN COLON LP2 decl_fn_stmts RP2 S_COLON .)
+
+
+state 203
+
+    (35) decl_fn_stmt -> fn_id LP1 pred_args . RP1 S_COLON
+    (36) decl_fn_stmt -> fn_id LP1 pred_args . RP1 R_ARROW unary_pred S_COLON
+
+    RP1             shift and go to state 229
+
+
+state 204
+
+    (46) pred_args -> main_pred . COMMA next_preds
+    (47) pred_args -> main_pred .
+
+    COMMA           shift and go to state 230
+    RP1             reduce using rule 47 (pred_args -> main_pred .)
+
+
+state 205
+
+    (48) main_pred -> ID .
+
+    COMMA           reduce using rule 48 (main_pred -> ID .)
+    RP1             reduce using rule 48 (main_pred -> ID .)
+
+
+state 206
+
+    (37) decl_fn_stmt -> fn_id LP3 type_var_args . RP3 LP1 pred_args RP1 S_COLON
+    (38) decl_fn_stmt -> fn_id LP3 type_var_args . RP3 LP1 pred_args RP1 R_ARROW unary_pred S_COLON
+    (73) type_var_args -> type_var_args . COMMA type_var_arg
+
+    RP3             shift and go to state 231
+    COMMA           shift and go to state 232
+
+
+state 207
+
+    (74) type_var_args -> type_var_arg .
+
+    RP3             reduce using rule 74 (type_var_args -> type_var_arg .)
+    COMMA           reduce using rule 74 (type_var_args -> type_var_arg .)
+
+
+state 208
+
+    (75) type_var_arg -> type_var_id .
+    (76) type_var_arg -> type_var_id . COLON unary_pred
+
+    RP3             reduce using rule 75 (type_var_arg -> type_var_id .)
+    COMMA           reduce using rule 75 (type_var_arg -> type_var_id .)
+    COLON           shift and go to state 233
+
+
+state 209
+
+    (77) type_var_id -> ID .
+
+    COLON           reduce using rule 77 (type_var_id -> ID .)
+    RP3             reduce using rule 77 (type_var_id -> ID .)
+    COMMA           reduce using rule 77 (type_var_id -> ID .)
+
+
+state 210
+
+    (29) trait_decl_stmt -> VAR COLON LP2 decl_stmts RP2 S_COLON .
+
+    RP2             reduce using rule 29 (trait_decl_stmt -> VAR COLON LP2 decl_stmts RP2 S_COLON .)
+    FN              reduce using rule 29 (trait_decl_stmt -> VAR COLON LP2 decl_stmts RP2 S_COLON .)
+    VAR             reduce using rule 29 (trait_decl_stmt -> VAR COLON LP2 decl_stmts RP2 S_COLON .)
+    CLS_FN          reduce using rule 29 (trait_decl_stmt -> VAR COLON LP2 decl_stmts RP2 S_COLON .)
+    CLS_VAR         reduce using rule 29 (trait_decl_stmt -> VAR COLON LP2 decl_stmts RP2 S_COLON .)
+    STATIC_FN       reduce using rule 29 (trait_decl_stmt -> VAR COLON LP2 decl_stmts RP2 S_COLON .)
+
+
+state 211
+
+    (98) decl_stmt -> var_id COLON unary_pred . S_COLON
+
+    S_COLON         shift and go to state 234
+
+
+state 212
+
+    (99) decl_stmt -> LP3 vars_id RP3 . S_COLON
+    (100) decl_stmt -> LP3 vars_id RP3 . COLON unary_pred S_COLON
+
+    S_COLON         shift and go to state 235
+    COLON           shift and go to state 236
+
+
+state 213
+
+    (101) vars_id -> vars_id COMMA . var_id
+    (103) var_id -> . ID
+
+    ID              shift and go to state 172
+
+    var_id                         shift and go to state 237
+
+state 214
+
+    (30) trait_decl_stmt -> CLS_FN COLON LP2 decl_cls_fn_stmts RP2 S_COLON .
+
+    RP2             reduce using rule 30 (trait_decl_stmt -> CLS_FN COLON LP2 decl_cls_fn_stmts RP2 S_COLON .)
+    FN              reduce using rule 30 (trait_decl_stmt -> CLS_FN COLON LP2 decl_cls_fn_stmts RP2 S_COLON .)
+    VAR             reduce using rule 30 (trait_decl_stmt -> CLS_FN COLON LP2 decl_cls_fn_stmts RP2 S_COLON .)
+    CLS_FN          reduce using rule 30 (trait_decl_stmt -> CLS_FN COLON LP2 decl_cls_fn_stmts RP2 S_COLON .)
+    CLS_VAR         reduce using rule 30 (trait_decl_stmt -> CLS_FN COLON LP2 decl_cls_fn_stmts RP2 S_COLON .)
+    STATIC_FN       reduce using rule 30 (trait_decl_stmt -> CLS_FN COLON LP2 decl_cls_fn_stmts RP2 S_COLON .)
+
+
+state 215
+
+    (41) decl_cls_fn_stmt -> fn_id LP1 pred_args . RP1 S_COLON
+    (42) decl_cls_fn_stmt -> fn_id LP1 pred_args . RP1 R_ARROW unary_pred S_COLON
+
+    RP1             shift and go to state 238
+
+
+state 216
+
+    (43) decl_cls_fn_stmt -> fn_id LP3 type_var_args . RP3 LP1 pred_args RP1 S_COLON
+    (44) decl_cls_fn_stmt -> fn_id LP3 type_var_args . RP3 LP1 pred_args RP1 R_ARROW unary_pred S_COLON
+    (73) type_var_args -> type_var_args . COMMA type_var_arg
+
+    RP3             shift and go to state 239
+    COMMA           shift and go to state 232
+
+
+state 217
+
+    (31) trait_decl_stmt -> CLS_VAR COLON LP2 decl_stmts RP2 S_COLON .
+
+    RP2             reduce using rule 31 (trait_decl_stmt -> CLS_VAR COLON LP2 decl_stmts RP2 S_COLON .)
+    FN              reduce using rule 31 (trait_decl_stmt -> CLS_VAR COLON LP2 decl_stmts RP2 S_COLON .)
+    VAR             reduce using rule 31 (trait_decl_stmt -> CLS_VAR COLON LP2 decl_stmts RP2 S_COLON .)
+    CLS_FN          reduce using rule 31 (trait_decl_stmt -> CLS_VAR COLON LP2 decl_stmts RP2 S_COLON .)
+    CLS_VAR         reduce using rule 31 (trait_decl_stmt -> CLS_VAR COLON LP2 decl_stmts RP2 S_COLON .)
+    STATIC_FN       reduce using rule 31 (trait_decl_stmt -> CLS_VAR COLON LP2 decl_stmts RP2 S_COLON .)
+
+
+state 218
+
+    (32) trait_decl_stmt -> STATIC_FN COLON LP2 decl_static_fn_stmts RP2 S_COLON .
+
+    RP2             reduce using rule 32 (trait_decl_stmt -> STATIC_FN COLON LP2 decl_static_fn_stmts RP2 S_COLON .)
+    FN              reduce using rule 32 (trait_decl_stmt -> STATIC_FN COLON LP2 decl_static_fn_stmts RP2 S_COLON .)
+    VAR             reduce using rule 32 (trait_decl_stmt -> STATIC_FN COLON LP2 decl_static_fn_stmts RP2 S_COLON .)
+    CLS_FN          reduce using rule 32 (trait_decl_stmt -> STATIC_FN COLON LP2 decl_static_fn_stmts RP2 S_COLON .)
+    CLS_VAR         reduce using rule 32 (trait_decl_stmt -> STATIC_FN COLON LP2 decl_static_fn_stmts RP2 S_COLON .)
+    STATIC_FN       reduce using rule 32 (trait_decl_stmt -> STATIC_FN COLON LP2 decl_static_fn_stmts RP2 S_COLON .)
+
+
+state 219
+
+    (106) decl_static_fn_stmt -> static_fn_id LP1 next_preds . RP1 S_COLON
+    (107) decl_static_fn_stmt -> static_fn_id LP1 next_preds . RP1 R_ARROW unary_pred S_COLON
+
+    RP1             shift and go to state 240
+
+
+state 220
+
+    (110) decl_static_fn_stmt -> static_fn_id LP1 RP1 . S_COLON
+    (111) decl_static_fn_stmt -> static_fn_id LP1 RP1 . R_ARROW unary_pred S_COLON
+
+    S_COLON         shift and go to state 241
+    R_ARROW         shift and go to state 242
+
+
+state 221
+
+    (62) next_anonymous_necessary_pred -> unary_pred .
+
+    COMMA           reduce using rule 62 (next_anonymous_necessary_pred -> unary_pred .)
+    RP1             reduce using rule 62 (next_anonymous_necessary_pred -> unary_pred .)
+
+
+state 222
+
+    (49) next_preds -> next_anonymous_necessary_preds . COMMA next_anonymous_opt_preds COMMA STAR COMMA next_named_preds
+    (50) next_preds -> next_anonymous_necessary_preds . COMMA next_anonymous_opt_preds COMMA STAR
+    (51) next_preds -> next_anonymous_necessary_preds . COMMA next_anonymous_opt_preds
+    (52) next_preds -> next_anonymous_necessary_preds . COMMA STAR COMMA next_named_preds
+    (53) next_preds -> next_anonymous_necessary_preds . COMMA STAR
+    (54) next_preds -> next_anonymous_necessary_preds .
+    (60) next_anonymous_necessary_preds -> next_anonymous_necessary_preds . COMMA next_anonymous_necessary_pred
+
+    COMMA           shift and go to state 243
+    RP1             reduce using rule 54 (next_preds -> next_anonymous_necessary_preds .)
+
+
+state 223
+
+    (55) next_preds -> next_anonymous_opt_preds . COMMA STAR COMMA next_named_preds
+    (56) next_preds -> next_anonymous_opt_preds . COMMA STAR
+    (57) next_preds -> next_anonymous_opt_preds .
+    (63) next_anonymous_opt_preds -> next_anonymous_opt_preds . COMMA next_anonymous_opt_pred
+
+    COMMA           shift and go to state 244
+    RP1             reduce using rule 57 (next_preds -> next_anonymous_opt_preds .)
+
+
+state 224
+
+    (58) next_preds -> STAR . next_named_preds
+    (59) next_preds -> STAR .
+    (66) next_named_preds -> . next_named_preds COMMA next_named_pred
+    (67) next_named_preds -> . next_named_pred
+    (68) next_named_pred -> . next_named_necessary_pred
+    (69) next_named_pred -> . next_named_opt_pred
+    (70) next_named_necessary_pred -> . arg_name COLON unary_pred
+    (71) next_named_opt_pred -> . arg_name COLON ASSIGN unary_pred
+    (72) arg_name -> . ID
+
+    RP1             reduce using rule 59 (next_preds -> STAR .)
+    ID              shift and go to state 250
+
+    next_named_preds               shift and go to state 245
+    next_named_pred                shift and go to state 246
+    next_named_necessary_pred      shift and go to state 247
+    next_named_opt_pred            shift and go to state 248
+    arg_name                       shift and go to state 249
+
+state 225
+
+    (61) next_anonymous_necessary_preds -> next_anonymous_necessary_pred .
+
+    COMMA           reduce using rule 61 (next_anonymous_necessary_preds -> next_anonymous_necessary_pred .)
+    RP1             reduce using rule 61 (next_anonymous_necessary_preds -> next_anonymous_necessary_pred .)
+
+
+state 226
+
+    (64) next_anonymous_opt_preds -> next_anonymous_opt_pred .
+
+    COMMA           reduce using rule 64 (next_anonymous_opt_preds -> next_anonymous_opt_pred .)
+    RP1             reduce using rule 64 (next_anonymous_opt_preds -> next_anonymous_opt_pred .)
+
+
+state 227
+
+    (65) next_anonymous_opt_pred -> ASSIGN . unary_pred
+    (78) unary_pred -> . pred_name
+    (79) unary_pred -> . unnamed_pred
+    (84) pred_name -> . ID
+    (80) unnamed_pred -> . pred_name LP3 args RP3
+    (81) unnamed_pred -> . LP3 pred_expr RP3
+    (82) unnamed_pred -> . TRAIT_OF LP1 var_expr RP1
+    (83) unnamed_pred -> . NONE
+
+    ID              shift and go to state 63
+    LP3             shift and go to state 29
+    TRAIT_OF        shift and go to state 30
+    NONE            shift and go to state 32
+
+    unary_pred                     shift and go to state 251
+    pred_name                      shift and go to state 61
+    unnamed_pred                   shift and go to state 62
+
+state 228
+
+    (108) decl_static_fn_stmt -> static_fn_id LP3 type_var_args . RP3 LP1 next_preds RP1 S_COLON
+    (109) decl_static_fn_stmt -> static_fn_id LP3 type_var_args . RP3 LP1 next_preds RP1 R_ARROW unary_pred S_COLON
+    (112) decl_static_fn_stmt -> static_fn_id LP3 type_var_args . RP3 LP1 RP1 S_COLON
+    (113) decl_static_fn_stmt -> static_fn_id LP3 type_var_args . RP3 LP1 RP1 R_ARROW unary_pred S_COLON
+    (73) type_var_args -> type_var_args . COMMA type_var_arg
+
+    RP3             shift and go to state 252
+    COMMA           shift and go to state 232
+
+
+state 229
+
+    (35) decl_fn_stmt -> fn_id LP1 pred_args RP1 . S_COLON
+    (36) decl_fn_stmt -> fn_id LP1 pred_args RP1 . R_ARROW unary_pred S_COLON
+
+    S_COLON         shift and go to state 253
+    R_ARROW         shift and go to state 254
+
+
+state 230
+
+    (46) pred_args -> main_pred COMMA . next_preds
+    (49) next_preds -> . next_anonymous_necessary_preds COMMA next_anonymous_opt_preds COMMA STAR COMMA next_named_preds
+    (50) next_preds -> . next_anonymous_necessary_preds COMMA next_anonymous_opt_preds COMMA STAR
+    (51) next_preds -> . next_anonymous_necessary_preds COMMA next_anonymous_opt_preds
+    (52) next_preds -> . next_anonymous_necessary_preds COMMA STAR COMMA next_named_preds
+    (53) next_preds -> . next_anonymous_necessary_preds COMMA STAR
+    (54) next_preds -> . next_anonymous_necessary_preds
+    (55) next_preds -> . next_anonymous_opt_preds COMMA STAR COMMA next_named_preds
+    (56) next_preds -> . next_anonymous_opt_preds COMMA STAR
+    (57) next_preds -> . next_anonymous_opt_preds
+    (58) next_preds -> . STAR next_named_preds
+    (59) next_preds -> . STAR
+    (60) next_anonymous_necessary_preds -> . next_anonymous_necessary_preds COMMA next_anonymous_necessary_pred
+    (61) next_anonymous_necessary_preds -> . next_anonymous_necessary_pred
+    (63) next_anonymous_opt_preds -> . next_anonymous_opt_preds COMMA next_anonymous_opt_pred
+    (64) next_anonymous_opt_preds -> . next_anonymous_opt_pred
+    (62) next_anonymous_necessary_pred -> . unary_pred
+    (65) next_anonymous_opt_pred -> . ASSIGN unary_pred
+    (78) unary_pred -> . pred_name
+    (79) unary_pred -> . unnamed_pred
+    (84) pred_name -> . ID
+    (80) unnamed_pred -> . pred_name LP3 args RP3
+    (81) unnamed_pred -> . LP3 pred_expr RP3
+    (82) unnamed_pred -> . TRAIT_OF LP1 var_expr RP1
+    (83) unnamed_pred -> . NONE
+
+    STAR            shift and go to state 224
+    ASSIGN          shift and go to state 227
+    ID              shift and go to state 63
+    LP3             shift and go to state 29
+    TRAIT_OF        shift and go to state 30
+    NONE            shift and go to state 32
+
+    next_preds                     shift and go to state 255
+    next_anonymous_necessary_preds shift and go to state 222
+    next_anonymous_opt_preds       shift and go to state 223
+    next_anonymous_necessary_pred  shift and go to state 225
+    next_anonymous_opt_pred        shift and go to state 226
+    unary_pred                     shift and go to state 221
+    pred_name                      shift and go to state 61
+    unnamed_pred                   shift and go to state 62
+
+state 231
+
+    (37) decl_fn_stmt -> fn_id LP3 type_var_args RP3 . LP1 pred_args RP1 S_COLON
+    (38) decl_fn_stmt -> fn_id LP3 type_var_args RP3 . LP1 pred_args RP1 R_ARROW unary_pred S_COLON
+
+    LP1             shift and go to state 256
+
+
+state 232
+
+    (73) type_var_args -> type_var_args COMMA . type_var_arg
+    (75) type_var_arg -> . type_var_id
+    (76) type_var_arg -> . type_var_id COLON unary_pred
+    (77) type_var_id -> . ID
+
+    ID              shift and go to state 209
+
+    type_var_arg                   shift and go to state 257
+    type_var_id                    shift and go to state 208
+
+state 233
+
+    (76) type_var_arg -> type_var_id COLON . unary_pred
+    (78) unary_pred -> . pred_name
+    (79) unary_pred -> . unnamed_pred
+    (84) pred_name -> . ID
+    (80) unnamed_pred -> . pred_name LP3 args RP3
+    (81) unnamed_pred -> . LP3 pred_expr RP3
+    (82) unnamed_pred -> . TRAIT_OF LP1 var_expr RP1
+    (83) unnamed_pred -> . NONE
+
+    ID              shift and go to state 63
+    LP3             shift and go to state 29
+    TRAIT_OF        shift and go to state 30
+    NONE            shift and go to state 32
+
+    unary_pred                     shift and go to state 258
+    pred_name                      shift and go to state 61
+    unnamed_pred                   shift and go to state 62
+
+state 234
+
+    (98) decl_stmt -> var_id COLON unary_pred S_COLON .
+
+    RP2             reduce using rule 98 (decl_stmt -> var_id COLON unary_pred S_COLON .)
+    LP3             reduce using rule 98 (decl_stmt -> var_id COLON unary_pred S_COLON .)
+    ID              reduce using rule 98 (decl_stmt -> var_id COLON unary_pred S_COLON .)
+
+
+state 235
+
+    (99) decl_stmt -> LP3 vars_id RP3 S_COLON .
+
+    RP2             reduce using rule 99 (decl_stmt -> LP3 vars_id RP3 S_COLON .)
+    LP3             reduce using rule 99 (decl_stmt -> LP3 vars_id RP3 S_COLON .)
+    ID              reduce using rule 99 (decl_stmt -> LP3 vars_id RP3 S_COLON .)
+
+
+state 236
+
+    (100) decl_stmt -> LP3 vars_id RP3 COLON . unary_pred S_COLON
+    (78) unary_pred -> . pred_name
+    (79) unary_pred -> . unnamed_pred
+    (84) pred_name -> . ID
+    (80) unnamed_pred -> . pred_name LP3 args RP3
+    (81) unnamed_pred -> . LP3 pred_expr RP3
+    (82) unnamed_pred -> . TRAIT_OF LP1 var_expr RP1
+    (83) unnamed_pred -> . NONE
+
+    ID              shift and go to state 63
+    LP3             shift and go to state 29
+    TRAIT_OF        shift and go to state 30
+    NONE            shift and go to state 32
+
+    unary_pred                     shift and go to state 259
+    pred_name                      shift and go to state 61
+    unnamed_pred                   shift and go to state 62
+
+state 237
+
+    (101) vars_id -> vars_id COMMA var_id .
+
+    RP3             reduce using rule 101 (vars_id -> vars_id COMMA var_id .)
+    COMMA           reduce using rule 101 (vars_id -> vars_id COMMA var_id .)
+
+
+state 238
+
+    (41) decl_cls_fn_stmt -> fn_id LP1 pred_args RP1 . S_COLON
+    (42) decl_cls_fn_stmt -> fn_id LP1 pred_args RP1 . R_ARROW unary_pred S_COLON
+
+    S_COLON         shift and go to state 260
+    R_ARROW         shift and go to state 261
+
+
+state 239
+
+    (43) decl_cls_fn_stmt -> fn_id LP3 type_var_args RP3 . LP1 pred_args RP1 S_COLON
+    (44) decl_cls_fn_stmt -> fn_id LP3 type_var_args RP3 . LP1 pred_args RP1 R_ARROW unary_pred S_COLON
+
+    LP1             shift and go to state 262
+
+
+state 240
+
+    (106) decl_static_fn_stmt -> static_fn_id LP1 next_preds RP1 . S_COLON
+    (107) decl_static_fn_stmt -> static_fn_id LP1 next_preds RP1 . R_ARROW unary_pred S_COLON
+
+    S_COLON         shift and go to state 263
+    R_ARROW         shift and go to state 264
+
+
+state 241
+
+    (110) decl_static_fn_stmt -> static_fn_id LP1 RP1 S_COLON .
+
+    RP2             reduce using rule 110 (decl_static_fn_stmt -> static_fn_id LP1 RP1 S_COLON .)
+    ID              reduce using rule 110 (decl_static_fn_stmt -> static_fn_id LP1 RP1 S_COLON .)
+
+
+state 242
+
+    (111) decl_static_fn_stmt -> static_fn_id LP1 RP1 R_ARROW . unary_pred S_COLON
+    (78) unary_pred -> . pred_name
+    (79) unary_pred -> . unnamed_pred
+    (84) pred_name -> . ID
+    (80) unnamed_pred -> . pred_name LP3 args RP3
+    (81) unnamed_pred -> . LP3 pred_expr RP3
+    (82) unnamed_pred -> . TRAIT_OF LP1 var_expr RP1
+    (83) unnamed_pred -> . NONE
+
+    ID              shift and go to state 63
+    LP3             shift and go to state 29
+    TRAIT_OF        shift and go to state 30
+    NONE            shift and go to state 32
+
+    unary_pred                     shift and go to state 265
+    pred_name                      shift and go to state 61
+    unnamed_pred                   shift and go to state 62
+
+state 243
+
+    (49) next_preds -> next_anonymous_necessary_preds COMMA . next_anonymous_opt_preds COMMA STAR COMMA next_named_preds
+    (50) next_preds -> next_anonymous_necessary_preds COMMA . next_anonymous_opt_preds COMMA STAR
+    (51) next_preds -> next_anonymous_necessary_preds COMMA . next_anonymous_opt_preds
+    (52) next_preds -> next_anonymous_necessary_preds COMMA . STAR COMMA next_named_preds
+    (53) next_preds -> next_anonymous_necessary_preds COMMA . STAR
+    (60) next_anonymous_necessary_preds -> next_anonymous_necessary_preds COMMA . next_anonymous_necessary_pred
+    (63) next_anonymous_opt_preds -> . next_anonymous_opt_preds COMMA next_anonymous_opt_pred
+    (64) next_anonymous_opt_preds -> . next_anonymous_opt_pred
+    (62) next_anonymous_necessary_pred -> . unary_pred
+    (65) next_anonymous_opt_pred -> . ASSIGN unary_pred
+    (78) unary_pred -> . pred_name
+    (79) unary_pred -> . unnamed_pred
+    (84) pred_name -> . ID
+    (80) unnamed_pred -> . pred_name LP3 args RP3
+    (81) unnamed_pred -> . LP3 pred_expr RP3
+    (82) unnamed_pred -> . TRAIT_OF LP1 var_expr RP1
+    (83) unnamed_pred -> . NONE
+
+    STAR            shift and go to state 267
+    ASSIGN          shift and go to state 227
+    ID              shift and go to state 63
+    LP3             shift and go to state 29
+    TRAIT_OF        shift and go to state 30
+    NONE            shift and go to state 32
+
+    next_anonymous_opt_preds       shift and go to state 266
+    next_anonymous_necessary_pred  shift and go to state 268
+    next_anonymous_opt_pred        shift and go to state 226
+    unary_pred                     shift and go to state 221
+    pred_name                      shift and go to state 61
+    unnamed_pred                   shift and go to state 62
+
+state 244
+
+    (55) next_preds -> next_anonymous_opt_preds COMMA . STAR COMMA next_named_preds
+    (56) next_preds -> next_anonymous_opt_preds COMMA . STAR
+    (63) next_anonymous_opt_preds -> next_anonymous_opt_preds COMMA . next_anonymous_opt_pred
+    (65) next_anonymous_opt_pred -> . ASSIGN unary_pred
+
+    STAR            shift and go to state 269
+    ASSIGN          shift and go to state 227
+
+    next_anonymous_opt_pred        shift and go to state 270
+
+state 245
+
+    (58) next_preds -> STAR next_named_preds .
+    (66) next_named_preds -> next_named_preds . COMMA next_named_pred
+
+    RP1             reduce using rule 58 (next_preds -> STAR next_named_preds .)
+    COMMA           shift and go to state 271
+
+
+state 246
+
+    (67) next_named_preds -> next_named_pred .
+
+    COMMA           reduce using rule 67 (next_named_preds -> next_named_pred .)
+    RP1             reduce using rule 67 (next_named_preds -> next_named_pred .)
+
+
+state 247
+
+    (68) next_named_pred -> next_named_necessary_pred .
+
+    COMMA           reduce using rule 68 (next_named_pred -> next_named_necessary_pred .)
+    RP1             reduce using rule 68 (next_named_pred -> next_named_necessary_pred .)
+
+
+state 248
+
+    (69) next_named_pred -> next_named_opt_pred .
+
+    COMMA           reduce using rule 69 (next_named_pred -> next_named_opt_pred .)
+    RP1             reduce using rule 69 (next_named_pred -> next_named_opt_pred .)
+
+
+state 249
+
+    (70) next_named_necessary_pred -> arg_name . COLON unary_pred
+    (71) next_named_opt_pred -> arg_name . COLON ASSIGN unary_pred
+
+    COLON           shift and go to state 272
+
+
+state 250
+
+    (72) arg_name -> ID .
+
+    COLON           reduce using rule 72 (arg_name -> ID .)
+
+
+state 251
+
+    (65) next_anonymous_opt_pred -> ASSIGN unary_pred .
+
+    COMMA           reduce using rule 65 (next_anonymous_opt_pred -> ASSIGN unary_pred .)
+    RP1             reduce using rule 65 (next_anonymous_opt_pred -> ASSIGN unary_pred .)
+
+
+state 252
+
+    (108) decl_static_fn_stmt -> static_fn_id LP3 type_var_args RP3 . LP1 next_preds RP1 S_COLON
+    (109) decl_static_fn_stmt -> static_fn_id LP3 type_var_args RP3 . LP1 next_preds RP1 R_ARROW unary_pred S_COLON
+    (112) decl_static_fn_stmt -> static_fn_id LP3 type_var_args RP3 . LP1 RP1 S_COLON
+    (113) decl_static_fn_stmt -> static_fn_id LP3 type_var_args RP3 . LP1 RP1 R_ARROW unary_pred S_COLON
+
+    LP1             shift and go to state 273
+
+
+state 253
+
+    (35) decl_fn_stmt -> fn_id LP1 pred_args RP1 S_COLON .
+
+    RP2             reduce using rule 35 (decl_fn_stmt -> fn_id LP1 pred_args RP1 S_COLON .)
+    ID              reduce using rule 35 (decl_fn_stmt -> fn_id LP1 pred_args RP1 S_COLON .)
+
+
+state 254
+
+    (36) decl_fn_stmt -> fn_id LP1 pred_args RP1 R_ARROW . unary_pred S_COLON
+    (78) unary_pred -> . pred_name
+    (79) unary_pred -> . unnamed_pred
+    (84) pred_name -> . ID
+    (80) unnamed_pred -> . pred_name LP3 args RP3
+    (81) unnamed_pred -> . LP3 pred_expr RP3
+    (82) unnamed_pred -> . TRAIT_OF LP1 var_expr RP1
+    (83) unnamed_pred -> . NONE
+
+    ID              shift and go to state 63
+    LP3             shift and go to state 29
+    TRAIT_OF        shift and go to state 30
+    NONE            shift and go to state 32
+
+    unary_pred                     shift and go to state 274
+    pred_name                      shift and go to state 61
+    unnamed_pred                   shift and go to state 62
+
+state 255
+
+    (46) pred_args -> main_pred COMMA next_preds .
+
+    RP1             reduce using rule 46 (pred_args -> main_pred COMMA next_preds .)
+
+
+state 256
+
+    (37) decl_fn_stmt -> fn_id LP3 type_var_args RP3 LP1 . pred_args RP1 S_COLON
+    (38) decl_fn_stmt -> fn_id LP3 type_var_args RP3 LP1 . pred_args RP1 R_ARROW unary_pred S_COLON
+    (46) pred_args -> . main_pred COMMA next_preds
+    (47) pred_args -> . main_pred
+    (48) main_pred -> . ID
+
+    ID              shift and go to state 205
+
+    pred_args                      shift and go to state 275
+    main_pred                      shift and go to state 204
+
+state 257
+
+    (73) type_var_args -> type_var_args COMMA type_var_arg .
+
+    RP3             reduce using rule 73 (type_var_args -> type_var_args COMMA type_var_arg .)
+    COMMA           reduce using rule 73 (type_var_args -> type_var_args COMMA type_var_arg .)
+
+
+state 258
+
+    (76) type_var_arg -> type_var_id COLON unary_pred .
+
+    RP3             reduce using rule 76 (type_var_arg -> type_var_id COLON unary_pred .)
+    COMMA           reduce using rule 76 (type_var_arg -> type_var_id COLON unary_pred .)
+
+
+state 259
+
+    (100) decl_stmt -> LP3 vars_id RP3 COLON unary_pred . S_COLON
+
+    S_COLON         shift and go to state 276
+
+
+state 260
+
+    (41) decl_cls_fn_stmt -> fn_id LP1 pred_args RP1 S_COLON .
+
+    RP2             reduce using rule 41 (decl_cls_fn_stmt -> fn_id LP1 pred_args RP1 S_COLON .)
+    ID              reduce using rule 41 (decl_cls_fn_stmt -> fn_id LP1 pred_args RP1 S_COLON .)
+
+
+state 261
+
+    (42) decl_cls_fn_stmt -> fn_id LP1 pred_args RP1 R_ARROW . unary_pred S_COLON
+    (78) unary_pred -> . pred_name
+    (79) unary_pred -> . unnamed_pred
+    (84) pred_name -> . ID
+    (80) unnamed_pred -> . pred_name LP3 args RP3
+    (81) unnamed_pred -> . LP3 pred_expr RP3
+    (82) unnamed_pred -> . TRAIT_OF LP1 var_expr RP1
+    (83) unnamed_pred -> . NONE
+
+    ID              shift and go to state 63
+    LP3             shift and go to state 29
+    TRAIT_OF        shift and go to state 30
+    NONE            shift and go to state 32
+
+    unary_pred                     shift and go to state 277
+    pred_name                      shift and go to state 61
+    unnamed_pred                   shift and go to state 62
+
+state 262
+
+    (43) decl_cls_fn_stmt -> fn_id LP3 type_var_args RP3 LP1 . pred_args RP1 S_COLON
+    (44) decl_cls_fn_stmt -> fn_id LP3 type_var_args RP3 LP1 . pred_args RP1 R_ARROW unary_pred S_COLON
+    (46) pred_args -> . main_pred COMMA next_preds
+    (47) pred_args -> . main_pred
+    (48) main_pred -> . ID
+
+    ID              shift and go to state 205
+
+    pred_args                      shift and go to state 278
+    main_pred                      shift and go to state 204
+
+state 263
+
+    (106) decl_static_fn_stmt -> static_fn_id LP1 next_preds RP1 S_COLON .
+
+    RP2             reduce using rule 106 (decl_static_fn_stmt -> static_fn_id LP1 next_preds RP1 S_COLON .)
+    ID              reduce using rule 106 (decl_static_fn_stmt -> static_fn_id LP1 next_preds RP1 S_COLON .)
+
+
+state 264
+
+    (107) decl_static_fn_stmt -> static_fn_id LP1 next_preds RP1 R_ARROW . unary_pred S_COLON
+    (78) unary_pred -> . pred_name
+    (79) unary_pred -> . unnamed_pred
+    (84) pred_name -> . ID
+    (80) unnamed_pred -> . pred_name LP3 args RP3
+    (81) unnamed_pred -> . LP3 pred_expr RP3
+    (82) unnamed_pred -> . TRAIT_OF LP1 var_expr RP1
+    (83) unnamed_pred -> . NONE
+
+    ID              shift and go to state 63
+    LP3             shift and go to state 29
+    TRAIT_OF        shift and go to state 30
+    NONE            shift and go to state 32
+
+    unary_pred                     shift and go to state 279
+    pred_name                      shift and go to state 61
+    unnamed_pred                   shift and go to state 62
+
+state 265
+
+    (111) decl_static_fn_stmt -> static_fn_id LP1 RP1 R_ARROW unary_pred . S_COLON
+
+    S_COLON         shift and go to state 280
+
+
+state 266
+
+    (49) next_preds -> next_anonymous_necessary_preds COMMA next_anonymous_opt_preds . COMMA STAR COMMA next_named_preds
+    (50) next_preds -> next_anonymous_necessary_preds COMMA next_anonymous_opt_preds . COMMA STAR
+    (51) next_preds -> next_anonymous_necessary_preds COMMA next_anonymous_opt_preds .
+    (63) next_anonymous_opt_preds -> next_anonymous_opt_preds . COMMA next_anonymous_opt_pred
+
+    COMMA           shift and go to state 281
+    RP1             reduce using rule 51 (next_preds -> next_anonymous_necessary_preds COMMA next_anonymous_opt_preds .)
+
+
+state 267
+
+    (52) next_preds -> next_anonymous_necessary_preds COMMA STAR . COMMA next_named_preds
+    (53) next_preds -> next_anonymous_necessary_preds COMMA STAR .
+
+    COMMA           shift and go to state 282
+    RP1             reduce using rule 53 (next_preds -> next_anonymous_necessary_preds COMMA STAR .)
+
+
+state 268
+
+    (60) next_anonymous_necessary_preds -> next_anonymous_necessary_preds COMMA next_anonymous_necessary_pred .
+
+    COMMA           reduce using rule 60 (next_anonymous_necessary_preds -> next_anonymous_necessary_preds COMMA next_anonymous_necessary_pred .)
+    RP1             reduce using rule 60 (next_anonymous_necessary_preds -> next_anonymous_necessary_preds COMMA next_anonymous_necessary_pred .)
+
+
+state 269
+
+    (55) next_preds -> next_anonymous_opt_preds COMMA STAR . COMMA next_named_preds
+    (56) next_preds -> next_anonymous_opt_preds COMMA STAR .
+
+    COMMA           shift and go to state 283
+    RP1             reduce using rule 56 (next_preds -> next_anonymous_opt_preds COMMA STAR .)
+
+
+state 270
+
+    (63) next_anonymous_opt_preds -> next_anonymous_opt_preds COMMA next_anonymous_opt_pred .
+
+    COMMA           reduce using rule 63 (next_anonymous_opt_preds -> next_anonymous_opt_preds COMMA next_anonymous_opt_pred .)
+    RP1             reduce using rule 63 (next_anonymous_opt_preds -> next_anonymous_opt_preds COMMA next_anonymous_opt_pred .)
+
+
+state 271
+
+    (66) next_named_preds -> next_named_preds COMMA . next_named_pred
+    (68) next_named_pred -> . next_named_necessary_pred
+    (69) next_named_pred -> . next_named_opt_pred
+    (70) next_named_necessary_pred -> . arg_name COLON unary_pred
+    (71) next_named_opt_pred -> . arg_name COLON ASSIGN unary_pred
+    (72) arg_name -> . ID
+
+    ID              shift and go to state 250
+
+    next_named_pred                shift and go to state 284
+    next_named_necessary_pred      shift and go to state 247
+    next_named_opt_pred            shift and go to state 248
+    arg_name                       shift and go to state 249
+
+state 272
+
+    (70) next_named_necessary_pred -> arg_name COLON . unary_pred
+    (71) next_named_opt_pred -> arg_name COLON . ASSIGN unary_pred
+    (78) unary_pred -> . pred_name
+    (79) unary_pred -> . unnamed_pred
+    (84) pred_name -> . ID
+    (80) unnamed_pred -> . pred_name LP3 args RP3
+    (81) unnamed_pred -> . LP3 pred_expr RP3
+    (82) unnamed_pred -> . TRAIT_OF LP1 var_expr RP1
+    (83) unnamed_pred -> . NONE
+
+    ASSIGN          shift and go to state 286
+    ID              shift and go to state 63
+    LP3             shift and go to state 29
+    TRAIT_OF        shift and go to state 30
+    NONE            shift and go to state 32
+
+    unary_pred                     shift and go to state 285
+    pred_name                      shift and go to state 61
+    unnamed_pred                   shift and go to state 62
+
+state 273
+
+    (108) decl_static_fn_stmt -> static_fn_id LP3 type_var_args RP3 LP1 . next_preds RP1 S_COLON
+    (109) decl_static_fn_stmt -> static_fn_id LP3 type_var_args RP3 LP1 . next_preds RP1 R_ARROW unary_pred S_COLON
+    (112) decl_static_fn_stmt -> static_fn_id LP3 type_var_args RP3 LP1 . RP1 S_COLON
+    (113) decl_static_fn_stmt -> static_fn_id LP3 type_var_args RP3 LP1 . RP1 R_ARROW unary_pred S_COLON
+    (49) next_preds -> . next_anonymous_necessary_preds COMMA next_anonymous_opt_preds COMMA STAR COMMA next_named_preds
+    (50) next_preds -> . next_anonymous_necessary_preds COMMA next_anonymous_opt_preds COMMA STAR
+    (51) next_preds -> . next_anonymous_necessary_preds COMMA next_anonymous_opt_preds
+    (52) next_preds -> . next_anonymous_necessary_preds COMMA STAR COMMA next_named_preds
+    (53) next_preds -> . next_anonymous_necessary_preds COMMA STAR
+    (54) next_preds -> . next_anonymous_necessary_preds
+    (55) next_preds -> . next_anonymous_opt_preds COMMA STAR COMMA next_named_preds
+    (56) next_preds -> . next_anonymous_opt_preds COMMA STAR
+    (57) next_preds -> . next_anonymous_opt_preds
+    (58) next_preds -> . STAR next_named_preds
+    (59) next_preds -> . STAR
+    (60) next_anonymous_necessary_preds -> . next_anonymous_necessary_preds COMMA next_anonymous_necessary_pred
+    (61) next_anonymous_necessary_preds -> . next_anonymous_necessary_pred
+    (63) next_anonymous_opt_preds -> . next_anonymous_opt_preds COMMA next_anonymous_opt_pred
+    (64) next_anonymous_opt_preds -> . next_anonymous_opt_pred
+    (62) next_anonymous_necessary_pred -> . unary_pred
+    (65) next_anonymous_opt_pred -> . ASSIGN unary_pred
+    (78) unary_pred -> . pred_name
+    (79) unary_pred -> . unnamed_pred
+    (84) pred_name -> . ID
+    (80) unnamed_pred -> . pred_name LP3 args RP3
+    (81) unnamed_pred -> . LP3 pred_expr RP3
+    (82) unnamed_pred -> . TRAIT_OF LP1 var_expr RP1
+    (83) unnamed_pred -> . NONE
+
+    RP1             shift and go to state 288
+    STAR            shift and go to state 224
+    ASSIGN          shift and go to state 227
+    ID              shift and go to state 63
+    LP3             shift and go to state 29
+    TRAIT_OF        shift and go to state 30
+    NONE            shift and go to state 32
+
+    next_preds                     shift and go to state 287
+    unary_pred                     shift and go to state 221
+    next_anonymous_necessary_preds shift and go to state 222
+    next_anonymous_opt_preds       shift and go to state 223
+    next_anonymous_necessary_pred  shift and go to state 225
+    next_anonymous_opt_pred        shift and go to state 226
+    pred_name                      shift and go to state 61
+    unnamed_pred                   shift and go to state 62
+
+state 274
+
+    (36) decl_fn_stmt -> fn_id LP1 pred_args RP1 R_ARROW unary_pred . S_COLON
+
+    S_COLON         shift and go to state 289
+
+
+state 275
+
+    (37) decl_fn_stmt -> fn_id LP3 type_var_args RP3 LP1 pred_args . RP1 S_COLON
+    (38) decl_fn_stmt -> fn_id LP3 type_var_args RP3 LP1 pred_args . RP1 R_ARROW unary_pred S_COLON
+
+    RP1             shift and go to state 290
+
+
+state 276
+
+    (100) decl_stmt -> LP3 vars_id RP3 COLON unary_pred S_COLON .
+
+    RP2             reduce using rule 100 (decl_stmt -> LP3 vars_id RP3 COLON unary_pred S_COLON .)
+    LP3             reduce using rule 100 (decl_stmt -> LP3 vars_id RP3 COLON unary_pred S_COLON .)
+    ID              reduce using rule 100 (decl_stmt -> LP3 vars_id RP3 COLON unary_pred S_COLON .)
+
+
+state 277
+
+    (42) decl_cls_fn_stmt -> fn_id LP1 pred_args RP1 R_ARROW unary_pred . S_COLON
+
+    S_COLON         shift and go to state 291
+
+
+state 278
+
+    (43) decl_cls_fn_stmt -> fn_id LP3 type_var_args RP3 LP1 pred_args . RP1 S_COLON
+    (44) decl_cls_fn_stmt -> fn_id LP3 type_var_args RP3 LP1 pred_args . RP1 R_ARROW unary_pred S_COLON
+
+    RP1             shift and go to state 292
+
+
+state 279
+
+    (107) decl_static_fn_stmt -> static_fn_id LP1 next_preds RP1 R_ARROW unary_pred . S_COLON
+
+    S_COLON         shift and go to state 293
+
+
+state 280
+
+    (111) decl_static_fn_stmt -> static_fn_id LP1 RP1 R_ARROW unary_pred S_COLON .
+
+    RP2             reduce using rule 111 (decl_static_fn_stmt -> static_fn_id LP1 RP1 R_ARROW unary_pred S_COLON .)
+    ID              reduce using rule 111 (decl_static_fn_stmt -> static_fn_id LP1 RP1 R_ARROW unary_pred S_COLON .)
+
+
+state 281
+
+    (49) next_preds -> next_anonymous_necessary_preds COMMA next_anonymous_opt_preds COMMA . STAR COMMA next_named_preds
+    (50) next_preds -> next_anonymous_necessary_preds COMMA next_anonymous_opt_preds COMMA . STAR
+    (63) next_anonymous_opt_preds -> next_anonymous_opt_preds COMMA . next_anonymous_opt_pred
+    (65) next_anonymous_opt_pred -> . ASSIGN unary_pred
+
+    STAR            shift and go to state 294
+    ASSIGN          shift and go to state 227
+
+    next_anonymous_opt_pred        shift and go to state 270
+
+state 282
+
+    (52) next_preds -> next_anonymous_necessary_preds COMMA STAR COMMA . next_named_preds
+    (66) next_named_preds -> . next_named_preds COMMA next_named_pred
+    (67) next_named_preds -> . next_named_pred
+    (68) next_named_pred -> . next_named_necessary_pred
+    (69) next_named_pred -> . next_named_opt_pred
+    (70) next_named_necessary_pred -> . arg_name COLON unary_pred
+    (71) next_named_opt_pred -> . arg_name COLON ASSIGN unary_pred
+    (72) arg_name -> . ID
+
+    ID              shift and go to state 250
+
+    next_named_preds               shift and go to state 295
+    next_named_pred                shift and go to state 246
+    next_named_necessary_pred      shift and go to state 247
+    next_named_opt_pred            shift and go to state 248
+    arg_name                       shift and go to state 249
+
+state 283
+
+    (55) next_preds -> next_anonymous_opt_preds COMMA STAR COMMA . next_named_preds
+    (66) next_named_preds -> . next_named_preds COMMA next_named_pred
+    (67) next_named_preds -> . next_named_pred
+    (68) next_named_pred -> . next_named_necessary_pred
+    (69) next_named_pred -> . next_named_opt_pred
+    (70) next_named_necessary_pred -> . arg_name COLON unary_pred
+    (71) next_named_opt_pred -> . arg_name COLON ASSIGN unary_pred
+    (72) arg_name -> . ID
+
+    ID              shift and go to state 250
+
+    next_named_preds               shift and go to state 296
+    next_named_pred                shift and go to state 246
+    next_named_necessary_pred      shift and go to state 247
+    next_named_opt_pred            shift and go to state 248
+    arg_name                       shift and go to state 249
+
+state 284
+
+    (66) next_named_preds -> next_named_preds COMMA next_named_pred .
+
+    COMMA           reduce using rule 66 (next_named_preds -> next_named_preds COMMA next_named_pred .)
+    RP1             reduce using rule 66 (next_named_preds -> next_named_preds COMMA next_named_pred .)
+
+
+state 285
+
+    (70) next_named_necessary_pred -> arg_name COLON unary_pred .
+
+    COMMA           reduce using rule 70 (next_named_necessary_pred -> arg_name COLON unary_pred .)
+    RP1             reduce using rule 70 (next_named_necessary_pred -> arg_name COLON unary_pred .)
+
+
+state 286
+
+    (71) next_named_opt_pred -> arg_name COLON ASSIGN . unary_pred
+    (78) unary_pred -> . pred_name
+    (79) unary_pred -> . unnamed_pred
+    (84) pred_name -> . ID
+    (80) unnamed_pred -> . pred_name LP3 args RP3
+    (81) unnamed_pred -> . LP3 pred_expr RP3
+    (82) unnamed_pred -> . TRAIT_OF LP1 var_expr RP1
+    (83) unnamed_pred -> . NONE
+
+    ID              shift and go to state 63
+    LP3             shift and go to state 29
+    TRAIT_OF        shift and go to state 30
+    NONE            shift and go to state 32
+
+    unary_pred                     shift and go to state 297
+    pred_name                      shift and go to state 61
+    unnamed_pred                   shift and go to state 62
+
+state 287
+
+    (108) decl_static_fn_stmt -> static_fn_id LP3 type_var_args RP3 LP1 next_preds . RP1 S_COLON
+    (109) decl_static_fn_stmt -> static_fn_id LP3 type_var_args RP3 LP1 next_preds . RP1 R_ARROW unary_pred S_COLON
+
+    RP1             shift and go to state 298
+
+
+state 288
+
+    (112) decl_static_fn_stmt -> static_fn_id LP3 type_var_args RP3 LP1 RP1 . S_COLON
+    (113) decl_static_fn_stmt -> static_fn_id LP3 type_var_args RP3 LP1 RP1 . R_ARROW unary_pred S_COLON
+
+    S_COLON         shift and go to state 299
+    R_ARROW         shift and go to state 300
+
+
+state 289
+
+    (36) decl_fn_stmt -> fn_id LP1 pred_args RP1 R_ARROW unary_pred S_COLON .
+
+    RP2             reduce using rule 36 (decl_fn_stmt -> fn_id LP1 pred_args RP1 R_ARROW unary_pred S_COLON .)
+    ID              reduce using rule 36 (decl_fn_stmt -> fn_id LP1 pred_args RP1 R_ARROW unary_pred S_COLON .)
+
+
+state 290
+
+    (37) decl_fn_stmt -> fn_id LP3 type_var_args RP3 LP1 pred_args RP1 . S_COLON
+    (38) decl_fn_stmt -> fn_id LP3 type_var_args RP3 LP1 pred_args RP1 . R_ARROW unary_pred S_COLON
+
+    S_COLON         shift and go to state 301
+    R_ARROW         shift and go to state 302
+
+
+state 291
+
+    (42) decl_cls_fn_stmt -> fn_id LP1 pred_args RP1 R_ARROW unary_pred S_COLON .
+
+    RP2             reduce using rule 42 (decl_cls_fn_stmt -> fn_id LP1 pred_args RP1 R_ARROW unary_pred S_COLON .)
+    ID              reduce using rule 42 (decl_cls_fn_stmt -> fn_id LP1 pred_args RP1 R_ARROW unary_pred S_COLON .)
+
+
+state 292
+
+    (43) decl_cls_fn_stmt -> fn_id LP3 type_var_args RP3 LP1 pred_args RP1 . S_COLON
+    (44) decl_cls_fn_stmt -> fn_id LP3 type_var_args RP3 LP1 pred_args RP1 . R_ARROW unary_pred S_COLON
+
+    S_COLON         shift and go to state 303
+    R_ARROW         shift and go to state 304
+
+
+state 293
+
+    (107) decl_static_fn_stmt -> static_fn_id LP1 next_preds RP1 R_ARROW unary_pred S_COLON .
+
+    RP2             reduce using rule 107 (decl_static_fn_stmt -> static_fn_id LP1 next_preds RP1 R_ARROW unary_pred S_COLON .)
+    ID              reduce using rule 107 (decl_static_fn_stmt -> static_fn_id LP1 next_preds RP1 R_ARROW unary_pred S_COLON .)
+
+
+state 294
+
+    (49) next_preds -> next_anonymous_necessary_preds COMMA next_anonymous_opt_preds COMMA STAR . COMMA next_named_preds
+    (50) next_preds -> next_anonymous_necessary_preds COMMA next_anonymous_opt_preds COMMA STAR .
+
+    COMMA           shift and go to state 305
+    RP1             reduce using rule 50 (next_preds -> next_anonymous_necessary_preds COMMA next_anonymous_opt_preds COMMA STAR .)
+
+
+state 295
+
+    (52) next_preds -> next_anonymous_necessary_preds COMMA STAR COMMA next_named_preds .
+    (66) next_named_preds -> next_named_preds . COMMA next_named_pred
+
+    RP1             reduce using rule 52 (next_preds -> next_anonymous_necessary_preds COMMA STAR COMMA next_named_preds .)
+    COMMA           shift and go to state 271
+
+
+state 296
+
+    (55) next_preds -> next_anonymous_opt_preds COMMA STAR COMMA next_named_preds .
+    (66) next_named_preds -> next_named_preds . COMMA next_named_pred
+
+    RP1             reduce using rule 55 (next_preds -> next_anonymous_opt_preds COMMA STAR COMMA next_named_preds .)
+    COMMA           shift and go to state 271
+
+
+state 297
+
+    (71) next_named_opt_pred -> arg_name COLON ASSIGN unary_pred .
+
+    COMMA           reduce using rule 71 (next_named_opt_pred -> arg_name COLON ASSIGN unary_pred .)
+    RP1             reduce using rule 71 (next_named_opt_pred -> arg_name COLON ASSIGN unary_pred .)
+
+
+state 298
+
+    (108) decl_static_fn_stmt -> static_fn_id LP3 type_var_args RP3 LP1 next_preds RP1 . S_COLON
+    (109) decl_static_fn_stmt -> static_fn_id LP3 type_var_args RP3 LP1 next_preds RP1 . R_ARROW unary_pred S_COLON
+
+    S_COLON         shift and go to state 306
+    R_ARROW         shift and go to state 307
+
+
+state 299
+
+    (112) decl_static_fn_stmt -> static_fn_id LP3 type_var_args RP3 LP1 RP1 S_COLON .
+
+    RP2             reduce using rule 112 (decl_static_fn_stmt -> static_fn_id LP3 type_var_args RP3 LP1 RP1 S_COLON .)
+    ID              reduce using rule 112 (decl_static_fn_stmt -> static_fn_id LP3 type_var_args RP3 LP1 RP1 S_COLON .)
+
+
+state 300
+
+    (113) decl_static_fn_stmt -> static_fn_id LP3 type_var_args RP3 LP1 RP1 R_ARROW . unary_pred S_COLON
+    (78) unary_pred -> . pred_name
+    (79) unary_pred -> . unnamed_pred
+    (84) pred_name -> . ID
+    (80) unnamed_pred -> . pred_name LP3 args RP3
+    (81) unnamed_pred -> . LP3 pred_expr RP3
+    (82) unnamed_pred -> . TRAIT_OF LP1 var_expr RP1
+    (83) unnamed_pred -> . NONE
+
+    ID              shift and go to state 63
+    LP3             shift and go to state 29
+    TRAIT_OF        shift and go to state 30
+    NONE            shift and go to state 32
+
+    unary_pred                     shift and go to state 308
+    pred_name                      shift and go to state 61
+    unnamed_pred                   shift and go to state 62
+
+state 301
+
+    (37) decl_fn_stmt -> fn_id LP3 type_var_args RP3 LP1 pred_args RP1 S_COLON .
+
+    RP2             reduce using rule 37 (decl_fn_stmt -> fn_id LP3 type_var_args RP3 LP1 pred_args RP1 S_COLON .)
+    ID              reduce using rule 37 (decl_fn_stmt -> fn_id LP3 type_var_args RP3 LP1 pred_args RP1 S_COLON .)
+
+
+state 302
+
+    (38) decl_fn_stmt -> fn_id LP3 type_var_args RP3 LP1 pred_args RP1 R_ARROW . unary_pred S_COLON
+    (78) unary_pred -> . pred_name
+    (79) unary_pred -> . unnamed_pred
+    (84) pred_name -> . ID
+    (80) unnamed_pred -> . pred_name LP3 args RP3
+    (81) unnamed_pred -> . LP3 pred_expr RP3
+    (82) unnamed_pred -> . TRAIT_OF LP1 var_expr RP1
+    (83) unnamed_pred -> . NONE
+
+    ID              shift and go to state 63
+    LP3             shift and go to state 29
+    TRAIT_OF        shift and go to state 30
+    NONE            shift and go to state 32
+
+    unary_pred                     shift and go to state 309
+    pred_name                      shift and go to state 61
+    unnamed_pred                   shift and go to state 62
+
+state 303
+
+    (43) decl_cls_fn_stmt -> fn_id LP3 type_var_args RP3 LP1 pred_args RP1 S_COLON .
+
+    RP2             reduce using rule 43 (decl_cls_fn_stmt -> fn_id LP3 type_var_args RP3 LP1 pred_args RP1 S_COLON .)
+    ID              reduce using rule 43 (decl_cls_fn_stmt -> fn_id LP3 type_var_args RP3 LP1 pred_args RP1 S_COLON .)
+
+
+state 304
+
+    (44) decl_cls_fn_stmt -> fn_id LP3 type_var_args RP3 LP1 pred_args RP1 R_ARROW . unary_pred S_COLON
+    (78) unary_pred -> . pred_name
+    (79) unary_pred -> . unnamed_pred
+    (84) pred_name -> . ID
+    (80) unnamed_pred -> . pred_name LP3 args RP3
+    (81) unnamed_pred -> . LP3 pred_expr RP3
+    (82) unnamed_pred -> . TRAIT_OF LP1 var_expr RP1
+    (83) unnamed_pred -> . NONE
+
+    ID              shift and go to state 63
+    LP3             shift and go to state 29
+    TRAIT_OF        shift and go to state 30
+    NONE            shift and go to state 32
+
+    unary_pred                     shift and go to state 310
+    pred_name                      shift and go to state 61
+    unnamed_pred                   shift and go to state 62
+
+state 305
+
+    (49) next_preds -> next_anonymous_necessary_preds COMMA next_anonymous_opt_preds COMMA STAR COMMA . next_named_preds
+    (66) next_named_preds -> . next_named_preds COMMA next_named_pred
+    (67) next_named_preds -> . next_named_pred
+    (68) next_named_pred -> . next_named_necessary_pred
+    (69) next_named_pred -> . next_named_opt_pred
+    (70) next_named_necessary_pred -> . arg_name COLON unary_pred
+    (71) next_named_opt_pred -> . arg_name COLON ASSIGN unary_pred
+    (72) arg_name -> . ID
+
+    ID              shift and go to state 250
+
+    next_named_preds               shift and go to state 311
+    next_named_pred                shift and go to state 246
+    next_named_necessary_pred      shift and go to state 247
+    next_named_opt_pred            shift and go to state 248
+    arg_name                       shift and go to state 249
+
+state 306
+
+    (108) decl_static_fn_stmt -> static_fn_id LP3 type_var_args RP3 LP1 next_preds RP1 S_COLON .
+
+    RP2             reduce using rule 108 (decl_static_fn_stmt -> static_fn_id LP3 type_var_args RP3 LP1 next_preds RP1 S_COLON .)
+    ID              reduce using rule 108 (decl_static_fn_stmt -> static_fn_id LP3 type_var_args RP3 LP1 next_preds RP1 S_COLON .)
+
+
+state 307
+
+    (109) decl_static_fn_stmt -> static_fn_id LP3 type_var_args RP3 LP1 next_preds RP1 R_ARROW . unary_pred S_COLON
+    (78) unary_pred -> . pred_name
+    (79) unary_pred -> . unnamed_pred
+    (84) pred_name -> . ID
+    (80) unnamed_pred -> . pred_name LP3 args RP3
+    (81) unnamed_pred -> . LP3 pred_expr RP3
+    (82) unnamed_pred -> . TRAIT_OF LP1 var_expr RP1
+    (83) unnamed_pred -> . NONE
+
+    ID              shift and go to state 63
+    LP3             shift and go to state 29
+    TRAIT_OF        shift and go to state 30
+    NONE            shift and go to state 32
+
+    unary_pred                     shift and go to state 312
+    pred_name                      shift and go to state 61
+    unnamed_pred                   shift and go to state 62
+
+state 308
+
+    (113) decl_static_fn_stmt -> static_fn_id LP3 type_var_args RP3 LP1 RP1 R_ARROW unary_pred . S_COLON
+
+    S_COLON         shift and go to state 313
+
+
+state 309
+
+    (38) decl_fn_stmt -> fn_id LP3 type_var_args RP3 LP1 pred_args RP1 R_ARROW unary_pred . S_COLON
+
+    S_COLON         shift and go to state 314
+
+
+state 310
+
+    (44) decl_cls_fn_stmt -> fn_id LP3 type_var_args RP3 LP1 pred_args RP1 R_ARROW unary_pred . S_COLON
+
+    S_COLON         shift and go to state 315
+
+
+state 311
+
+    (49) next_preds -> next_anonymous_necessary_preds COMMA next_anonymous_opt_preds COMMA STAR COMMA next_named_preds .
+    (66) next_named_preds -> next_named_preds . COMMA next_named_pred
+
+    RP1             reduce using rule 49 (next_preds -> next_anonymous_necessary_preds COMMA next_anonymous_opt_preds COMMA STAR COMMA next_named_preds .)
+    COMMA           shift and go to state 271
+
+
+state 312
+
+    (109) decl_static_fn_stmt -> static_fn_id LP3 type_var_args RP3 LP1 next_preds RP1 R_ARROW unary_pred . S_COLON
+
+    S_COLON         shift and go to state 316
+
+
+state 313
+
+    (113) decl_static_fn_stmt -> static_fn_id LP3 type_var_args RP3 LP1 RP1 R_ARROW unary_pred S_COLON .
+
+    RP2             reduce using rule 113 (decl_static_fn_stmt -> static_fn_id LP3 type_var_args RP3 LP1 RP1 R_ARROW unary_pred S_COLON .)
+    ID              reduce using rule 113 (decl_static_fn_stmt -> static_fn_id LP3 type_var_args RP3 LP1 RP1 R_ARROW unary_pred S_COLON .)
+
+
+state 314
+
+    (38) decl_fn_stmt -> fn_id LP3 type_var_args RP3 LP1 pred_args RP1 R_ARROW unary_pred S_COLON .
+
+    RP2             reduce using rule 38 (decl_fn_stmt -> fn_id LP3 type_var_args RP3 LP1 pred_args RP1 R_ARROW unary_pred S_COLON .)
+    ID              reduce using rule 38 (decl_fn_stmt -> fn_id LP3 type_var_args RP3 LP1 pred_args RP1 R_ARROW unary_pred S_COLON .)
+
+
+state 315
+
+    (44) decl_cls_fn_stmt -> fn_id LP3 type_var_args RP3 LP1 pred_args RP1 R_ARROW unary_pred S_COLON .
+
+    RP2             reduce using rule 44 (decl_cls_fn_stmt -> fn_id LP3 type_var_args RP3 LP1 pred_args RP1 R_ARROW unary_pred S_COLON .)
+    ID              reduce using rule 44 (decl_cls_fn_stmt -> fn_id LP3 type_var_args RP3 LP1 pred_args RP1 R_ARROW unary_pred S_COLON .)
+
+
+state 316
+
+    (109) decl_static_fn_stmt -> static_fn_id LP3 type_var_args RP3 LP1 next_preds RP1 R_ARROW unary_pred S_COLON .
+
+    RP2             reduce using rule 109 (decl_static_fn_stmt -> static_fn_id LP3 type_var_args RP3 LP1 next_preds RP1 R_ARROW unary_pred S_COLON .)
+    ID              reduce using rule 109 (decl_static_fn_stmt -> static_fn_id LP3 type_var_args RP3 LP1 next_preds RP1 R_ARROW unary_pred S_COLON .)
+
