@@ -8,7 +8,7 @@ tokens = ll.tokens
 
 def p_t(p: ply.yacc.YaccProduction):
     """
-    Program : PROGRAM_BEGIN S_COLON stmts PROGRAM_END S_COLON
+    program : PROGRAM_BEGIN S_COLON stmts PROGRAM_END S_COLON
             | WS
     stmts : stmts stmt
           | stmt
@@ -96,7 +96,7 @@ def p_t(p: ply.yacc.YaccProduction):
               | pred_expr_a
     pred_expr_a : pred_expr_a AND pred_expr_b
                 | pred_expr_b
-    pred_expr_b : NOT pred_expr_b
+    pred_expr_b : NOT pred_expr_c
                 | pred_expr_c
     pred_expr_c : unary_pred
                 | LP1 pred_expr RP1
@@ -127,7 +127,6 @@ def p_t(p: ply.yacc.YaccProduction):
     to_print : ID
              | boolean_expr
              | unnamed_pred
-             | unary_pred DOT member_fn_name
     boolean_expr : boolean_expr OR boolean_expr_a
                  | boolean_expr_a
     boolean_expr_a : boolean_expr_a XOR boolean_expr_b
@@ -151,7 +150,6 @@ def p_t(p: ply.yacc.YaccProduction):
     args : args COMMA arg
          | arg
     arg : ID
-    member_fn_name : ID
     assign_stmt : names ASSIGN assign_expr S_COLON
     names : names COMMA name
           | name
