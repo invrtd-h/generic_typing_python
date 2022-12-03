@@ -320,11 +320,6 @@ def p_trait_decl_stmt_r4(p: yacc.YaccProduction) -> None:
     p[0] = TraitDeclStmtStaticFn(decl_static_fn_stmts=p[4])
 
 
-def p_trait_decl_stmt_err0(p: yacc.YaccProduction) -> None:
-    """ trait_decl_stmt : error S_COLON """
-    pass
-
-
 def p_decl_fn_stmts_r0(p: yacc.YaccProduction) -> None:
     """ decl_fn_stmts : decl_fn_stmts decl_fn_stmt """
     p[0] = DeclFnStmts(decl_fn_stmts=p[1], decl_fn_stmt=p[2])
@@ -905,9 +900,18 @@ def p_assign_expr_r1(p: yacc.YaccProduction) -> None:
     p[0] = AssignExpr(names=p[1])
 
 
+def p_trait_decl_stmt_err0(p: yacc.YaccProduction) -> None:
+    """ trait_decl_stmt : error S_COLON """
+    print('error detected : {0}'.format(p[1]))
+
+
+def p_trait_decl_stmt_err1(p: yacc.YaccProduction) -> None:
+    """ trait_decl_stmt : error LP2 error S_COLON RP2 S_COLON"""
+    print('error detected : {0}'.format(p[1]))
+
+
 def p_error(p: LexToken) -> None:
-    print(p, parser.statestack)
-    parser.errok()
+    pass
 
 
 parser: ply.yacc.LRParser = yacc.yacc()
@@ -924,6 +928,7 @@ if __name__ == '__main__':
     f.close()
 
     from preprocessor.preprocessor import preprocess
+
     s = preprocess(s)
 
     from utils import logger

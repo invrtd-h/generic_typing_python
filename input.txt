@@ -167,6 +167,10 @@ trait Err(self):
     tutu(self)
     fefe(self)
 
+    fun:
+        ret(self)
+
+
 trait OK(self):
     fn:
         yaya(self, int)
