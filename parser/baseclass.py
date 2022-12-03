@@ -1,7 +1,7 @@
 from utils import override
 
 
-class AstNode:
+class PtNode:
     __slots__ = ()
 
     name: str = 'None'
@@ -9,14 +9,16 @@ class AstNode:
     def parse_tree_print(self, indent: int = 0, logger=None) -> None:
         if logger is None:
             print('=' * indent, end=' ')
-            print('=' * indent, end=' ')
             print(self.name)
         else:
             logger.log('=' * indent + ' ' + self.name)
         for slot in self.__slots__:
-            val: AstNode = getattr(self, slot)
+            val: PtNode = getattr(self, slot)
             if val is not None:
                 val.parse_tree_print(indent + 2, logger)
+
+    def accept(self, visitor: 'Visitor') -> 'PtNode':
+        return visitor.visit(self)
 
     def null_init(self) -> None:
         """
@@ -26,7 +28,7 @@ class AstNode:
             setattr(self, slot, None)
 
 
-class TermNode(AstNode):
+class TermNode(PtNode):
     __slots__ = ('terminal_name',)
 
     def __init__(self, name: str) -> None:
@@ -41,7 +43,7 @@ class TermNode(AstNode):
             logger.log('-' * indent + ' ' + self.terminal_name)
 
 
-class IDNode(AstNode):
+class IDNode(PtNode):
     __slots__ = ('id',)
 
     def __init__(self, id: str):

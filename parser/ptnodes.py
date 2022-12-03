@@ -1,9 +1,9 @@
-from baseclass import AstNode, Flyweights, IDNode
+from baseclass import PtNode, Flyweights, IDNode
 
 fw = Flyweights  # alias
 
 
-class Program(AstNode):
+class Program(PtNode):
     __slots__ = ('PROGRAM_BEGIN', 'S_COLON', 'stmts',
                  'PROGRAM_END', 'S_COLON2')
 
@@ -17,7 +17,7 @@ class Program(AstNode):
         self.S_COLON2 = fw.s_colon
 
 
-class Stmts(AstNode):
+class Stmts(PtNode):
     __slots__ = ('stmts', 'stmt')
 
     name: str = 'stmts'
@@ -30,7 +30,7 @@ class Stmts(AstNode):
             raise ValueError("stmt cannot be None")
 
 
-class Stmt(AstNode):
+class Stmt(PtNode):
     __slots__ = ('next',)
 
     name: str = 'stmt'
@@ -39,7 +39,7 @@ class Stmt(AstNode):
         self.next = next
 
 
-class TraitDecl(AstNode):
+class TraitDecl(PtNode):
     __slots__ = ('TRAIT', 'trait_id', 'LP1', 'class_args', 'RP1',
                  'EXTENDS', 'unary_pred', 'COLON',
                  'LP2', 'trait_decl_stmts', 'RP2', 'S_COLON')
@@ -66,7 +66,7 @@ class TraitDecl(AstNode):
             self.EXTENDS = None
 
 
-class TraitID(AstNode):
+class TraitID(PtNode):
     __slots__ = ('id',)
 
     name: str = 'trait_id'
@@ -75,7 +75,7 @@ class TraitID(AstNode):
         self.id: IDNode = IDNode(id)
 
 
-class ClassArgs(AstNode):
+class ClassArgs(PtNode):
     __slots__ = ('main_arg', 'COMMA', 'sub_args')
 
     name: str = 'class_args'
@@ -89,7 +89,7 @@ class ClassArgs(AstNode):
             self.COMMA = None
 
 
-class MainArg(AstNode):
+class MainArg(PtNode):
     __slots__ = ('id',)
 
     name: str = 'main_arg'
@@ -98,7 +98,7 @@ class MainArg(AstNode):
         self.id = IDNode(id)
 
 
-class SubArgs(AstNode):
+class SubArgs(PtNode):
     __slots__ = ('necessary_args', 'COMMA', 'optional_args')
 
     name: str = 'sub_args'
@@ -116,7 +116,7 @@ class SubArgs(AstNode):
             raise ValueError('At least one of necessary_args and optional_args must be not None')
 
 
-class NecessaryArgs(AstNode):
+class NecessaryArgs(PtNode):
     __slots__ = ('necessary_args', 'COMMA', 'necessary_arg')
 
     name: str = 'necessary_args'
@@ -134,7 +134,7 @@ class NecessaryArgs(AstNode):
             raise ValueError('necessary_arg must be not None')
 
 
-class NecessaryArg(AstNode):
+class NecessaryArg(PtNode):
     __slots__ = ('id',)
 
     name: str = 'necessary_arg'
@@ -143,7 +143,7 @@ class NecessaryArg(AstNode):
         self.id = IDNode(id)
 
 
-class OptionalArgs(AstNode):
+class OptionalArgs(PtNode):
     __slots__ = ('optional_args', 'COMMA', 'optional_arg')
 
     name: str = 'optional_args'
@@ -160,7 +160,7 @@ class OptionalArgs(AstNode):
             raise ValueError('optional_arg must be not None')
 
 
-class OptionalArg(AstNode):
+class OptionalArg(PtNode):
     __slots__ = ('id', 'ASSIGN', 'unary_pred')
 
     name: str = 'optional_arg'
@@ -171,7 +171,7 @@ class OptionalArg(AstNode):
         self.unary_pred = unary_pred
 
 
-class TraitDeclStmts(AstNode):
+class TraitDeclStmts(PtNode):
     __slots__ = ('trait_decl_stmts', 'trait_decl_stmt',
                  'PASS', 'S_COLON')
 
@@ -192,7 +192,7 @@ class TraitDeclStmts(AstNode):
         self.S_COLON = None
 
 
-class TraitDeclStmt(AstNode):
+class TraitDeclStmt(PtNode):
     __slots__ = ('decl_type', 'COLON', 'LP2',
                  'decl_stmts', 'RP2', 'S_COLON')
 
@@ -259,7 +259,7 @@ class TraitDeclStmtStaticFn(TraitDeclStmt):
         self.S_COLON = fw.s_colon
 
 
-class DeclFnStmts(AstNode):
+class DeclFnStmts(PtNode):
     __slots__ = ('decl_fn_stmts', 'decl_fn_stmt')
 
     name: str = 'decl_fn_stmts'
@@ -269,7 +269,7 @@ class DeclFnStmts(AstNode):
         self.decl_fn_stmt = decl_fn_stmt
 
 
-class DeclFnStmt(AstNode):
+class DeclFnStmt(PtNode):
     __slots__ = ('fn_id', 'LP3', 'type_var_args', 'RP3',
                  'LP1', 'pred_args', 'RP1',
                  'R_ARROW', 'unary_pred', 'S_COLON')
@@ -298,7 +298,7 @@ class DeclFnStmt(AstNode):
         self.S_COLON = fw.s_colon
 
 
-class DeclClsFnStmts(AstNode):
+class DeclClsFnStmts(PtNode):
     __slots__ = ('decl_cls_fn_stmts', 'decl_cls_fn_stmt')
 
     name: str = 'decl_cls_fn_stmts'
@@ -309,7 +309,7 @@ class DeclClsFnStmts(AstNode):
         self.decl_cls_fn_stmt = decl_cls_fn_stmt
 
 
-class DeclClsFnStmt(AstNode):
+class DeclClsFnStmt(PtNode):
     __slots__ = ('fn_id', 'LP3', 'type_var_args', 'RP3',
                  'LP1', 'pred_args', 'RP1',
                  'R_ARROW', 'unary_pred', 'S_COLON')
@@ -338,7 +338,7 @@ class DeclClsFnStmt(AstNode):
         self.S_COLON = fw.s_colon
 
 
-class FnID(AstNode):
+class FnID(PtNode):
     __slots__ = ('id',)
 
     name: str = 'fn_id'
@@ -347,7 +347,7 @@ class FnID(AstNode):
         self.id = IDNode(id)
 
 
-class PredArgs(AstNode):
+class PredArgs(PtNode):
     __slots__ = ('main_pred', 'COMMA', 'next_preds')
 
     name: str = 'pred_args'
@@ -362,7 +362,7 @@ class PredArgs(AstNode):
             self.COMMA = None
 
 
-class MainPred(AstNode):
+class MainPred(PtNode):
     __slots__ = ('id',)
 
     name: str = 'main_pred'
@@ -371,7 +371,7 @@ class MainPred(AstNode):
         self.id = IDNode(id)
 
 
-class NextPreds(AstNode):
+class NextPreds(PtNode):
     __slots__ = ('next_ano_nec_preds', 'COMMA1',
                  'next_ano_opt_preds', 'COMMA2',
                  'STAR', 'COMMA3',
@@ -408,7 +408,7 @@ class NextPreds(AstNode):
         return
 
 
-class NextAnoNecPreds(AstNode):
+class NextAnoNecPreds(PtNode):
     __slots__ = ('next_ano_nec_preds', 'COMMA', 'next_ano_nec_pred')
 
     name: str = 'next_anonymous_necessary_preds'
@@ -426,7 +426,7 @@ class NextAnoNecPreds(AstNode):
             raise ValueError('next_ano_nec_pred cannot be None')
 
 
-class NextAnoNecPred(AstNode):
+class NextAnoNecPred(PtNode):
     __slots__ = ('unary_pred',)
 
     name: str = 'next_anonymous_necessary_pred'
@@ -435,7 +435,7 @@ class NextAnoNecPred(AstNode):
         self.unary_pred = unary_pred
 
 
-class NextAnoOptPreds(AstNode):
+class NextAnoOptPreds(PtNode):
     __slots__ = ('next_ano_opt_preds', 'COMMA', 'next_ano_opt_pred')
 
     name: str = 'next_anonymous_optional_preds'
@@ -453,7 +453,7 @@ class NextAnoOptPreds(AstNode):
             raise ValueError('next_ano_opt_pred cannot be None')
 
 
-class NextAnoOptPred(AstNode):
+class NextAnoOptPred(PtNode):
     __slots__ = ('ASSIGN', 'unary_pred')
 
     name: str = 'next_anonymous_optional_pred'
@@ -463,7 +463,7 @@ class NextAnoOptPred(AstNode):
         self.unary_pred = unary_pred
 
 
-class NextNamedPreds(AstNode):
+class NextNamedPreds(PtNode):
     __slots__ = ('next_named_preds', 'COMMA', 'next_named_pred')
 
     name: str = 'next_named_preds'
@@ -481,7 +481,7 @@ class NextNamedPreds(AstNode):
             raise ValueError('next_named_pred must not be None')
 
 
-class NextNamedPred(AstNode):
+class NextNamedPred(PtNode):
     __slots__ = ('next_named_nec_pred',
                  'next_named_opt_pred')
 
@@ -501,7 +501,7 @@ class NextNamedPred(AstNode):
             raise ValueError('next_named_pred must have exactly one child')
 
 
-class NextNamedNecPred(AstNode):
+class NextNamedNecPred(PtNode):
     __slots__ = ('arg_name', 'COLON', 'unary_pred')
 
     name: str = 'next_named_necessary_pred'
@@ -512,7 +512,7 @@ class NextNamedNecPred(AstNode):
         self.unary_pred = unary_pred
 
 
-class NextNamedOptPred(AstNode):
+class NextNamedOptPred(PtNode):
     __slots__ = ('arg_name', 'COLON', 'ASSIGN', 'unary_pred')
 
     name: str = 'next_named_optional_pred'
@@ -524,7 +524,7 @@ class NextNamedOptPred(AstNode):
         self.unary_pred = unary_pred
 
 
-class ArgName(AstNode):
+class ArgName(PtNode):
     __slots__ = ('id',)
 
     name: str = 'arg_name'
@@ -533,7 +533,7 @@ class ArgName(AstNode):
         self.id = IDNode(id)
 
 
-class TypeVarArgs(AstNode):
+class TypeVarArgs(PtNode):
     __slots__ = ('type_var_args', 'COMMA', 'type_var_arg')
 
     name: str = 'type_var_args'
@@ -550,7 +550,7 @@ class TypeVarArgs(AstNode):
             raise ValueError('type_var_arg must not be None')
 
 
-class TypeVarArg(AstNode):
+class TypeVarArg(PtNode):
     __slots__ = ('type_var_id', 'COLON', 'unary_pred')
 
     name: str = 'type_var_arg'
@@ -565,7 +565,7 @@ class TypeVarArg(AstNode):
             self.COLON = None
 
 
-class TypeVarId(AstNode):
+class TypeVarId(PtNode):
     __slots__ = ('id',)
 
     name: str = 'type_var_id'
@@ -574,7 +574,7 @@ class TypeVarId(AstNode):
         self.id = IDNode(id)
 
 
-class UnaryPred(AstNode):
+class UnaryPred(PtNode):
     __slots__ = ('pred_name', 'unnamed_pred')
 
     name: str = 'unary_pred'
@@ -592,7 +592,7 @@ class UnaryPred(AstNode):
             raise ValueError('unary_pred must have exactly one child')
 
 
-class PredName(AstNode):
+class PredName(PtNode):
     __slots__ = ('id',)
 
     name: str = 'pred_name'
@@ -601,7 +601,7 @@ class PredName(AstNode):
         self.id = IDNode(id)
 
 
-class UnnamedPred(AstNode):
+class UnnamedPred(PtNode):
     __slots__ = ('pred_name', 'LP3', 'args', 'RP3',
                  'LP32', 'pred_expr', 'RP32',
                  'TRAIT_OF', 'LP1', 'var_expr', 'RP1',
@@ -631,7 +631,7 @@ class UnnamedPred(AstNode):
             self.NONE = fw.none
 
 
-class PredExpr(AstNode):
+class PredExpr(PtNode):
     __slots__ = ('pred_expr', 'OR', 'pred_expr_a')
 
     name: str = 'pred_expr'
@@ -647,7 +647,7 @@ class PredExpr(AstNode):
             raise ValueError('pred_expr_a must not be None')
 
 
-class PredExprA(AstNode):
+class PredExprA(PtNode):
     __slots__ = ('pred_expr_a', 'AND', 'pred_expr_b')
 
     name: str = 'pred_expr_a'
@@ -663,7 +663,7 @@ class PredExprA(AstNode):
             raise ValueError('pred_expr_b must not be None')
 
 
-class PredExprB(AstNode):
+class PredExprB(PtNode):
     __slots__ = ('NOT', 'pred_expr_c')
 
     name: str = 'pred_expr_b'
@@ -678,7 +678,7 @@ class PredExprB(AstNode):
             raise ValueError('pred_expr_c must not be None')
 
 
-class PredExprC(AstNode):
+class PredExprC(PtNode):
     __slots__ = ('unary_pred', 'LP1', 'pred_expr', 'RP1')
 
     name: str = 'pred_expr_c'
@@ -701,7 +701,7 @@ class PredExprC(AstNode):
             raise err
 
 
-class VarExpr(AstNode):
+class VarExpr(PtNode):
     __slots__ = ('unary_pred', 'DOT', 'member_var_name')
 
     name: str = 'var_expr'
@@ -712,7 +712,7 @@ class VarExpr(AstNode):
         self.member_var_name = member_var_name
 
 
-class MemberVarName(AstNode):
+class MemberVarName(PtNode):
     __slots__ = ('id',)
 
     name: str = 'member_var_name'
@@ -721,7 +721,7 @@ class MemberVarName(AstNode):
         self.id = IDNode(id)
 
 
-class DeclStmts(AstNode):
+class DeclStmts(PtNode):
     __slots__ = ('decl_stmts', 'decl_stmt')
 
     name: str = 'decl_stmts'
@@ -734,7 +734,7 @@ class DeclStmts(AstNode):
             raise ValueError('decl_stmt must not be None')
 
 
-class DeclStmt(AstNode):
+class DeclStmt(PtNode):
     __slots__ = ('var_id', 'LP3', 'vars_id', 'RP3',
                  'COLON', 'unary_pred', 'S_COLON')
 
@@ -765,7 +765,7 @@ class DeclStmt(AstNode):
         self.S_COLON = fw.s_colon
 
 
-class VarsId(AstNode):
+class VarsId(PtNode):
     __slots__ = ('vars_id', 'COMMA', 'var_id')
 
     name: str = 'vars_id'
@@ -783,7 +783,7 @@ class VarsId(AstNode):
             raise ValueError('var_id must not be None')
 
 
-class VarId(AstNode):
+class VarId(PtNode):
     __slots__ = ('id',)
 
     name: str = 'var_id'
@@ -792,7 +792,7 @@ class VarId(AstNode):
         self.id = IDNode(id)
 
 
-class DeclStaticFnStmts(AstNode):
+class DeclStaticFnStmts(PtNode):
     __slots__ = ('decl_static_fn_stmts', 'decl_static_fn_stmt')
 
     name: str = 'decl_static_fn_stmts'
@@ -805,7 +805,7 @@ class DeclStaticFnStmts(AstNode):
             raise ValueError('decl_static_fn_stmt must not be None')
 
 
-class DeclStaticFnStmt(AstNode):
+class DeclStaticFnStmt(PtNode):
     __slots__ = ('static_fn_id',
                  'LP3', 'type_var_args', 'RP3',
                  'LP1', 'next_preds', 'RP1',
@@ -838,7 +838,7 @@ class DeclStaticFnStmt(AstNode):
         self.S_COLON = fw.s_colon
 
 
-class StaticFnId(AstNode):
+class StaticFnId(PtNode):
     __slots__ = ('id',)
 
     name: str = 'static_fn_id'
@@ -847,7 +847,7 @@ class StaticFnId(AstNode):
         self.id = IDNode(id)
 
 
-class PrintStmt(AstNode):
+class PrintStmt(PtNode):
     __slots__ = ('PRINTINFO', 'to_print', 'S_COLON')
 
     name: str = 'print_stmt'
@@ -858,7 +858,7 @@ class PrintStmt(AstNode):
         self.S_COLON = fw.s_colon
 
 
-class GenerateStmt(AstNode):
+class GenerateStmt(PtNode):
     __slots__ = ('GENERATE', 'to_print', 'S_COLON')
 
     name: str = 'generate_stmt'
@@ -869,7 +869,7 @@ class GenerateStmt(AstNode):
         self.S_COLON = fw.s_colon
 
 
-class ToPrint(AstNode):
+class ToPrint(PtNode):
     __slots__ = ('ID', 'boolean_expr', 'unnamed_pred')
 
     name: str = 'to_print'
@@ -893,7 +893,7 @@ class ToPrint(AstNode):
             raise err
 
 
-class BooleanExpr(AstNode):
+class BooleanExpr(PtNode):
     __slots__ = ('boolean_expr', 'OR', 'boolean_expr_a')
 
     name: str = 'boolean_expr'
@@ -911,7 +911,7 @@ class BooleanExpr(AstNode):
             raise ValueError('boolean_expr_a must not be None')
 
 
-class BooleanExprA(AstNode):
+class BooleanExprA(PtNode):
     __slots__ = ('boolean_expr_a', 'XOR', 'boolean_expr_b')
 
     name: str = 'boolean_expr_a'
@@ -929,7 +929,7 @@ class BooleanExprA(AstNode):
             raise ValueError('boolean_expr_b must not be None')
 
 
-class BooleanExprB(AstNode):
+class BooleanExprB(PtNode):
     __slots__ = ('boolean_expr_b', 'AND', 'boolean_expr_c')
 
     name: str = 'boolean_expr_b'
@@ -947,7 +947,7 @@ class BooleanExprB(AstNode):
             raise ValueError('boolean_expr_c must not be None')
 
 
-class BooleanExprC(AstNode):
+class BooleanExprC(PtNode):
     __slots__ = ('boolean_expr_c', 'EQ', 'NEQ', 'boolean_expr_d')
 
     name: str = 'boolean_expr_c'
@@ -969,7 +969,7 @@ class BooleanExprC(AstNode):
             raise ValueError('boolean_expr_d must not be None')
 
 
-class BooleanExprD(AstNode):
+class BooleanExprD(PtNode):
     __slots__ = ('NOT', 'boolean_expr_e')
 
     name: str = 'boolean_expr_d'
@@ -985,7 +985,7 @@ class BooleanExprD(AstNode):
             raise ValueError('boolean_expr_e must not be None')
 
 
-class BooleanExprE(AstNode):
+class BooleanExprE(PtNode):
     __slots__ = ('atomic_boolean_expr',
                  'LP1', 'boolean_expr', 'RP1')
 
@@ -1008,7 +1008,7 @@ class BooleanExprE(AstNode):
             raise err
 
 
-class AtomicBooleanExpr(AstNode):
+class AtomicBooleanExpr(PtNode):
     name: str = 'atomic_boolean_expr'
 
     pass
@@ -1054,7 +1054,7 @@ class AtomicBooleanExprType4(AtomicBooleanExpr):
         self.RP1 = fw.rp1
 
 
-class Constants(AstNode):
+class Constants(PtNode):
     __slots__ = ('VALUE',)
 
     name: str = 'constants'
@@ -1066,7 +1066,7 @@ class Constants(AstNode):
             self.VALUE = fw.false
 
 
-class Args(AstNode):
+class Args(PtNode):
     __slots__ = ('args', 'COMMA', 'arg')
 
     name: str = 'args'
@@ -1085,7 +1085,7 @@ class Args(AstNode):
             raise ValueError('arg must not be None')
 
 
-class Arg(AstNode):
+class Arg(PtNode):
     __slots__ = ('id',)
 
     name: str = 'arg'
@@ -1094,7 +1094,7 @@ class Arg(AstNode):
         self.id = IDNode(id)
 
 
-class AssignStmt(AstNode):
+class AssignStmt(PtNode):
     __slots__ = ('names', 'ASSIGN', 'assign_expr', 'S_COLON')
 
     name: str = 'assign_stmt'
@@ -1107,7 +1107,7 @@ class AssignStmt(AstNode):
         self.S_COLON = fw.s_colon
 
 
-class Names(AstNode):
+class Names(PtNode):
     __slots__ = ('names', 'COMMA', 'mono_name')
 
     name: str = 'names'
@@ -1126,7 +1126,7 @@ class Names(AstNode):
             raise ValueError('name must not be None')
 
 
-class Name(AstNode):
+class Name(PtNode):
     __slots__ = ('id',)
 
     name: str = 'name'
@@ -1135,7 +1135,7 @@ class Name(AstNode):
         self.id = IDNode(id)
 
 
-class AssignExpr(AstNode):
+class AssignExpr(PtNode):
     __slots__ = ('names', 'ASSIGN', 'assign_expr')
 
     name: str = 'assign_expr'

@@ -88,7 +88,7 @@ def t_error(t) -> None:
 lexer = lex.lex()
 
 
-s1: str = """class AstNode:
+s1: str = """class PtNode:
     __slots__ = ()
 
     name: str = None
@@ -97,7 +97,7 @@ s1: str = """class AstNode:
         print('-' * indent, end='')
         print(self.name)
         for slot in self.__slots__:
-            val: AstNode = getattr(self, slot)
+            val: PtNode = getattr(self, slot)
             if val is not None:
                 val.ast_print(indent + 2)
 """
