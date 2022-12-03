@@ -69,6 +69,11 @@ t_DOT = r'\.'
 t_STAR = r'\*'
 
 
+def t_newline(t) -> None:
+    r'[\r\n]+'
+    t.lexer.lineno += t.value.count("\n")
+
+
 def t_WS(t) -> None:
     r'[\s]+'
     pass

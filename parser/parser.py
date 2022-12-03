@@ -150,8 +150,10 @@ name : ID
 assign_expr : names ASSIGN assign_expr
             | names
 """
-
+import ply.yacc
 import ply.yacc as yacc
+from ply.lex import LexToken
+
 import lexer.lexer as ll
 from ptnodes import *
 
@@ -316,6 +318,11 @@ def p_trait_decl_stmt_r3(p: yacc.YaccProduction) -> None:
 def p_trait_decl_stmt_r4(p: yacc.YaccProduction) -> None:
     """ trait_decl_stmt : STATIC_FN COLON LP2 decl_static_fn_stmts RP2 S_COLON """
     p[0] = TraitDeclStmtStaticFn(decl_static_fn_stmts=p[4])
+
+
+def p_trait_decl_stmt_err0(p: yacc.YaccProduction) -> None:
+    """ trait_decl_stmt : error S_COLON """
+    pass
 
 
 def p_decl_fn_stmts_r0(p: yacc.YaccProduction) -> None:
@@ -898,27 +905,12 @@ def p_assign_expr_r1(p: yacc.YaccProduction) -> None:
     p[0] = AssignExpr(names=p[1])
 
 
-def p_error(p):
-    """
-    Panic mode recovery.
-    This code is copied from the official PLY documentation.
-    """
-    if p:
-        print("Syntax error at {}".format(p.value))
-    # Read ahead looking for a terminating ";"
-    while True:
-        tok = parser.token()  # Get the next token
-        if not tok:
-            return None
-        if not tok or tok.type == 'S_COLON':
-            break
+def p_error(p: LexToken) -> None:
+    print(p, parser.statestack)
     parser.errok()
 
-    # Return S_COLON to the parser as the next lookahead token
-    return tok
 
-
-parser = yacc.yacc()
+parser: ply.yacc.LRParser = yacc.yacc()
 
 
 def get_parse_tree(s: str) -> Program:

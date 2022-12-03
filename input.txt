@@ -156,3 +156,17 @@ trait TraitWithAllOptionalArgs(self, arg_a=int, arg_b=str):
 trait GenericTrait(self):
     fn:
         foo[T](self, T) -> T
+
+# errors
+
+trait Err(self):
+    yay(self)
+    aya(self)
+    fn:
+        tata(self)
+    tutu(self)
+    fefe(self)
+
+trait OK(self):
+    fn:
+        yaya(self, int)

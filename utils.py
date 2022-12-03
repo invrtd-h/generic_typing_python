@@ -6,6 +6,7 @@ def no_effect_decorator(func):
 
 
 override = no_effect_decorator
+noexcept = no_effect_decorator
 
 
 class Implicit_type_conversion:
@@ -100,12 +101,28 @@ class DuplicatedError(Exception):
     pass
 
 
+class FnConflictError(Exception):
+    pass
+
+
+class VarConflictError(Exception):
+    pass
+
+
 class GPErrors:
     __slots__ = ()
 
     @staticmethod
     def duplicated_error(msg: str) -> DuplicatedError:
         return DuplicatedError(msg)
+
+    @staticmethod
+    def fn_conflict_error(msg: str) -> FnConflictError:
+        return FnConflictError(msg)
+
+    @staticmethod
+    def var_conflict_error(msg: str) -> VarConflictError:
+        return VarConflictError(msg)
 
 
 errs = GPErrors()

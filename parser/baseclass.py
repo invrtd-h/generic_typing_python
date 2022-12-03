@@ -17,7 +17,7 @@ class PtNode:
             if val is not None:
                 val.parse_tree_print(indent + 2, logger)
 
-    def accept(self, visitor: 'Visitor') -> 'PtNode':
+    def accept(self, visitor) -> 'PtNode':
         return visitor.visit(self)
 
     def null_init(self) -> None:
@@ -75,7 +75,7 @@ class Flyweights:
     pass_ = TermNode('pass')
     true = TermNode('True')
     false = TermNode('False')
-    trait = TermNode('trait')
+    trait = TermNode('trait_id')
     cls_fn = TermNode('cls_fn')
     cls_var = TermNode('cls_var')
     extends = TermNode('extends')
