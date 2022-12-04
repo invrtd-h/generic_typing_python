@@ -915,9 +915,10 @@ def p_trait_decl_stmt_err1(p: yacc.YaccProduction) -> None:
     print('error detected : {0}'.format(p[1]))
 
 
-def p_assign_stmt_err0(p: yacc.YaccProduction) -> None:
-    """ assign_stmt : names assign_expr S_COLON """
-    print('error detected')
+def p_assign_expr_err0(p: yacc.YaccProduction) -> None:
+    """
+    assign_stmt : names ASSIGN error S_COLON
+    """
     print('no RHS expression after the assign operator')
 
 
@@ -1069,12 +1070,6 @@ def decl_cls_fn_stmt_err5(p: yacc.YaccProduction) -> None:
     print('the square parenthesis is not closed')
 
 
-# Error recovery : handling the brace error in unnamed_pred (not completed)
-def p_unnamed_pred_err0(p: yacc.YaccProduction) -> None:
-    """ unnamed_pred : pred_name error RP3 """
-    print('the square brace is not opened but closed')
-
-
 # Error recovery : handling the brace error in decl_stmt
 def p_decl_stmt_err0(p: yacc.YaccProduction) -> None:
     """ decl_stmt :  error RP3 S_COLON """
@@ -1129,6 +1124,7 @@ def p_error(p) -> None:
 
     no = p.lineno - 1
 
+    print('=' * 50)
     print("Syntax error at line %d, column %d" % (no, p.lexpos - x[0][no]))
     print(x[1][p.lineno])
     print(' ' * (p.lexpos - x[0][no]) + '^')
@@ -1154,8 +1150,11 @@ if __name__ == '__main__':
     from utils import logger
 
     x = parser.parse(s)
+
+    print('=' * 50)
     if x is not None:
         x.parse_tree_print(logger=logger)
         logger.write_on_file(filename='output.txt')
+        print("Parsing completed successfully")
     else:
         print("Compiler shut down due to syntax error")

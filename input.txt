@@ -173,6 +173,6 @@ printinfo [Addable and Subable](int) # -> True
 
 printinfo [(a and b) or (c and (d or e))]
 
+a, b =
 
-
-
+a, b = c, d = e, f =
