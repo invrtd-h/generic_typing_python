@@ -1,7 +1,7 @@
 import ply.yacc
 import ply.yacc as yacc
 
-import lexer.lexer as ll
+import lexical.lexer as ll
 
 tokens = ll.tokens
 
@@ -179,7 +179,7 @@ def p_error(p):
             break
     parser.errok()
 
-    # Return S_COLON to the parser as the next lookahead token
+    # Return S_COLON to the syntax as the next lookahead token
     return tok
 
 

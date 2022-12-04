@@ -75,6 +75,31 @@ class FnInfo:
                self.named_nec == other.named_nec and self.named_opt == other.named_opt and self.ret == other.ret and \
                self.policy == other.policy
 
+    def __repr__(self):
+        ret: str = "fn: "
+        if self.policy == fp.fn:
+            ret += 'member_fn, '
+        elif self.policy == fp.cls_fn:
+            ret += 'class_fn, '
+        elif self.policy == fp.static_fn:
+            ret += 'static_fn, '
+
+        ret += 'name = ' + self.name + ', '
+
+        for ids in self.ano_nec:
+            ret += ids
+            ret += ', '
+        for ids in self.ano_opt:
+            ret += '='
+            ret += ids
+            ret += ', '
+        for name, ids in self.named_nec:
+            ret += name + ': ' + ids + ', '
+        for name, ids in self.named_opt:
+            ret += name + ':= ' + ids + ', '
+
+        return ret[:-2]
+
 
 class VarInfo:
     __slots__ = ('name', 'trait_id', 'policy')
@@ -94,6 +119,16 @@ class VarInfo:
         if not isinstance(other, VarInfo):
             return False
         return self.name == other.name and self.trait_id == other.trait_id and self.policy == other.policy
+
+    def __repr__(self) -> str:
+        ret = 'var: '
+        if self.policy == vp.var:
+            ret += 'member variable, '
+        else:
+            ret += 'class variable, '
+        ret += 'name = ' + self.name + ', trait = ' + self.trait_id
+
+        return ret
 
 
 class TraitInfo:
@@ -350,6 +385,21 @@ class TraitInfo:
             if VarInfo.conflicts(var, self.maybe_vars_dict[var.name]):
                 return True
         return False
+
+    def __repr__(self) -> str:
+        ret = 'The trait must have these functions : \n'
+        for x, fn in self.fns_dict:
+            ret += str(fn) + '\n'
+        ret += 'The trait may have these functions : \n'
+        for x, fn in self.maybe_fns_dict:
+            ret += str(fn) + '\n'
+        ret += 'The trait must have these variables : \n'
+        for x, var in self.vars_dict:
+            ret += str(var) + '\n'
+        for x, var in self.maybe_vars_dict:
+            ret += str(var) + '\n'
+
+        return ret
 
 
 if __name__ == '__main__':

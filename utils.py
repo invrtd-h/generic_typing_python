@@ -58,8 +58,10 @@ class Logger:
     def set_end_char(cls, end_char: str) -> None:
         cls._end_char = end_char
 
-    def log(self, msg: str) -> None:
-        self._log += msg + self._end_char
+    def log(self, msg: str, end: str = None) -> None:
+        if end is None:
+            end = self._end_char
+        self._log += str(msg) + end
 
 
 logger = Logger()

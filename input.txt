@@ -35,7 +35,7 @@ trait AnyRandom(self):
 
     cls_fn:
         foo(cls, int) -> str
-        foo(cls, float) -> str
+        foo(cls, float)
 
     cls_var:
         xxx
@@ -43,6 +43,8 @@ trait AnyRandom(self):
 
     static_fn:
         bar() -> None
+
+printinfo trait_of(AnyRandom.x)
 
 
 t_random = any_random
@@ -140,11 +142,13 @@ generate FooBarable
 
 printinfo [FooBarable and BarBazable] implies [FooBarable or BarBazable]
 
+# 13. assignments.
+
 a, b = b, a
 
 # 14. default arguments.
 
-trait DefaultArgsExample(self, arg_a, arg_b, arg_c=int, arg_d=float):
+trait DefaultArgsExample(self, arg_a, arg_b, arg_c=[Addable and Subable], arg_d=float):
     pass
 
 trait TraitWithAllOptionalArgs(self, arg_a=int, arg_b=str):
@@ -157,20 +161,14 @@ trait GenericTrait(self):
     fn:
         foo[T](self, T) -> T
 
-# errors
-
-trait Err(self):
-    yay(self)
-    aya(self)
-    fn:
-        tata(self)
-    tutu(self)
-    fefe(self)
-
-    fun:
-        ret(self)
-
 
 trait OK(self):
     fn:
         yaya(self, int)
+    static_fn:
+        static_yaya()
+        static_fefe(int, bool)
+
+printinfo [Addable and Subable](int) # -> True
+
+printinfo [(a and b) or (c and (d or e))]

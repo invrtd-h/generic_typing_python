@@ -152,10 +152,10 @@ assign_expr : names ASSIGN assign_expr
 """
 import ply.yacc
 import ply.yacc as yacc
-from ply.lex import LexToken
 
-import lexer.lexer as ll
-from ptnodes import *
+import lexical.lexer as ll
+
+from syntax.ptnodes import *
 
 tokens = ll.tokens
 
@@ -910,8 +910,8 @@ def p_trait_decl_stmt_err1(p: yacc.YaccProduction) -> None:
     print('error detected : {0}'.format(p[1]))
 
 
-def p_error(p: LexToken) -> None:
-    pass
+def p_error(p) -> None:
+    print('error detected : {0}'.format(p))
 
 
 parser: ply.yacc.LRParser = yacc.yacc()
@@ -933,5 +933,6 @@ if __name__ == '__main__':
 
     from utils import logger
 
-    parser.parse(s).parse_tree_print(logger=logger)
+    x = parser.parse(s)
+    x.parse_tree_print(logger=logger)
     logger.write_on_file(filename='output.txt')
