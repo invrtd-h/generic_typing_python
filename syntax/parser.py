@@ -150,6 +150,8 @@ name : ID
 assign_expr : names ASSIGN assign_expr
             | names
 """
+import bisect
+
 import ply.yacc
 import ply.yacc as yacc
 
@@ -1121,7 +1123,15 @@ def p_decl_static_fn_stmt_err5(p: yacc.YaccProduction) -> None:
 
 
 def p_error(p) -> None:
-    print('error detected : {0}'.format(p))
+
+    from preprocessor.preprocessor import line_lengths
+    x = line_lengths.data
+
+    no = p.lineno - 1
+
+    print("Syntax error at line %d, column %d" % (no, p.lexpos - x[0][no]))
+    print(x[1][p.lineno])
+    print(' ' * (p.lexpos - x[0][no]) + '^')
 
 
 parser: ply.yacc.LRParser = yacc.yacc()
@@ -1144,5 +1154,8 @@ if __name__ == '__main__':
     from utils import logger
 
     x = parser.parse(s)
-    x.parse_tree_print(logger=logger)
-    logger.write_on_file(filename='output.txt')
+    if x is not None:
+        x.parse_tree_print(logger=logger)
+        logger.write_on_file(filename='output.txt')
+    else:
+        print("Compiler shut down due to syntax error")

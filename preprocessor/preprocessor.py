@@ -1,5 +1,19 @@
 from typing import Optional
 from functools import reduce
+from copy import deepcopy
+
+
+class SimpleHolder:
+    __slots__ = ('data',)
+
+    def __init__(self, data=None):
+        self.data = data
+
+    def export(self):
+        return deepcopy(self.data)
+
+
+line_lengths = SimpleHolder()
 
 
 class ProgramLine:
@@ -63,6 +77,13 @@ class Program:
 
         self._add_semicolon()
         self._add_parentheses()
+
+        lens: tuple[list[int], list[str]] = ([0], [''])
+        for line in self.lines:
+            lens[0].append(lens[0][-1] + len(line.data) + line.initial_indents + 1)
+            lens[1].append(' ' * line.initial_indents + line.data)
+
+        line_lengths.data = lens
 
     def __repr__(self) -> str:
         """Returns the program as a string"""
