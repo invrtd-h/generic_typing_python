@@ -904,11 +904,175 @@ def p_trait_decl_stmt_err0(p: yacc.YaccProduction) -> None:
     """ trait_decl_stmt : error S_COLON """
     print('error detected : {0}'.format(p[1]))
 
-
 def p_trait_decl_stmt_err1(p: yacc.YaccProduction) -> None:
-    """ trait_decl_stmt : error LP2 error S_COLON RP2 S_COLON"""
+    """ trait_decl_stmt : error LP2 error RP2 S_COLON"""
     print('error detected : {0}'.format(p[1]))
 
+def p_assign_stmt_err0(p: yacc.YaccProduction) -> None:
+    """ assign_stmt : names assign_expr S_COLON """
+    print('error detected')
+    print('no RHS expression after the assign operator')
+
+def p_trait_decl_err0(p: yacc.YaccProduction) -> None:
+    """ trait_decl : TRAIT trait_id error COLON LP2 trait_decl_stmts RP2 S_COLON """
+    print('the parenthesis is not opened but closed')
+
+def p_trait_decl_err1(p: yacc.YaccProduction) -> None:
+    """ trait_decl : TRAIT trait_id LP1 class_args error LP2 trait_decl_stmts RP2 S_COLON """
+    print('the parenthesis is not closed')
+
+def p_trait_decl_err2(p: yacc.YaccProduction) -> None:
+    """ trait_decl : TRAIT trait_id LP1 class_args RP1 error S_COLON """
+    print('the curly braket is not opened but closed')
+
+def p_trait_decl_err3(p: yacc.YaccProduction) -> None:
+    """ trait_decl : TRAIT trait_id LP1 class_args RP1 LP2 trait_decl_stmts error S_COLON """
+    print('the curly braket is not closed')
+
+def p_trait_decl_err4(p: yacc.YaccProduction) -> None:
+    """ trait_decl : TRAIT trait_id error EXTENDS unary_pred COLON LP2 trait_decl_stmts RP2 S_COLON """
+    print('the parenthesis is not opened but closed')
+
+def p_trait_decl_err5(p: yacc.YaccProduction) -> None:
+    """ trait_decl : TRAIT trait_id LP1 class_args error EXTENDS unary_pred COLON LP2 trait_decl_stmts RP2 S_COLON """
+    print('the parenthesis is not closed')
+
+def p_trait_decl_err6(p: yacc.YaccProduction) -> None:
+    """ trait_decl : TRAIT trait_id LP1 class_args RP1 COLON error S_COLON """
+    print('the curly braket is not opened but closed')
+
+# Error recovery : handling the brace error in trait_decl_stmts
+def p_trait_decl_stmt_err2(p: yacc.YaccProduction) -> None:
+    """ trait_decl_stmt : FN COLON error RP2 S_COLON """
+    print('the curly braket is not opened but closed')
+
+def p_trait_decl_stmt_err3(p: yacc.YaccProduction) -> None:
+    """ trait_decl_stmt : FN COLON LP2 error S_COLON """
+    print('the curly braket is not closed')
+
+def p_trait_decl_stmt_err4(p: yacc.YaccProduction) -> None:
+    """ trait_decl_stmt : VAR COLON error RP2 S_COLON """
+    print('the curly braket is not opened but closed')
+
+def p_trait_decl_stmt_err5(p: yacc.YaccProduction) -> None:
+    """ trait_decl_stmt : VAR COLON LP2 error S_COLON """
+    print('the curly braket is not closed')
+
+def p_trait_decl_stmt_err6(p: yacc.YaccProduction) -> None:
+    """ trait_decl_stmt : CLS_FN COLON error RP2 S_COLON """
+    print('the curly braket is not opened but closed')
+
+def p_trait_decl_stmt_err7(p: yacc.YaccProduction) -> None:
+    """ trait_decl_stmt : CLS_FN COLON LP2 error S_COLON """
+    print('the curly braket is not closed')
+
+def p_trait_decl_stmt_err8(p: yacc.YaccProduction) -> None:
+    """ trait_decl_stmt : CLS_VAR COLON error RP2 S_COLON """
+    print('the curly braket is not opened but closed')
+
+def p_trait_decl_stmt_err9(p: yacc.YaccProduction) -> None:
+    """ trait_decl_stmt : CLS_VAR COLON LP2 error S_COLON """
+    print('the curly braket is not closed')
+
+def p_trait_decl_stmt_err10(p: yacc.YaccProduction) -> None:
+    """ trait_decl_stmt : STATIC_FN COLON error RP2 S_COLON """
+    print('the curly braket is not opened but closed')
+
+def p_trait_decl_stmt_err11(p: yacc.YaccProduction) -> None:
+    """ trait_decl_stmt : STATIC_FN COLON LP2 error S_COLON """
+    print('the curly braket is not closed')
+
+# Error recovery : handling the brace error in trait_decl_stmt
+def p_decl_fn_stmt_err0(p: yacc.YaccProduction) -> None:
+    """ decl_fn_stmt : fn_id error RP1 S_COLON """
+    print('the parenthesis is not opened but closed')
+
+def p_decl_fn_stmt_err1(p: yacc.YaccProduction) -> None:
+    """ decl_fn_stmt : fn_id LP1 error S_COLON """
+    print('the parenthesis is not closed')
+
+def p_decl_fn_stmt_err2(p: yacc.YaccProduction) -> None:
+    """ decl_fn_stmt : fn_id LP3 type_var_args RP3 error RP1 S_COLON """
+    print('the parenthesis is opened but closed')
+
+def p_decl_fn_stmt_err3(p: yacc.YaccProduction) -> None:
+    """ decl_fn_stmt : fn_id LP3 type_var_args RP3 LP1 error S_COLON """
+    print('the parenthesis is not closed')
+
+def p_decl_fn_stmt_err4(p: yacc.YaccProduction) -> None:
+    """ decl_fn_stmt : fn_id error RP3 LP1 pred_args RP1 S_COLON """
+    print('the square brace is opened but closed')
+
+def p_decl_fn_stmt_err5(p: yacc.YaccProduction) -> None:
+    """ decl_fn_stmt : fn_id LP3 error LP1 pred_args RP1 S_COLON """
+    print('the square parenthesis is not closed')
+
+# Error recovery : handling the brace error in trait_decl_stmt
+def decl_cls_fn_stmt_err0(p: yacc.YaccProduction) -> None:
+    """ decl_cls_fn_stmt : fn_id error RP1 S_COLON """
+    print('the parenthesis is not opened but closed')
+
+def decl_cls_fn_stmt_err1(p: yacc.YaccProduction) -> None:
+    """ decl_cls_fn_stmt : fn_id LP1 error S_COLON """
+    print('the parenthesis is not closed')
+
+def decl_cls_fn_stmt_err2(p: yacc.YaccProduction) -> None:
+    """ decl_cls_fn_stmt : fn_id LP3 type_var_args RP3 error RP1 S_COLON """
+    print('the parenthesis is opened but closed')
+
+def decl_cls_fn_stmt_err3(p: yacc.YaccProduction) -> None:
+    """ decl_cls_fn_stmt : fn_id LP3 type_var_args RP3 LP1 error S_COLON """
+    print('the parenthesis is not closed')
+
+def decl_cls_fn_stmt_err4(p: yacc.YaccProduction) -> None:
+    """ decl_cls_fn_stmt : fn_id error RP3 LP1 pred_args RP1 S_COLON """
+    print('the square brace is opened but closed')
+
+def decl_cls_fn_stmt_err5(p: yacc.YaccProduction) -> None:
+    """ decl_cls_fn_stmt : fn_id LP3 error LP1 pred_args RP1 S_COLON """
+    print('the square parenthesis is not closed')
+
+# Error recovery : handling the brace error in unnamed_pred (not completed)
+def p_unnamed_pred_err0(p: yacc.YaccProduction) -> None:
+    """ unnamed_pred : pred_name error RP3 """
+    print('the square brace is not opened but closed')
+
+# Error recovery : handling the brace error in decl_stmt
+def p_decl_stmt_err0(p: yacc.YaccProduction) -> None:
+    """ decl_stmt :  error RP3 S_COLON """
+    print('the square braket is not opened but closed')
+
+def p_decl_stmt_err1(p: yacc.YaccProduction) -> None:
+    """ decl_stmt :  error RP3 COLON unary_pred S_COLON """
+    print('the square braket is not closed')
+def p_decl_stmt_err2(p: yacc.YaccProduction) -> None:
+    """ decl_stmt :  LP3 error S_COLON """
+    print('the square braket is not closed')
+
+# Error recovery : handling the brace error in decl_static_fn_stmt
+def p_decl_static_fn_stmt_err0(p: yacc.YaccProduction) -> None:
+    """ decl_static_fn_stmt : static_fn_id error RP1 S_COLON """
+    print('the parenthesis is not opened but closed')
+
+def p_decl_static_fn_stmt_err1(p: yacc.YaccProduction) -> None:
+    """ decl_static_fn_stmt : static_fn_id LP1 error S_COLON """
+    print('the parenthesis is not closed')
+
+def p_decl_static_fn_stmt_err2(p: yacc.YaccProduction) -> None:
+    """ decl_static_fn_stmt : static_fn_id LP3 type_var_args RP3 error RP1 S_COLON """
+    print('the parenthesis is opened but closed')
+
+def p_decl_static_fn_stmt_err3(p: yacc.YaccProduction) -> None:
+    """ decl_static_fn_stmt : static_fn_id LP3 type_var_args RP3 LP1 error S_COLON """
+    print('the parenthesis is not closed')
+
+def p_decl_static_fn_stmt_err4(p: yacc.YaccProduction) -> None:
+    """ decl_static_fn_stmt : static_fn_id error RP3 LP1 next_preds RP1 S_COLON """
+    print('the square brace is opened but closed')
+
+def  p_decl_static_fn_stmt_err5(p: yacc.YaccProduction) -> None:
+    """ decl_static_fn_stmt : static_fn_id LP3 error LP1 next_preds RP1 S_COLON """
+    print('the square parenthesis is not closed')
 
 def p_error(p: LexToken) -> None:
     pass
