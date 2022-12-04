@@ -122,3 +122,5 @@ if __name__ == '__main__':
     x = 1
     if type(x) == int:
         print('int')
+
+#__init__.py

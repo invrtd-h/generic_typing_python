@@ -171,4 +171,14 @@ trait OK(self):
 
 printinfo [Addable and Subable](int) # -> True
 
+<<<<<<< Updated upstream
 printinfo [(a and b) or (c and (d or e))]
+=======
+trait OK(self):
+    fn:
+        yaya(self, int)
+
+    fn(params) :
+        a:1
+        b:2
+>>>>>>> Stashed changes

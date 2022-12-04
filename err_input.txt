@@ -1,0 +1,4 @@
+# 1. brace error
+    fn(params :
+        a:1
+        b:2
