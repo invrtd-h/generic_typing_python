@@ -1,0 +1,509 @@
+ init
+== Program
+==== statement
+====== trait declaration
+-------- any
+======== class args
+---------- self
+==== statement
+====== trait declaration
+-------- StackLike
+======== class args
+---------- self
+======== declaring statements
+========== member functions
+============ fn
+-------------- append
+============== (args)
+---------------- self
+================ anonymous necessary
+================== named trait
+-------------------- any
+============== trait AND/OR trait expression
+================ predicate expression, LHS
+================== named trait
+-------------------- self
+---------------- or
+================ predicate expression, RHS
+================== None trait
+-------------------- None
+============ fn
+-------------- pop
+============== (args)
+---------------- self
+============== trait AND/OR trait expression
+================ predicate expression, LHS
+================== named trait
+-------------------- self
+---------------- or
+================ predicate expression, RHS
+================== None trait
+-------------------- None
+============ fn
+-------------- popop
+============== (args)
+---------------- self
+============== trait AND/OR trait expression
+================ predicate expression, LHS
+================== named trait
+-------------------- self
+---------------- or
+================ predicate expression, RHS
+================== predicate expression, LHS
+==================== None trait
+---------------------- None
+------------------ and
+================== predicate expression, RHS
+==================== None trait
+---------------------- None
+========== member functions
+============ fn
+-------------- __len__
+============== (args)
+---------------- self
+============== named trait
+---------------- int
+==== statement
+====== trait declaration
+-------- PointLike
+======== class args
+---------- self
+======== declaring statements
+========== member variables
+============ var
+-------------- x
+============== named trait
+---------------- int
+============ var
+-------------- y
+============== named trait
+---------------- int
+==== statement
+====== trait declaration
+-------- AnyRandom
+======== class args
+---------- self
+======== declaring statements
+========== member variables
+============ var
+-------------- x
+============== named trait
+---------------- int
+============ var
+-------------- y
+============== named trait
+---------------- int
+============ var
+-------------- z
+========== member functions
+============ fn
+-------------- __init__
+============== (args)
+---------------- self
+================ anonymous optional
+================== named trait
+-------------------- int
+================== named trait
+-------------------- int
+================== named trait
+-------------------- any
+============== None trait
+---------------- None
+========== class functions
+============ fn
+-------------- foo
+============== (args)
+---------------- cls
+================ anonymous necessary
+================== named trait
+-------------------- int
+============== named trait
+---------------- str
+============ fn
+-------------- foo
+============== (args)
+---------------- cls
+================ anonymous necessary
+================== named trait
+-------------------- float
+========== class variables
+============ var
+-------------- xxx
+============ var
+-------------- yyy
+============== named trait
+---------------- int
+========== static functions
+============ fn
+-------------- bar
+============== None trait
+---------------- None
+==== print:
+====== trait of a member variable
+======== named trait
+---------- AnyRandom
+-------- .
+-------- x
+==== statement
+====== names
+-------- t_random
+====== names
+-------- any_random
+------ assign
+==== statement
+====== trait declaration
+-------- decl_var_with_comma
+======== class args
+---------- self
+======== declaring statements
+========== member variables
+============ var
+-------------- x
+-------------- y
+-------------- z
+============== named trait
+---------------- int
+==== statement
+====== trait declaration
+-------- Addable
+======== class args
+---------- self
+========== sub args
+------------ T
+======== declaring statements
+========== member functions
+============ fn
+-------------- __add__
+============== (args)
+---------------- self
+================ anonymous necessary
+================== named trait
+-------------------- T
+============== named trait
+---------------- self
+==== statement
+====== trait declaration
+-------- Multipliable
+======== class args
+---------- self
+========== sub args
+------------ T
+======== declaring statements
+========== member functions
+============ fn
+-------------- __mul__
+============== (args)
+---------------- self
+================ anonymous necessary
+================== named trait
+-------------------- T
+============== named trait
+---------------- self
+==== print:
+====== predicate call, boolean
+======== named trait
+---------- StackLike
+-------- fn_call
+======== args
+---------- int
+==== print:
+====== predicate call, boolean
+======== named trait
+---------- StackLike
+-------- fn_call
+======== args
+---------- list
+==== print:
+====== predicate call, boolean
+======== named trait
+---------- Addable
+-------- fn_call
+======== args
+---------- str
+---------- int
+==== print:
+====== predicate call, boolean
+======== named trait
+---------- Multipliable
+-------- fn_call
+======== args
+---------- str
+---------- int
+==== print:
+====== predicate call, boolean
+======== unnamed_pred_rule_2
+---------- Addable
+========== args
+------------ int
+-------- fn_call
+======== args
+---------- str
+==== statement
+====== trait declaration
+-------- AddableSubable
+======== class args
+---------- self
+========== sub args
+------------ T
+======== unnamed_pred_rule_2
+---------- Addable
+========== args
+------------ T
+======== declaring statements
+========== member functions
+============ fn
+-------------- __sub__
+============== (args)
+---------------- self
+================ anonymous necessary
+================== named trait
+-------------------- T
+==== statement
+====== trait declaration
+-------- Fooable
+======== class args
+---------- self
+======== declaring statements
+========== member functions
+============ fn
+-------------- foo
+============== (args)
+---------------- self
+================ anonymous necessary
+================== named trait
+-------------------- any
+==== print:
+------ Fooable
+==== statement
+====== trait declaration
+-------- FooBarable
+======== class args
+---------- self
+======== declaring statements
+========== member functions
+============ fn
+-------------- foo
+============== (args)
+---------------- self
+================ anonymous necessary
+================== named trait
+-------------------- any
+============ fn
+-------------- bar
+============== (args)
+---------------- self
+================ anonymous necessary
+================== named trait
+-------------------- any
+==== statement
+====== trait declaration
+-------- BarBazable
+======== class args
+---------- self
+======== declaring statements
+========== member functions
+============ fn
+-------------- bar
+============== (args)
+---------------- self
+================ anonymous necessary
+================== named trait
+-------------------- any
+============ fn
+-------------- baz
+============== (args)
+---------------- self
+================ anonymous necessary
+================== named trait
+-------------------- any
+==== print:
+====== trait AND/OR trait expression
+======== predicate expression, LHS
+========== named trait
+------------ FooBarable
+-------- and
+======== predicate expression, RHS
+========== named trait
+------------ BarBazable
+==== print:
+====== trait AND/OR trait expression
+======== predicate expression, LHS
+========== named trait
+------------ FooBarable
+-------- or
+======== predicate expression, RHS
+========== named trait
+------------ BarBazable
+==== generate:
+------ Fooo
+==== generate:
+------ FooBarable
+==== print:
+====== implies expression, boolean
+======== trait AND/OR trait expression
+========== predicate expression, LHS
+============ named trait
+-------------- FooBarable
+---------- and
+========== predicate expression, RHS
+============ named trait
+-------------- BarBazable
+-------- implies
+======== trait AND/OR trait expression
+========== predicate expression, LHS
+============ named trait
+-------------- FooBarable
+---------- or
+========== predicate expression, RHS
+============ named trait
+-------------- BarBazable
+==== statement
+====== names
+-------- a
+-------- b
+====== names
+-------- b
+-------- a
+------ assign
+==== statement
+====== trait declaration
+-------- DefaultArgsExample
+======== class args
+---------- self
+========== sub args
+------------ arg_a
+------------ arg_b
+============ optional
+-------------- arg_c
+============== trait AND/OR trait expression
+================ predicate expression, LHS
+================== named trait
+-------------------- Addable
+---------------- and
+================ predicate expression, RHS
+================== named trait
+-------------------- Subable
+============ optional
+-------------- arg_d
+============== named trait
+---------------- float
+==== statement
+====== trait declaration
+-------- TraitWithAllOptionalArgs
+======== class args
+---------- self
+========== sub args
+============ optional
+-------------- arg_a
+============== named trait
+---------------- int
+============ optional
+-------------- arg_b
+============== named trait
+---------------- str
+======== declaring statements
+========== member functions
+============ fn
+-------------- whatever
+============== (args)
+---------------- self
+================ anonymous necessary
+================== named trait
+-------------------- int
+================== named trait
+-------------------- int
+================ anonymous optional
+================== named trait
+-------------------- int
+================== named trait
+-------------------- int
+================ named argument
+------------------ a
+------------------ rule=optional
+================== named trait
+-------------------- int
+================ named argument
+------------------ b
+------------------ rule=necessary
+================== named trait
+-------------------- int
+==== statement
+====== trait declaration
+-------- GenericTrait
+======== class args
+---------- self
+======== declaring statements
+========== member functions
+============ fn
+-------------- foo
+============== [args]
+---------------- T
+============== (args)
+---------------- self
+================ anonymous necessary
+================== named trait
+-------------------- T
+============== named trait
+---------------- T
+==== statement
+====== trait declaration
+-------- OK
+======== class args
+---------- self
+======== declaring statements
+========== member functions
+============ fn
+-------------- yaya
+============== (args)
+---------------- self
+================ anonymous necessary
+================== named trait
+-------------------- int
+========== static functions
+============ fn
+-------------- static_yaya
+============ fn
+-------------- static_fefe
+============== (args)
+================ anonymous necessary
+================== named trait
+-------------------- int
+================== named trait
+-------------------- bool
+==== print:
+====== predicate call, boolean
+======== trait AND/OR trait expression
+========== predicate expression, LHS
+============ named trait
+-------------- Addable
+---------- and
+========== predicate expression, RHS
+============ named trait
+-------------- Subable
+-------- fn_call
+======== args
+---------- int
+==== print:
+====== trait AND/OR trait expression
+======== predicate expression, LHS
+========== predicate expression, LHS
+============ named trait
+-------------- a
+---------- and
+========== predicate expression, RHS
+============ named trait
+-------------- b
+-------- or
+======== predicate expression, RHS
+========== predicate expression, LHS
+============ named trait
+-------------- c
+---------- and
+========== predicate expression, RHS
+============ predicate expression, LHS
+============== named trait
+---------------- d
+------------ or
+============ predicate expression, RHS
+============== named trait
+---------------- e
