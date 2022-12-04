@@ -150,7 +150,6 @@ name : ID
 assign_expr : names ASSIGN assign_expr
             | names
 """
-import bisect
 
 import ply.yacc
 import ply.yacc as yacc
@@ -1117,6 +1116,42 @@ def p_decl_static_fn_stmt_err5(p: yacc.YaccProduction) -> None:
     print('the square parenthesis is not closed')
 
 
+def p_error_boolean_0(p: yacc.YaccProduction) -> None:
+    """
+    boolean_expr : error boolean_expr_e
+                 | boolean_expr OR error
+    boolean_expr_a : boolean_expr_a XOR error
+    boolean_expr_b : boolean_expr_b AND error
+    boolean_expr_c : boolean_expr_c EQ error
+                   | boolean_expr_c NEQ error
+    boolean_expr_d : NOT error
+    boolean_expr_e : LP1 error RP1
+    """
+    print('expected a valid boolean expression here')
+
+
+def p_error_atomic_boolean_0(p: yacc.YaccProduction) -> None:
+    """
+    atomic_boolean_expr : error LP1 args RP1
+                        | error IMPLIES unary_pred
+    """
+    print('seems that the previous expression is not a valid unary predicate')
+
+
+def p_error_atomic_boolean_1(p: yacc.YaccProduction) -> None:
+    """
+    atomic_boolean_expr : unary_pred error unary_pred
+    """
+    print('Unexpected Token, expected "implies" here')
+
+
+def p_error_print_stmt_0(p: yacc.YaccProduction) -> None:
+    """
+    print_stmt : PRINTINFO error S_COLON
+    """
+    print('Invalid print statement')
+
+
 def p_error(p) -> None:
 
     from preprocessor.preprocessor import line_lengths
@@ -1126,6 +1161,7 @@ def p_error(p) -> None:
 
     print('=' * 50)
     print("Syntax error at line %d, column %d" % (no, p.lexpos - x[0][no]))
+    print("LALR Parser state : %d" % parser.state)
     print(x[1][p.lineno])
     print(' ' * (p.lexpos - x[0][no]) + '^')
 

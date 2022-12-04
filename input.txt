@@ -176,3 +176,9 @@ printinfo [(a and b) or (c and (d or e))]
 a, b =
 
 a, b = c, d = e, f =
+
+printinfo True or (True or False) xor (False and True) and (xor False)
+printinfo True or (and True or False) xor (False and and True) and (xor False)
+printinfo foo trait bar
+
+

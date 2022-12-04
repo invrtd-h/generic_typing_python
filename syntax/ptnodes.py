@@ -1018,9 +1018,6 @@ class BooleanExpr(PtNode):
         else:
             self.OR = None
 
-        if boolean_expr_a is None:
-            raise ValueError('boolean_expr_a must not be None')
-
 
 class BooleanExprA(PtNode):
     __slots__ = ('boolean_expr_a', 'XOR', 'boolean_expr_b')
@@ -1035,9 +1032,6 @@ class BooleanExprA(PtNode):
             self.XOR = fw.xor
         else:
             self.XOR = None
-
-        if boolean_expr_b is None:
-            raise ValueError('boolean_expr_b must not be None')
 
 
 class BooleanExprB(PtNode):
@@ -1092,9 +1086,6 @@ class BooleanExprD(PtNode):
             self.NOT = None
         self.boolean_expr_e = boolean_expr_e
 
-        if boolean_expr_e is None:
-            raise ValueError('boolean_expr_e must not be None')
-
 
 class BooleanExprE(PtNode):
     __slots__ = ('atomic_boolean_expr',
@@ -1115,8 +1106,6 @@ class BooleanExprE(PtNode):
             self.LP1 = fw.lp1
             self.boolean_expr = boolean_expr
             self.RP1 = fw.rp1
-        else:
-            raise err
 
 
 class AtomicBooleanExpr(PtNode):
