@@ -47,7 +47,7 @@ impl Zero for i32 {
 }
 ```
 
-Also learn about Haskell, Type Classes.
+Also learn about **Type Classes** of Haskell.
 
 #### Why we use ABC?
 
@@ -72,7 +72,7 @@ Python의 typing 모듈을 통해 일부 해결할 수 있으나 여전히 제�
 들어 있다면 디버깅이 힘들어질 수 있습니다. 이런 상황을 막기 위해 변수가
 갖고 있는 기능을 미리 명시하는 것이 좋습니다.
 
-#### Reserved Keywords
+#### Main Concepts
 
 ```
 1. Trait
@@ -146,6 +146,23 @@ predicate는 type 또는 trait를 인자로 받아서 True/False를 리턴하는
 언어에서 모든 type과 trait는 predicate로 사용할 수 있습니다.
 이 또한 C++20의 Concept가 predicate로도 사용되는 관례를 따른 
 것입니다.
+
+```
+6. More about trait declarations
+
+trait Addable(self, T):
+    fn:
+        __add__(self, T)
+
+trait Foo(self):
+    fn:
+        bar(self, Addable[int], =float, *, 
+            name1:Addable[int], name2:=float) -> int
+
+```
+
+이처럼 함수의 정의부에 trait이 올 수도 있고, python의 default
+인자와 keyword 인자를 지원합니다.
 
 더 자세한 예제는 Appendix의 예제를 참고하세요.
 
@@ -385,7 +402,406 @@ stmts
 
 ### English
 
+A library that prints the abstract base class code of a python class.
 
+#### Abstract Base Class
+
+It's a concept similar to interface in Java. Python does not 
+support the syntax for creating Interface, but Abstract base 
+class allows you to create classes that act like Interface. 
+Abstract base class cannot be instantiated by itself, and functions 
+within the class are defined but not implemented. The 
+responsibility for implementation lies with the class that 
+inherited the Abstract Base Class. The reason for using 
+abstract base class is known to provide the same interface 
+to multiple classes with similar functions.
+
+#### Inspired By
+
+C++20, Concepts
+
+```c++
+template<typename T>
+concept Hashable = requires(T a)
+{
+    { std::hash<T>{}(a) } -> std::convertible_to<std::size_t>;
+};
+```
+
+Rust, Traits
+
+```rust
+trait Zero {
+    const ZERO: Self;
+    fn is_zero(&self) -> bool;
+}
+
+impl Zero for i32 {
+    const ZERO: Self = 0;
+
+    fn is_zero(&self) -> bool {
+        *self == Self::ZERO
+    }
+}
+```
+
+Also learn about **Type Classes** of Haskell.
+
+#### Why we use ABC?
+
+1. You can take advantage of the powerful capabilities of IDE.
+
+In dynamic typing languages, it is difficult to take advantage 
+of IDE's powerful capabilities because IDE is difficult to get 
+information about the type of variable. If x is an argument 
+in a function, the IDE has no idea what function x has. 
+Python 3.5's Type Annotation was introduced to solve this issue, 
+but the problem is that it provides only a very limited amount 
+of generic. For example, if you think of a function that takes 
+x and returns x[0], the type of x might be list, tuple, dictionary, 
+but not int. We need a name that can represent all of these types.
+This problem can be solved in part through Python's typing module, 
+but it is still limited. The goal of this project is to generate 
+Python code that makes Python's Type Annotation more useful.
+
+2. You can write more secure code.
+
+You can write more secure code by specifying specific features 
+that variables must implement. For Python, if an exception occurs 
+because a function is not implemented, and there is a code inside 
+that ignores the exception, debugging can be difficult. To prevent 
+this situation, it is recommended to specify the function of the 
+variable in advance.
+
+#### Reserved Keywords
+
+```
+1. Trait
+
+trait Foo(self):
+   // ~~~~
+```
+
+Define the trait.
+
+The reason why the name is trait is that there is no 'trait' in 
+Python reserved words, and we borrowed the name of Rust's trait, 
+but it does not implement all the features of it.
+
+Because Rust's trace allows implementation within the trait 
+statement, in fact, this feature itself is more like Java's interface.
+
+```
+2. fn / cls_fn / static_fn / var / cls_var
+
+trait Foo(self):
+    fn:
+        bar(self, int, int) -> int
+    cls_var:
+        x: int
+
+```
+
+Defines functions within the trait.
+The element inside () means the type of arguments of the function, and 
+the element after -> means the return type.
+
+```
+3. extends
+
+trait Foo(self) extends Bar:
+    // ~~~~
+```
+
+Inherits the trait.
+
+```
+4. trait with multiple arguments
+
+trait Addable(self, T):
+    fn:
+        __add__(self, T) -> T
+        
+int_addable = Addable[int]
+```
+
+You can also use multiple arguments to create a trait. 
+The created trait can bind the type using the [] operator. 
+In the example above, the expression Addable[int] puts int in 
+the position of T, so int_addable refers to any type that can 
+be expressed in x + (int).
+
+The [] operator does not bind any factors to the first factor, self, 
+but starts binding to the second factor. This follows the 
+convention of the concept of C++20.
+
+```
+5. trait as a predicate
+
+the expression 'int_addable(int)' returns 'True'. 
+```
+
+A predicte is a function that takes types or traits as arguments 
+and returns True/False. It is mainly used for case-work in 
+functional programming. If you put a type in a predicate in the 
+form as a predicate(type), it returns whether the type satisfies 
+the predicate. In this language, all type names and traits are 
+available as a predicate. This is also in accordance with the 
+convention that the concept of C++20 is also used as a predicte.
+
+```
+6. More about trait declarations
+
+trait Addable(self, T):
+    fn:
+        __add__(self, T)
+
+trait Foo(self):
+    fn:
+        bar(self, Addable[int], =float, *, 
+            name1:Addable[int], name2:=float) -> int
+
+```
+
+Like this example, a trait can come to the definition of the 
+function, and it supports Python's default and keyword arguments.
+
+See Appendix for more examples.
+
+#### Policy
+
+The entire grammar consists of approximately 150 rules, excluding 
+error handling, and according to ply.yacc(), it is a complete 
+LALR(1) grammar.
+
+```
+"""
+program : PROGRAM_BEGIN S_COLON stmts PROGRAM_END S_COLON
+        | WS
+stmts : stmts stmt
+      | stmt
+stmt : trait_decl
+     | print_stmt
+     | generate_stmt
+     | assign_stmt
+     | S_COLON
+trait_decl : TRAIT trait_id LP1 class_args RP1 COLON LP2 trait_decl_stmts RP2 S_COLON
+           | TRAIT trait_id LP1 class_args RP1 EXTENDS unary_pred COLON LP2 trait_decl_stmts RP2 S_COLON
+trait_id : ID
+class_args : main_arg COMMA sub_args
+           | main_arg
+main_arg : ID
+sub_args : necessary_args COMMA optional_args
+         | necessary_args
+         | optional_args
+necessary_args : necessary_args COMMA necessary_arg
+               | necessary_arg
+necessary_arg : ID
+optional_args : optional_args COMMA optional_arg
+              | optional_arg
+optional_arg : ID ASSIGN unary_pred
+trait_decl_stmts : trait_decl_stmts trait_decl_stmt
+                 | trait_decl_stmt
+                 | PASS S_COLON
+trait_decl_stmt : FN COLON LP2 decl_fn_stmts RP2 S_COLON
+                | VAR COLON LP2 decl_stmts RP2 S_COLON
+                | CLS_FN COLON LP2 decl_cls_fn_stmts RP2 S_COLON
+                | CLS_VAR COLON LP2 decl_stmts RP2 S_COLON
+                | STATIC_FN COLON LP2 decl_static_fn_stmts RP2 S_COLON
+decl_fn_stmts : decl_fn_stmts decl_fn_stmt
+              | decl_fn_stmt
+decl_fn_stmt : fn_id LP1 pred_args RP1 S_COLON
+             | fn_id LP1 pred_args RP1 R_ARROW unary_pred S_COLON
+             | fn_id LP3 type_var_args RP3 LP1 pred_args RP1 S_COLON
+             | fn_id LP3 type_var_args RP3 LP1 pred_args RP1 R_ARROW unary_pred S_COLON
+decl_cls_fn_stmts : decl_cls_fn_stmts decl_cls_fn_stmt
+                  | decl_cls_fn_stmt
+decl_cls_fn_stmt : fn_id LP1 pred_args RP1 S_COLON
+                 | fn_id LP1 pred_args RP1 R_ARROW unary_pred S_COLON
+                 | fn_id LP3 type_var_args RP3 LP1 pred_args RP1 S_COLON
+                 | fn_id LP3 type_var_args RP3 LP1 pred_args RP1 R_ARROW unary_pred S_COLON
+fn_id : ID
+pred_args : main_pred COMMA next_preds
+          | main_pred
+main_pred : ID
+next_preds : next_anonymous_necessary_preds COMMA next_anonymous_opt_preds COMMA STAR COMMA next_named_preds
+           | next_anonymous_necessary_preds COMMA next_anonymous_opt_preds COMMA STAR
+           | next_anonymous_necessary_preds COMMA next_anonymous_opt_preds
+           | next_anonymous_necessary_preds COMMA STAR COMMA next_named_preds
+           | next_anonymous_necessary_preds COMMA STAR
+           | next_anonymous_necessary_preds
+           | next_anonymous_opt_preds COMMA STAR COMMA next_named_preds
+           | next_anonymous_opt_preds COMMA STAR
+           | next_anonymous_opt_preds
+           | STAR next_named_preds
+           | STAR
+next_anonymous_necessary_preds : next_anonymous_necessary_preds COMMA next_anonymous_necessary_pred
+                               | next_anonymous_necessary_pred
+next_anonymous_necessary_pred : unary_pred
+next_anonymous_opt_preds : next_anonymous_opt_preds COMMA next_anonymous_opt_pred
+                         | next_anonymous_opt_pred
+next_anonymous_opt_pred : ASSIGN unary_pred
+next_named_preds : next_named_preds COMMA next_named_pred
+                 | next_named_pred
+next_named_pred : next_named_necessary_pred
+                | next_named_opt_pred
+next_named_necessary_pred : arg_name COLON unary_pred
+next_named_opt_pred : arg_name COLON ASSIGN unary_pred
+arg_name : ID
+type_var_args : type_var_args COMMA type_var_arg
+              | type_var_arg
+type_var_arg : type_var_id
+             | type_var_id COLON unary_pred
+type_var_id : ID
+unary_pred : pred_name
+           | unnamed_pred
+unnamed_pred : pred_name LP3 args RP3
+             | LP3 pred_expr RP3
+             | TRAIT_OF LP1 var_expr RP1
+             | NONE
+pred_name : ID
+pred_expr : pred_expr OR pred_expr_a
+          | pred_expr_a
+pred_expr_a : pred_expr_a AND pred_expr_b
+            | pred_expr_b
+pred_expr_b : NOT pred_expr_c
+            | pred_expr_c
+pred_expr_c : unary_pred
+            | LP1 pred_expr RP1
+var_expr : unary_pred DOT member_var_name
+member_var_name : ID
+decl_stmts : decl_stmts decl_stmt
+           | decl_stmt
+decl_stmt : var_id S_COLON
+          | var_id COLON unary_pred S_COLON
+          | LP3 vars_id RP3 S_COLON
+          | LP3 vars_id RP3 COLON unary_pred S_COLON
+vars_id : vars_id COMMA var_id
+        | var_id
+var_id : ID
+decl_static_fn_stmts : decl_static_fn_stmts decl_static_fn_stmt
+                     | decl_static_fn_stmt
+decl_static_fn_stmt : static_fn_id LP1 next_preds RP1 S_COLON
+                    | static_fn_id LP1 next_preds RP1 R_ARROW unary_pred S_COLON
+                    | static_fn_id LP3 type_var_args RP3 LP1 next_preds RP1 S_COLON
+                    | static_fn_id LP3 type_var_args RP3 LP1 next_preds RP1 R_ARROW unary_pred S_COLON
+                    | static_fn_id LP1 RP1 S_COLON
+                    | static_fn_id LP1 RP1 R_ARROW unary_pred S_COLON
+                    | static_fn_id LP3 type_var_args RP3 LP1 RP1 S_COLON
+                    | static_fn_id LP3 type_var_args RP3 LP1 RP1 R_ARROW unary_pred S_COLON
+static_fn_id : ID
+print_stmt : PRINTINFO to_print S_COLON
+generate_stmt : GENERATE to_print S_COLON
+to_print : ID
+         | boolean_expr
+         | unnamed_pred
+boolean_expr : boolean_expr OR boolean_expr_a
+             | boolean_expr_a
+boolean_expr_a : boolean_expr_a XOR boolean_expr_b
+               | boolean_expr_b
+boolean_expr_b : boolean_expr_b AND boolean_expr_c
+               | boolean_expr_c
+boolean_expr_c : boolean_expr_c EQ boolean_expr_d
+               | boolean_expr_c NEQ boolean_expr_d
+               | boolean_expr_d
+boolean_expr_d : NOT boolean_expr_e
+               | boolean_expr_e
+boolean_expr_e : atomic_boolean_expr
+               | LP1 boolean_expr RP1
+atomic_boolean_expr : constants
+                    | unary_pred LP1 args RP1
+                    | unary_pred IMPLIES unary_pred
+                    | LP1 unary_pred EQ unary_pred RP1
+                    | LP1 unary_pred NEQ unary_pred RP1
+constants : TRUE
+          | FALSE
+args : args COMMA pred_expr
+     | pred_expr
+assign_stmt : names ASSIGN assign_expr S_COLON
+names : names COMMA name
+      | name
+name : ID
+assign_expr : names ASSIGN assign_expr
+            | names
+"""
+```
+
+#### How to test the module
+
+Run main.py to print the abstract syntax tree.
+
+Run syntax/parser.py to print the parse tree.
+
+The program now has the ability to output Parse Tree and AST.
+
+#### preprocessor
+
+It is a program that preprocesss Python grammar into c-like grammar. 
+This is because Python grammar is hard to express in CFG.
+The program automatically generates semicolons and brackets 
+using stacks, and the time complexity is O(n).
+
+Note that according to python grammar, a semicolon is not always 
+taken at the end of each line. For example:
+
+```python
+x, y, z, w = [
+    1, 2, 3, 4
+] # -> The semicolon should be only here.
+```
+
+#### lexer
+
+Do the lexical analysis.
+
+As additional functions, there is a function of recognizing a line 
+change and putting it into a token, and a function of recognizing 
+and discarding whitespaces. The ability to recognize line breaks 
+is useful when outputting error messages.
+
+#### parser
+
+Create a Parse Tree using ply.yacc.
+Parse Tree consists of nodes of dozens of classes, all of
+which are defined at ptnodes.py.
+
+#### semantic analysis
+
+Analyze the parse tree to create an abstract ayntax tree.
+A visitor object interpreting the parse tree is defined at 
+visitor.py. The Visitor performs DFS in the Parse Tree and 
+can interpret the tree by changing its own state.
+
+The generated AST is easier to interpret than the existing 
+Parse Tree. This is because it performs various interpretations,
+such as discarding tokens. The main interpretation tasks are 
+flattening the tree. For example:
+
+```
+stmts
+== stmts
+==== stmts
+====== stmts
+======== stmt
+======== ;
+====== ;
+==== ;
+== ;
+```
+
+The parse tree above is converted to the following AST.
+
+```
+stmts
+== stmt
+== ;
+== stmt
+== ;
+== stmt
+== ;
+== stmt
+== ;
+```
 
 ### Appendix
 

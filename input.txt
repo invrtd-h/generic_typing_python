@@ -140,7 +140,7 @@ generate FooBarable
 
 # 12. implies operator.
 
-printinfo [FooBarable and BarBazable] implies [FooBarable or BarBazable]
+printinfo [FooBarable and BarBazable] implies [FooBarable or BarBazable] # -> True
 
 # 13. assignments.
 
