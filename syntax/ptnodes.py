@@ -137,9 +137,6 @@ class Stmts(PtNode):
         self.stmts = stmts
         self.stmt = stmt
 
-        if stmt is None:
-            raise ValueError("stmt cannot be None")
-
 
 class Stmt(PtNode):
     __slots__ = ('next',)
@@ -223,9 +220,6 @@ class SubArgs(PtNode):
         else:
             self.COMMA = None
 
-        if necessary_args is None and optional_args is None:
-            raise ValueError('At least one of necessary_args and optional_args must be not None')
-
 
 class NecessaryArgs(PtNode):
     __slots__ = ('necessary_args', 'COMMA', 'necessary_arg')
@@ -240,9 +234,6 @@ class NecessaryArgs(PtNode):
             self.COMMA = fw.comma
         else:
             self.COMMA = None
-
-        if necessary_arg is None:
-            raise ValueError('necessary_arg must be not None')
 
 
 class NecessaryArg(PtNode):
@@ -266,9 +257,6 @@ class OptionalArgs(PtNode):
             self.COMMA = fw.comma
         else:
             self.COMMA = None
-
-        if optional_arg is None:
-            raise ValueError('optional_arg must be not None')
 
 
 class OptionalArg(PtNode):
@@ -533,9 +521,6 @@ class NextAnoNecPreds(PtNode):
         else:
             self.COMMA = None
 
-        if next_ano_nec_pred is None:
-            raise ValueError('next_ano_nec_pred cannot be None')
-
 
 class NextAnoNecPred(PtNode):
     __slots__ = ('unary_pred',)
@@ -559,9 +544,6 @@ class NextAnoOptPreds(PtNode):
             self.COMMA = fw.comma
         else:
             self.COMMA = None
-
-        if next_ano_opt_pred is None:
-            raise ValueError('next_ano_opt_pred cannot be None')
 
 
 class NextAnoOptPred(PtNode):
@@ -588,9 +570,6 @@ class NextNamedPreds(PtNode):
         else:
             self.COMMA = None
 
-        if next_named_pred is None:
-            raise ValueError('next_named_pred must not be None')
-
 
 class NextNamedPred(PtNode):
     __slots__ = ('next_named_nec_pred',
@@ -602,14 +581,6 @@ class NextNamedPred(PtNode):
                  next_named_opt_pred=None) -> None:
         self.next_named_nec_pred = next_named_nec_pred
         self.next_named_opt_pred = next_named_opt_pred
-
-        # check that only one of the two is not None
-        a = next_named_nec_pred is None
-        b = next_named_opt_pred is None
-        if a ^ b:
-            pass
-        else:
-            raise ValueError('next_named_pred must have exactly one child')
 
 
 class NextNamedNecPred(PtNode):
@@ -657,9 +628,6 @@ class TypeVarArgs(PtNode):
         else:
             self.COMMA = None
 
-        if type_var_arg is None:
-            raise ValueError('type_var_arg must not be None')
-
 
 class TypeVarArg(PtNode):
     __slots__ = ('type_var_id', 'COLON', 'unary_pred')
@@ -693,14 +661,6 @@ class UnaryPred(PtNode):
     def __init__(self, *, pred_name=None, unnamed_pred=None) -> None:
         self.pred_name = pred_name
         self.unnamed_pred = unnamed_pred
-
-        # check that only one of the two is not None
-        a = pred_name is None
-        b = unnamed_pred is None
-        if a ^ b:
-            pass
-        else:
-            raise ValueError('unary_pred must have exactly one child')
 
 
 class PredName(PtNode):
@@ -754,8 +714,6 @@ class PredExpr(PtNode):
             self.OR = fw.or_
         else:
             self.OR = None
-        if pred_expr_a is None:
-            raise ValueError('pred_expr_a must not be None')
 
 
 class PredExprA(PtNode):
@@ -770,8 +728,6 @@ class PredExprA(PtNode):
             self.AND = fw.and_
         else:
             self.AND = None
-        if pred_expr_b is None:
-            raise ValueError('pred_expr_b must not be None')
 
 
 class PredExprB(PtNode):
@@ -785,8 +741,6 @@ class PredExprB(PtNode):
             self.NOT = fw.not_
         else:
             self.NOT = None
-        if pred_expr_c is None:
-            raise ValueError('pred_expr_c must not be None')
 
 
 class PredExprC(PtNode):
@@ -808,8 +762,6 @@ class PredExprC(PtNode):
         elif pred_expr is not None:
             self.LP1 = fw.lp1
             self.RP1 = fw.rp1
-        else:
-            raise err
 
 
 class VarExpr(PtNode):
@@ -841,9 +793,6 @@ class DeclStmts(PtNode):
         self.decl_stmts = decl_stmts
         self.decl_stmt = decl_stmt
 
-        if decl_stmt is None:
-            raise ValueError('decl_stmt must not be None')
-
 
 class DeclStmt(PtNode):
     __slots__ = ('var_id', 'LP3', 'vars_id', 'RP3',
@@ -864,8 +813,6 @@ class DeclStmt(PtNode):
             self.LP3 = fw.lp3
             self.vars_id = vars_id
             self.RP3 = fw.rp3
-        else:
-            raise err
 
         if unary_pred is not None:
             self.COLON = fw.colon
@@ -889,9 +836,6 @@ class VarsId(PtNode):
             self.COMMA = fw.comma
         else:
             self.COMMA = None
-
-        if var_id is None:
-            raise ValueError('var_id must not be None')
 
 
 class VarId(PtNode):
@@ -997,8 +941,6 @@ class ToPrint(PtNode):
                 raise err
         elif unnamed_pred is not None:
             self.unnamed_pred = unnamed_pred
-        else:
-            raise err
 
 
 class BooleanExpr(PtNode):
@@ -1045,9 +987,6 @@ class BooleanExprB(PtNode):
         else:
             self.AND = None
 
-        if boolean_expr_c is None:
-            raise ValueError('boolean_expr_c must not be None')
-
 
 class BooleanExprC(PtNode):
     __slots__ = ('boolean_expr_c', 'EQ', 'NEQ', 'boolean_expr_d')
@@ -1066,9 +1005,6 @@ class BooleanExprC(PtNode):
             self.EQ = None
             self.NEQ = fw.neq
         self.boolean_expr_d = boolean_expr_d
-
-        if boolean_expr_d is None:
-            raise ValueError('boolean_expr_d must not be None')
 
 
 class BooleanExprD(PtNode):
@@ -1169,11 +1105,11 @@ class Constants(PtNode):
 
 
 class Args(PtNode):
-    __slots__ = ('args', 'COMMA', 'arg')
+    __slots__ = ('args', 'COMMA', 'unary_pred')
 
     name: str = 'args'
 
-    def __init__(self, args=None, arg=None) -> None:
+    def __init__(self, args=None, unary_pred=None) -> None:
         if args is not None:
             self.args = args
             self.COMMA = fw.comma
@@ -1181,10 +1117,7 @@ class Args(PtNode):
             self.args = None
             self.COMMA = None
 
-        self.arg = arg
-
-        if arg is None:
-            raise ValueError('arg must not be None')
+        self.unary_pred = unary_pred
 
 
 class Arg(PtNode):

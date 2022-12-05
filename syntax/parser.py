@@ -140,9 +140,8 @@ atomic_boolean_expr : constants
                     | LP1 unary_pred NEQ unary_pred RP1
 constants : TRUE
           | FALSE
-args : args COMMA arg
-     | arg
-arg : ID
+args : args COMMA unary_pred
+     | unary_pred
 assign_stmt : names ASSIGN assign_expr S_COLON
 names : names COMMA name
       | name
@@ -857,18 +856,13 @@ def p_constants_r1(p: yacc.YaccProduction) -> None:
 
 
 def p_args_r0(p: yacc.YaccProduction) -> None:
-    """ args : args COMMA arg """
-    p[0] = Args(args=p[1], arg=p[3])
+    """ args : args COMMA unary_pred """
+    p[0] = Args(args=p[1], unary_pred=p[3])
 
 
 def p_args_r1(p: yacc.YaccProduction) -> None:
-    """ args : arg """
-    p[0] = Args(arg=p[1])
-
-
-def p_arg_r0(p: yacc.YaccProduction) -> None:
-    """ arg : ID """
-    p[0] = Arg(id=p[1])
+    """ args : unary_pred """
+    p[0] = Args(unary_pred=p[1])
 
 
 def p_assign_stmt_r0(p: yacc.YaccProduction) -> None:
@@ -914,11 +908,6 @@ def p_trait_decl_err1(p: yacc.YaccProduction) -> None:
     print('the parenthesis is not closed')
 
 
-def p_trait_decl_err2(p: yacc.YaccProduction) -> None:
-    """ trait_decl : TRAIT trait_id LP1 class_args RP1 error S_COLON """
-    print('the curly bracket is not opened but closed')
-
-
 def p_trait_decl_err4(p: yacc.YaccProduction) -> None:
     """ trait_decl : TRAIT trait_id error EXTENDS unary_pred COLON LP2 trait_decl_stmts RP2 S_COLON """
     print('the parenthesis is not opened but closed')
@@ -927,37 +916,6 @@ def p_trait_decl_err4(p: yacc.YaccProduction) -> None:
 def p_trait_decl_err5(p: yacc.YaccProduction) -> None:
     """ trait_decl : TRAIT trait_id LP1 class_args error EXTENDS unary_pred COLON LP2 trait_decl_stmts RP2 S_COLON """
     print('the parenthesis is not closed')
-
-
-def p_trait_decl_err6(p: yacc.YaccProduction) -> None:
-    """ trait_decl : TRAIT trait_id LP1 class_args RP1 COLON error S_COLON """
-    print('the curly bracket is not opened but closed')
-
-
-# Error recovery : handling the brace error in trait_decl_stmts
-def p_trait_decl_stmt_err2(p: yacc.YaccProduction) -> None:
-    """ trait_decl_stmt : FN COLON error RP2 S_COLON """
-    print('the curly bracket is not opened but closed')
-
-
-def p_trait_decl_stmt_err4(p: yacc.YaccProduction) -> None:
-    """ trait_decl_stmt : VAR COLON error RP2 S_COLON """
-    print('the curly bracket is not opened but closed')
-
-
-def p_trait_decl_stmt_err6(p: yacc.YaccProduction) -> None:
-    """ trait_decl_stmt : CLS_FN COLON error RP2 S_COLON """
-    print('the curly bracket is not opened but closed')
-
-
-def p_trait_decl_stmt_err8(p: yacc.YaccProduction) -> None:
-    """ trait_decl_stmt : CLS_VAR COLON error RP2 S_COLON """
-    print('the curly bracket is not opened but closed')
-
-
-def p_trait_decl_stmt_err10(p: yacc.YaccProduction) -> None:
-    """ trait_decl_stmt : STATIC_FN COLON error RP2 S_COLON """
-    print('the curly bracket is not opened but closed')
 
 
 # Error recovery : handling the brace error in trait_decl_stmt
@@ -1108,18 +1066,36 @@ def p_error_print_stmt_0(p: yacc.YaccProduction) -> None:
 
 def p_error_args_0(p: yacc.YaccProduction) -> None:
     """
-    args : error arg
-    vars_id : error var_id
-    type_var_args : error type_var_arg
-    next_anonymous_necessary_preds : error next_anonymous_necessary_pred
-    next_anonymous_opt_preds : error next_anonymous_opt_pred
-    next_named_preds : error next_named_pred
+    vars_id : error COMMA var_id
+            | vars_id COMMA error
+    type_var_args : error COMMA type_var_arg
+                  | type_var_args COMMA error
+    next_anonymous_necessary_preds : error COMMA next_anonymous_necessary_pred
+    next_anonymous_opt_preds : error COMMA next_anonymous_opt_pred
+                             | next_anonymous_opt_preds COMMA error
+    next_named_preds : error COMMA next_named_pred
+                     | next_named_preds COMMA error
 
-    pred_args : error next_preds
-    necessary_args : error necessary_arg
-    optional_args : error optional_arg
+    pred_args : error COMMA next_preds
+    necessary_args : error COMMA necessary_arg
+    optional_args : error COMMA optional_arg
+                  | optional_args COMMA error
     """
     print('Invalid form of arguments')
+
+
+def p_error_args_1(p: yacc.YaccProduction) -> None:
+    """
+    next_named_necessary_pred : name ASSIGN error unary_pred
+    """
+    print('Invalid declaration of arguments : Did you mean ":" instead of "=" ?')
+
+
+def p_error_args_2(p: yacc.YaccProduction) -> None:
+    """
+    next_named_opt_pred : name ASSIGN COLON error unary_pred
+    """
+    print('Invalid declaration of arguments : Did you mean ":=" instead of "=:" ?')
 
 
 def p_error_pred_expr_0(p: yacc.YaccProduction) -> None:
@@ -1140,35 +1116,24 @@ def p_assign_expr_err0(p: yacc.YaccProduction) -> None:
     print('no RHS expression after the assign operator')
 
 
-def p_error_decl_fn_stmts_0(p: yacc.YaccProduction) -> None:
-    """
-    decl_fn_stmts :
-    decl_cls_fn_stmts :
-    decl_static_fn_stmts :
-    """
-    p_error(parser.token())
-    print('No function name defined')
-
-
-def p_error_decl_var_stmts_0(p: yacc.YaccProduction) -> None:
-    """
-    decl_stmts : error S_COLON
-    """
-    print('No variable name defined')
-
-
 def p_error_no_args_in_p1_0(p: yacc.YaccProduction) -> None:
     """
     decl_fn_stmt : fn_id LP1 RP1 error S_COLON
                  | fn_id LP1 RP1 error R_ARROW unary_pred S_COLON
                  | fn_id LP3 type_var_args RP3 LP1 RP1 error S_COLON
                  | fn_id LP3 type_var_args RP3 LP1 RP1 error R_ARROW unary_pred S_COLON
+    """
+    print('You need at least one argument here (conventionally "self")')
+
+
+def p_error_no_args_in_p1_1(p: yacc.YaccProduction) -> None:
+    """
     decl_cls_fn_stmt : fn_id LP1 RP1 error S_COLON
                      | fn_id LP1 RP1 error R_ARROW unary_pred S_COLON
                      | fn_id LP3 type_var_args RP3 LP1 RP1 error S_COLON
                      | fn_id LP3 type_var_args RP3 LP1 RP1 error R_ARROW unary_pred S_COLON
     """
-    print('You need at least one argument here (conventionally "self")')
+    print('You need at least one argument here (conventionally "cls")')
 
 
 def p_error_no_args_in_p3_0(p: yacc.YaccProduction) -> None:
@@ -1177,12 +1142,53 @@ def p_error_no_args_in_p3_0(p: yacc.YaccProduction) -> None:
     decl_fn_stmt : fn_id LP3 RP3 error S_COLON
     decl_cls_fn_stmt : fn_id LP3 RP3 error S_COLON
     """
-    print('You need to put at least 1 argument in the [] parenthesis')
+    print('You need to put at least one argument in the [] parenthesis')
+
+
+def p_error_no_name_0(p: yacc.YaccProduction) -> None:
+    """
+    decl_fn_stmt : error S_COLON
+    decl_cls_fn_stmt : error S_COLON
+    decl_static_fn_stmt : error S_COLON
+    decl_stmt : error S_COLON
+    """
+    print('You need to give a name to the function or the variable')
+
+
+def p_error_decl_stmt_0(p: yacc.YaccProduction) -> None:
+    """
+    decl_fn_stmt : fn_id LP1 pred_args RP1 R_ARROW error S_COLON
+                 | fn_id LP3 type_var_args RP3 LP1 pred_args RP1 R_ARROW error S_COLON
+    decl_cls_fn_stmt : fn_id LP1 pred_args RP1 R_ARROW error S_COLON
+                     | fn_id LP3 type_var_args RP3 LP1 pred_args RP1 R_ARROW error S_COLON
+    decl_static_fn_stmt : static_fn_id LP1 next_preds RP1 R_ARROW error S_COLON
+                        | static_fn_id LP3 type_var_args RP3 LP1 next_preds RP1 R_ARROW error S_COLON
+    """
+    print('Expected a valid trait expression after "->"')
+
+
+def p_error_decl_stmt_1(p: yacc.YaccProduction) -> None:
+    """
+    decl_stmt : var_id COLON error S_COLON
+              | LP3 vars_id RP3 COLON error S_COLON
+    """
+    print('Expected a valid trait expression after ":"')
+
+
+def p_error_empty_decl_0(p: yacc.YaccProduction) -> None:
+    """
+    trait_decl_stmt : FN COLON LP2 RP2 error S_COLON
+                    | CLS_FN COLON LP2 RP2 error S_COLON
+                    | STATIC_FN COLON LP2 RP2 error S_COLON
+                    | VAR COLON LP2 RP2 error S_COLON
+                    | CLS_VAR COLON LP2 RP2 error S_COLON
+    """
+    print('Empty declaration statement')
 
 
 def p_error(p) -> None:
 
-    from preprocessor.preprocessor import line_lengths
+    from preprocessor.preprocess import line_lengths
     x = line_lengths.data
 
     no = p.lineno - 1
@@ -1202,7 +1208,7 @@ parser: ply.yacc.LRParser = yacc.yacc()
 
 
 def get_parse_tree(s: str) -> Program:
-    from preprocessor.preprocessor import preprocess
+    from preprocessor.preprocess import preprocess
     return parser.parse(preprocess(s))
 
 
@@ -1211,7 +1217,7 @@ if __name__ == '__main__':
     s = f.read()
     f.close()
 
-    from preprocessor.preprocessor import preprocess
+    from preprocessor.preprocess import preprocess
 
     s = preprocess(s)
 

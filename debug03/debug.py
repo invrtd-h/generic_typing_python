@@ -190,7 +190,7 @@ if __name__ == '__main__':
     s = f.read()
     f.close()
 
-    from preprocessor.preprocessor import preprocess
+    from preprocessor.preprocess import preprocess
     s = preprocess(s)
 
     print(parser.parse(s))

@@ -1,4 +1,4 @@
-from preprocessor.preprocessor import preprocess
+from preprocessor.preprocess import preprocess
 from semantic.visitor import Visitor
 import syntax.parser
 from utils import logger
