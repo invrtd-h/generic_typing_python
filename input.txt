@@ -170,3 +170,16 @@ trait vector7D(self) extends vector[vector[vector[vector[vector[vector[vector[in
 
 printinfo (trait_of(x.z) implies trait_of(y.z)) and (True == False or False != int(int))
 
+trait Scanner(self):
+    fn:
+        analyze(self) -> str
+        analyze(self, int) -> str
+        analyze(self, int, int) -> str
+        analyze(self, int, int, int) -> str
+        analyze(self, int, int, int, int) -> str
+        analyze(self, int, int, int, int, int) -> str
+        analyze(self, int, int, int, int, int, int) -> str
+        stop(self)-> bool
+    static_fn:
+        start(self) -> str
+
