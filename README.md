@@ -18,6 +18,8 @@ Abstract Base Class는 그 자체로 인스턴스화가 불가능하고, 클래�
 Abstract Base Class를 사용하는 이유는 비슷한 기능을 하는 여러
 가지 클래스에게 동일한 인터페이스를 제공하기 위함이라고 알려져 있습니다.
 
+* TODO
+
 
 ### English
 

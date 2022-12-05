@@ -912,9 +912,6 @@ class DeclStaticFnStmts(PtNode):
         self.decl_static_fn_stmts = decl_static_fn_stmts
         self.decl_static_fn_stmt = decl_static_fn_stmt
 
-        if decl_static_fn_stmt is None:
-            raise ValueError('decl_static_fn_stmt must not be None')
-
 
 class DeclStaticFnStmt(PtNode):
     __slots__ = ('static_fn_id',

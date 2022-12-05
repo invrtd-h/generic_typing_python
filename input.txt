@@ -181,4 +181,18 @@ printinfo True or (True or False) xor (False and True) and (xor False)
 printinfo True or (and True or False) xor (False and and True) and (xor False)
 printinfo foo trait bar
 
+printinfo [Addable and Subable](int,,, int)
+printinfo [Addable and Subable](,,,int)
+
+trait ERR(self):
+    fn:
+        yaya()
+    static_fn:
+        []() -> int
+        okay(int, bool)
+        static_yaya[]() -> int
+    fn:
+
+
+printinfo ERR
 
