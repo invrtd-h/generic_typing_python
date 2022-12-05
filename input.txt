@@ -223,3 +223,16 @@ printinfo ERR
 trait vector7D(self) extends vector[vector[vector[vector[vector[vector[vector[int]]]]]]]:
     pass
 
+trait Scanner(self):
+    fn:
+        analyze(self) -> str
+        analyze(self, int) -> str
+        analyze(self, int, int) -> str
+        analyze(self, int, int, int) -> str
+        analyze(self, int, int, int, int) -> str
+        analyze(self, int, int, int, int, int) -> str
+        analyze(self, int, int, int, int, int, int) -> str
+        stop(self)-> bool
+    static_fn:
+        start(self) -> str
+
