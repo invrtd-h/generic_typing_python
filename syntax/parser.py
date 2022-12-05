@@ -140,8 +140,8 @@ atomic_boolean_expr : constants
                     | LP1 unary_pred NEQ unary_pred RP1
 constants : TRUE
           | FALSE
-args : args COMMA unary_pred
-     | unary_pred
+args : args COMMA pred_expr
+     | pred_expr
 assign_stmt : names ASSIGN assign_expr S_COLON
 names : names COMMA name
       | name
@@ -856,13 +856,13 @@ def p_constants_r1(p: yacc.YaccProduction) -> None:
 
 
 def p_args_r0(p: yacc.YaccProduction) -> None:
-    """ args : args COMMA unary_pred """
-    p[0] = Args(args=p[1], unary_pred=p[3])
+    """ args : args COMMA pred_expr """
+    p[0] = Args(args=p[1], pred_expr=p[3])
 
 
 def p_args_r1(p: yacc.YaccProduction) -> None:
-    """ args : unary_pred """
-    p[0] = Args(unary_pred=p[1])
+    """ args : pred_expr """
+    p[0] = Args(pred_expr=p[1])
 
 
 def p_assign_stmt_r0(p: yacc.YaccProduction) -> None:
@@ -1100,11 +1100,8 @@ def p_error_args_2(p: yacc.YaccProduction) -> None:
 
 def p_error_pred_expr_0(p: yacc.YaccProduction) -> None:
     """
-    pred_expr : error pred_expr_c
+    pred_expr : error AND pred_expr_c
               | pred_expr OR error
-    pred_expr_a : pred_expr_a AND error
-    pred_expr_b : NOT error
-    pred_expr_c : LP1 error RP1
     """
     print('expected a valid predicate expression here')
 
@@ -1213,7 +1210,7 @@ def get_parse_tree(s: str) -> Program:
 
 
 if __name__ == '__main__':
-    f = open("../input.txt", 'r')
+    f = open("../err_input.txt", 'r')
     s = f.read()
     f.close()
 

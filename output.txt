@@ -205,39 +205,55 @@
 ---------- StackLike
 -------- fn_call
 ======== args
----------- int
+========== predicate expression
+============ named trait
+-------------- int
 ==== print:
 ====== predicate call, boolean
 ======== named trait
 ---------- StackLike
 -------- fn_call
 ======== args
----------- list
+========== predicate expression
+============ named trait
+-------------- list
 ==== print:
 ====== predicate call, boolean
 ======== named trait
 ---------- Addable
 -------- fn_call
 ======== args
----------- str
----------- int
+========== predicate expression
+============ named trait
+-------------- str
+========== predicate expression
+============ named trait
+-------------- int
 ==== print:
 ====== predicate call, boolean
 ======== named trait
 ---------- Multipliable
 -------- fn_call
 ======== args
----------- str
----------- int
+========== predicate expression
+============ named trait
+-------------- str
+========== predicate expression
+============ named trait
+-------------- int
 ==== print:
 ====== predicate call, boolean
 ======== unnamed_pred_rule_2
 ---------- Addable
 ========== args
------------- int
+============ predicate expression
+============== named trait
+---------------- int
 -------- fn_call
 ======== args
----------- str
+========== predicate expression
+============ named trait
+-------------- str
 ==== statement
 ====== trait declaration
 -------- AddableSubable
@@ -248,7 +264,9 @@
 ======== unnamed_pred_rule_2
 ---------- Addable
 ========== args
------------- T
+============ predicate expression
+============== named trait
+---------------- T
 ======== declaring statements
 ========== member functions
 ============ fn
@@ -447,63 +465,200 @@
 ---------------- T
 ==== statement
 ====== trait declaration
--------- OK
+-------- vector7D
 ======== class args
 ---------- self
+======== unnamed_pred_rule_2
+---------- vector
+========== args
+============ predicate expression
+============== unnamed_pred_rule_2
+---------------- vector
+================ args
+================== predicate expression
+==================== unnamed_pred_rule_2
+---------------------- vector
+====================== args
+======================== predicate expression
+========================== unnamed_pred_rule_2
+---------------------------- vector
+============================ args
+============================== predicate expression
+================================ unnamed_pred_rule_2
+---------------------------------- vector
+================================== args
+==================================== predicate expression
+====================================== unnamed_pred_rule_2
+---------------------------------------- vector
+======================================== args
+========================================== predicate expression
+============================================ unnamed_pred_rule_2
+---------------------------------------------- vector
+============================================== args
+================================================ predicate expression
+================================================== named trait
+---------------------------------------------------- int
 ======== declaring statements
 ========== member functions
 ============ fn
--------------- yaya
+-------------- begin
 ============== (args)
 ---------------- self
-================ anonymous necessary
-================== named trait
--------------------- int
-========== static functions
+============== unnamed_pred_rule_2
+---------------- iterator
+================ args
+================== predicate expression
+==================== predicate expression, LHS
+====================== predicate expression, LHS
+======================== unnamed_pred_rule_2
+-------------------------- vector
+========================== args
+============================ predicate expression
+============================== named trait
+-------------------------------- any
+---------------------- or
+====================== predicate expression, RHS
+======================== unnamed_pred_rule_2
+-------------------------- vector
+========================== args
+============================ predicate expression
+============================== predicate expression, LHS
+================================ unnamed_pred_rule_2
+---------------------------------- vector
+================================== args
+==================================== predicate expression
+====================================== named trait
+---------------------------------------- any
+------------------------------ or
+============================== predicate expression, RHS
+================================ named trait
+---------------------------------- any
+-------------------- or
+==================== predicate expression, RHS
+====================== unnamed_pred_rule_2
+------------------------ vector
+======================== args
+========================== predicate expression
+============================ unnamed_pred_rule_2
+------------------------------ vector
+============================== args
+================================ predicate expression
+================================== unnamed_pred_rule_2
+------------------------------------ vector
+==================================== args
+====================================== predicate expression
+======================================== named trait
+------------------------------------------ any
 ============ fn
--------------- static_yaya
-============ fn
--------------- static_fefe
+-------------- end
 ============== (args)
-================ anonymous necessary
-================== named trait
--------------------- int
-================== named trait
--------------------- bool
+---------------- self
+============== unnamed_pred_rule_2
+---------------- iterator
+================ args
+================== predicate expression
+==================== predicate expression, LHS
+====================== named trait
+------------------------ int
+-------------------- or
+==================== predicate expression, RHS
+====================== predicate expression, LHS
+======================== trait AND/OR trait expression
+========================== trait of a member variable
+============================ named trait
+------------------------------ vector
+---------------------------- .
+---------------------------- a
+---------------------- and
+====================== predicate expression, RHS
+======================== trait of a member variable
+========================== trait AND/OR trait expression
+============================ predicate expression, LHS
+============================== None trait
+-------------------------------- None
+---------------------------- or
+============================ predicate expression, RHS
+============================== unnamed_pred_rule_2
+-------------------------------- vector5D
+================================ args
+================================== predicate expression
+==================================== unnamed_pred_rule_2
+-------------------------------------- v
+====================================== args
+======================================== predicate expression
+========================================== named trait
+-------------------------------------------- u
+================================== predicate expression
+==================================== unnamed_pred_rule_2
+-------------------------------------- v
+====================================== args
+======================================== predicate expression
+========================================== named trait
+-------------------------------------------- u
+-------------------------- .
+-------------------------- y
+============ fn
+-------------- front
+============== (args)
+---------------- self
+================ anonymous optional
+================== trait AND/OR trait expression
+==================== predicate expression, LHS
+====================== named trait
+------------------------ int
+-------------------- or
+==================== predicate expression, RHS
+====================== predicate expression, LHS
+======================== predicate expression, LHS
+========================== named trait
+---------------------------- str
+------------------------ and
+======================== predicate expression, RHS
+-------------------------- not
+========================== named trait
+---------------------------- float
+---------------------- or
+====================== predicate expression, RHS
+======================== unnamed_pred_rule_2
+-------------------------- vector
+========================== args
+============================ predicate expression
+============================== named trait
+-------------------------------- int
 ==== print:
-====== predicate call, boolean
-======== trait AND/OR trait expression
-========== predicate expression, LHS
-============ named trait
--------------- Addable
----------- and
-========== predicate expression, RHS
-============ named trait
--------------- Subable
--------- fn_call
-======== args
----------- int
-==== print:
-====== trait AND/OR trait expression
-======== predicate expression, LHS
-========== predicate expression, LHS
-============ named trait
--------------- a
----------- and
-========== predicate expression, RHS
-============ named trait
--------------- b
--------- or
-======== predicate expression, RHS
-========== predicate expression, LHS
-============ named trait
--------------- c
----------- and
-========== predicate expression, RHS
-============ predicate expression, LHS
+====== boolean expression
+======== boolean expression, LHS
+========== implies expression, boolean
+============ trait of a member variable
 ============== named trait
----------------- d
+---------------- x
+-------------- .
+-------------- z
+------------ implies
+============ trait of a member variable
+============== named trait
+---------------- y
+-------------- .
+-------------- z
+-------- and
+======== boolean expression, RHS
+========== boolean expression
+============ boolean expression, LHS
+============== constant, boolean
+---------------- False
+-------------- eq
+============== constant, boolean
+---------------- False
 ------------ or
-============ predicate expression, RHS
-============== named trait
----------------- e
+============ boolean expression, RHS
+============== constant, boolean
+---------------- False
+-------------- neq
+============== predicate call, boolean
+================ named trait
+------------------ int
+---------------- fn_call
+================ args
+================== predicate expression
+==================== named trait
+---------------------- int

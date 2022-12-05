@@ -705,7 +705,9 @@ class Visitor:
 
     def visit_args(self, node: pt.Args, my_node: ASTNode):
         self.visit(node.args, my_node)
-        my_node.insert('arg', node.arg.id)
+        my_node.insert('arg', ASTNode('predicate expression'))
+
+        self.visit(node.pred_expr, my_node['arg'])
 
         return self
 

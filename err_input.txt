@@ -1,4 +1,42 @@
-# 1. brace error
-    fn(params :
-        a:1
-        b:2
+
+a, b =
+
+a, b = c, d = e, f =
+
+printinfo True or (True or False) xor (False and True) and (xor False)
+printinfo True or (and True or False) xor (False and and True) and (xor False)
+printinfo foo trait bar
+
+printinfo [Addable and Subable](int,,, int)
+printinfo [Addable and Subable](,,,int)
+
+trait ERR(self):
+    fn:
+        yaya()
+
+trait ERR2(self):
+    static_fn:
+        []() -> int
+        okay(int, bool)
+        static_yaya[]() -> int
+
+trait ERR3(self):
+    fn:
+
+trait ERR4(self):
+    fn:
+        [][][][]
+
+
+trait ERR5(self):
+    fn:
+        somewhat_err_fn(self, any, int, =int, int)
+    static_fn:
+        somewhat_stt_err_fn(any, int, *, int, :int, a:=int)
+    fn:
+        err_fn2(self, any, int, *, a=int, b:=int, c:int, d=:int)
+        err_fn3(self, int str float bool)
+    cls_fn:
+        err_fn4(self) -> True
+        err_fn5(True, self)
+        err_fn6(self, True, int) -> int

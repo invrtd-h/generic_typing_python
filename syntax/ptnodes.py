@@ -1105,11 +1105,11 @@ class Constants(PtNode):
 
 
 class Args(PtNode):
-    __slots__ = ('args', 'COMMA', 'unary_pred')
+    __slots__ = ('args', 'COMMA', 'pred_expr')
 
     name: str = 'args'
 
-    def __init__(self, args=None, unary_pred=None) -> None:
+    def __init__(self, args=None, pred_expr=None) -> None:
         if args is not None:
             self.args = args
             self.COMMA = fw.comma
@@ -1117,7 +1117,7 @@ class Args(PtNode):
             self.args = None
             self.COMMA = None
 
-        self.unary_pred = unary_pred
+        self.pred_expr = pred_expr
 
 
 class Arg(PtNode):

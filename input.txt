@@ -75,7 +75,7 @@ printinfo Addable(str, int) # -> False
 printinfo Multipliable(str, int) # -> True, since "str" * 3 is a valid expression
 
 
-# 4. trait[]() expression as a semantic sugar.
+# 4. If you want to bind some arguments to a trait, use trait[]() expression.
 
 printinfo Addable[int](str) # -> False, exactly same meaning with Addable(str, int)
 
@@ -162,64 +162,11 @@ trait GenericTrait(self):
         foo[T](self, T) -> T
 
 
-trait OK(self):
-    fn:
-        yaya(self, int)
-    static_fn:
-        static_yaya()
-        static_fefe(int, bool)
-
-printinfo [Addable and Subable](int) # -> True
-
-printinfo [(a and b) or (c and (d or e))]
-
-a, b =
-
-a, b = c, d = e, f =
-
-printinfo True or (True or False) xor (False and True) and (xor False)
-printinfo True or (and True or False) xor (False and and True) and (xor False)
-printinfo foo trait bar
-
-printinfo [Addable and Subable](int,,, int)
-printinfo [Addable and Subable](,,,int)
-
-trait ERR(self):
-    fn:
-        yaya()
-
-trait ERR2(self):
-    static_fn:
-        []() -> int
-        okay(int, bool)
-        static_yaya[]() -> int
-
-trait ERR3(self):
-    fn:
-
-trait ERR4(self):
-    fn:
-        [][][][]
-
-
-trait ERR5(self):
-    fn:
-        somewhat_err_fn(self, any, int, =int, int)
-    static_fn:
-        somewhat_stt_err_fn(any, int, *, int, :int, a:=int)
-    fn:
-        err_fn2(self, any, int, *, a=int, b:=int, c:int, d=:int)
-        err_fn3(self, int str float bool)
-    cls_fn:
-        err_fn4(self) -> True
-        err_fn5(True, self)
-        err_fn6(self, True, int) -> int
-    var:
-        err_var: False
-
-
-printinfo ERR
-
 trait vector7D(self) extends vector[vector[vector[vector[vector[vector[vector[int]]]]]]]:
-    pass
+    fn:
+        begin(self) -> iterator[vector[any] or vector[vector[any] or any] or vector[vector[vector[any]]]]
+        end(self) -> iterator[int or [trait_of(vector.a)] and trait_of([None or vector5D[v[u], v[u]]].y)]
+        front(self, =[int or (str and not float or vector[int])])
+
+printinfo (trait_of(x.z) implies trait_of(y.z)) and (True == False or False != int(int))
 
