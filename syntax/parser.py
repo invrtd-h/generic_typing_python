@@ -930,12 +930,12 @@ def p_trait_decl_err1(p: yacc.YaccProduction) -> None:
 
 
 def p_trait_decl_err2(p: yacc.YaccProduction) -> None:
-    """ trait_decl : TRAIT trait_id LP1 class_args RP1 error S_COLON """
+    """ trait_decl : TRAIT trait_id LP1 class_args RP1 error RP2 S_COLON """
     print('the curly bracket is not opened but closed')
 
 
 def p_trait_decl_err3(p: yacc.YaccProduction) -> None:
-    """ trait_decl : TRAIT trait_id LP1 class_args RP1 LP2 trait_decl_stmts error S_COLON """
+    """ trait_decl : TRAIT trait_id LP1 class_args RP1 LP2 error S_COLON """
     print('the curly bracket is not closed')
 
 
